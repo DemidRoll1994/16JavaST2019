@@ -11,6 +11,7 @@ public class ToursStorage {
         tourList = tours;
     }
 
+
     public Tour get(int id) {
         for (Tour tour : tourList) {
             if (tour.getId() == id) {
@@ -25,25 +26,39 @@ public class ToursStorage {
     }
 
     public boolean remove(int id) {
-        return remove(get(id));
+        if (!tourList.isEmpty()) {
+            return remove(get(id));
+        }
+        return false;
     }
 
     public boolean remove(Tour tour) {
-        return tourList.remove(tour);
+        if (!tourList.isEmpty()) {
+            return tourList.remove(tour);
+        }
+        return false;
     }
 
+    /**
+     * Method will update tour in storage.
+     * Unfortunately, in this storage version
+     *
+     * @return boolean value with <b>true</b> if updated and <b>false</b> if doesn't.
+     */
     public boolean update(Tour tour) {
-
-        tourList.set(idOf(tour), tour);
-
-    }
-
-    private int idOf(Tour tour) {
+        int tourId = -1;
         for (Tour t : tourList) {
             if (tour.getId() == t.getId()) {
-                return tour.getId();
+                tourId = tour.getId();
+                break;
             }
         }
-        return -1;
+
+        if (tourId != -1) {
+            tourList.set(tourId, tour);
+            return true;
+        }
+        return false;
     }
+
 }
