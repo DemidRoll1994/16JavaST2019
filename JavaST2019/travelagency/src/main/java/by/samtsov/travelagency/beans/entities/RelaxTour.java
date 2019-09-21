@@ -1,16 +1,20 @@
 package by.samtsov.travelagency.beans.entities;
 
+import by.samtsov.travelagency.beans.enums.Feed;
+import by.samtsov.travelagency.beans.enums.Transport;
+
 public class RelaxTour extends Tour{
 
     private boolean onSea;
 
-    public Tour createTour(int id, double price, int duration, String name, boolean onSea) {
-        return new RelaxTour(id, price, duration, name, onSea);
-
+    public Tour createTour(String[] values) {
+        return new RelaxTour(Integer.parseInt(values[0]), Double.parseDouble(values[1])
+                , Integer.parseInt(values[2]), values[3], Transport.valueOf(values[4]), Feed.valueOf(values[5])
+                , Boolean.valueOf(values[6]));
     }
 
-    private RelaxTour(int id, double price, int duration, String name, boolean onSea) {
-        super(id, price, duration, name);
+    private RelaxTour(int id, double price, int duration, String name, Transport transport, Feed feed, boolean onSea) {
+        super(id, price, duration, name, transport, feed);
         this.onSea = onSea;
     }
 
@@ -42,9 +46,8 @@ public class RelaxTour extends Tour{
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("RelaxTour{");
-        sb.append("onSea=").append(onSea);
-        sb.append('}');
-        return sb.toString();
+        return "RelaxTour{"  + super.toString()
+                + "onSea=" + onSea
+                + "} ";
     }
 }

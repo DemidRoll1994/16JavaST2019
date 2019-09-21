@@ -7,9 +7,18 @@ import java.util.List;
 public class ToursStorage {
     private List<Tour> tourList;
 
-    public ToursStorage(List<Tour> tours) {
-        tourList = tours;
+    private static ToursStorage instance;
+
+    private ToursStorage() {
     }
+
+    public static ToursStorage getInstance(){
+        if (instance == null) {
+            instance = new ToursStorage();
+        }
+        return instance;
+    }
+
 
 
     public Tour get(int id) {

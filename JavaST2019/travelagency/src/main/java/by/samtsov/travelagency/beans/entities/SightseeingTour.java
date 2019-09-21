@@ -1,15 +1,20 @@
 package by.samtsov.travelagency.beans.entities;
 
+import by.samtsov.travelagency.beans.enums.Feed;
+import by.samtsov.travelagency.beans.enums.Transport;
+
 public class SightseeingTour extends Tour {
     private String country;
 
-    public Tour createTour(int id, double price, int duration, String name, String country) {
-        return new SightseeingTour(id, price, duration, name, country);
-
+    public Tour createTour(String[] values) {
+        return new SightseeingTour(Integer.parseInt(values[0]), Double.parseDouble(values[1])
+                , Integer.parseInt(values[2]), values[3], Transport.valueOf(values[4]), Feed.valueOf(values[5])
+                , (values[6]));
     }
 
-    private SightseeingTour(int id, double price, int duration, String name, String country) {
-        super(id, price, duration, name);
+    private SightseeingTour(int id, double price, int duration, String name, Transport transport, Feed feed
+            , String country) {
+        super(id, price, duration, name, transport, feed);
         this.country = country;
     }
 
@@ -41,9 +46,8 @@ public class SightseeingTour extends Tour {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("SightseeingTour{");
-        sb.append("country='").append(country).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return "SightseeingTour{" + super.toString()
+                + "country='" + country + '\''
+                + "} ";
     }
 }

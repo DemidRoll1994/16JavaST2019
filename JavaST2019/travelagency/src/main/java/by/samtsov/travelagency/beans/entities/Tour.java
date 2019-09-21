@@ -1,25 +1,48 @@
 package by.samtsov.travelagency.beans.entities;
 
+import by.samtsov.travelagency.beans.enums.Feed;
+import by.samtsov.travelagency.beans.enums.Transport;
+
 public abstract class Tour {
-    /**A tour identifier. */
+    /**
+     * A tour identifier.
+     */
     private int id;
-    /**A tour price. */
+    /**
+     * A tour price.
+     */
     private double price;
-    /** A tour duration in days. */
+    /**
+     * A tour duration in days.
+     */
     private int duration;
-    /** A tour name.*/
+    /**
+     * A tour name.
+     */
     private String name;
+    /**
+     * A tour transport
+     */
+    private Transport transport;
+    /**
+     * A tour feed
+     */
+    private Feed feed;
+
 
     /**Factory method.
      * @return tour implementation.
      */
-    //public abstract Tour createTour();
 
-    public Tour(int id, double price, int duration, String name) {
+    public abstract Tour createTour(String[]strings);
+
+    public Tour(int id, double price, int duration, String name, Transport transport, Feed feed) {
         this.id = id;
         this.price = price;
         this.duration = duration;
         this.name = name;
+        this.transport = transport;
+        this.feed = feed;
     }
 
     public int getId() {
@@ -54,6 +77,22 @@ public abstract class Tour {
         this.name = name;
     }
 
+    public Transport getTransport() {
+        return transport;
+    }
+
+    public void setTransport(Transport transport) {
+        this.transport = transport;
+    }
+
+    public Feed getFeed() {
+        return feed;
+    }
+
+    public void setFeed(Feed feed) {
+        this.feed = feed;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -61,10 +100,14 @@ public abstract class Tour {
 
         Tour tour = (Tour) o;
 
+        if (duration != tour.duration) return false;
         if (id != tour.id) return false;
         if (Double.compare(tour.price, price) != 0) return false;
-        if (duration != tour.duration) return false;
-        return name != null ? name.equals(tour.name) : tour.name == null;
+        if (feed != tour.feed) return false;
+        if (name != null ? !name.equals(tour.name) : tour.name != null) return false;
+        if (transport != tour.transport) return false;
+
+        return true;
     }
 
     @Override
@@ -76,17 +119,20 @@ public abstract class Tour {
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + duration;
         result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (transport != null ? transport.hashCode() : 0);
+        result = 31 * result + (feed != null ? feed.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Tour{");
-        sb.append("id=").append(id);
-        sb.append(", price=").append(price);
-        sb.append(", duration=").append(duration);
-        sb.append(", name='").append(name).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return "Tour{" +
+                "id=" + id +
+                ", price=" + price +
+                ", duration=" + duration +
+                ", name='" + name + '\'' +
+                ", transport=" + transport +
+                ", feed=" + feed +
+                '}';
     }
 }

@@ -1,18 +1,24 @@
 package by.samtsov.travelagency.beans.entities;
 
-public class CruiseTour extends Tour{
+import by.samtsov.travelagency.beans.enums.Feed;
+import by.samtsov.travelagency.beans.enums.Transport;
+
+public class CruiseTour extends Tour {
     private String country;
     private boolean onSea;
 
-    public Tour createTour(int id, double price, int duration, String name, String country, boolean onSea) {
-        return new CruiseTour(id, price, duration, name, country, onSea);
+    public Tour createTour(String[] values) {
+        return new CruiseTour(Integer.parseInt(values[0]), Double.parseDouble(values[1]), Integer.parseInt(values[2])
+                , values[3], Transport.valueOf(values[4]), Feed.valueOf(values[5]), values[6]
+                , Boolean.getBoolean(values[7]));
 
     }
 
-    private CruiseTour(int id, double price, int duration, String name, String country, boolean onSea) {
-        super(id, price, duration, name);
-        this.country=country;
-        this.onSea=onSea;
+    public CruiseTour(int id, double price, int duration, String name, Transport transport, Feed feed, String country
+            , boolean onSea) {
+        super(id, price, duration, name, transport, feed);
+        this.country = country;
+        this.onSea = onSea;
     }
 
     public String getCountry() {
@@ -40,7 +46,9 @@ public class CruiseTour extends Tour{
         CruiseTour that = (CruiseTour) o;
 
         if (onSea != that.onSea) return false;
-        return country != null ? country.equals(that.country) : that.country == null;
+        if (country != null ? !country.equals(that.country) : that.country != null) return false;
+
+        return true;
     }
 
     @Override
@@ -53,10 +61,9 @@ public class CruiseTour extends Tour{
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("CruiseTour{");
-        sb.append("country='").append(country).append('\'');
-        sb.append(", onSea=").append(onSea);
-        sb.append('}');
-        return sb.toString();
+        return "CruiseTour{" + super.toString()
+                + "country='" + country + '\''
+                + ", onSea=" + onSea
+                + "} ";
     }
 }

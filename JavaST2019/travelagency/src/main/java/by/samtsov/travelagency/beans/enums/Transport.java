@@ -1,22 +1,29 @@
 package by.samtsov.travelagency.beans.enums;
 
-public enum HealthCareType {
+/**
+ * Created by samtsov on 21.09.19.
+ */
+public enum Transport {
 
     /**
-     * Spa-procedures.
+     * Road transport.
      */
-    SPA("Spa"),
+    BUS("Coach bus"),
 
     /**
-     * Procedures uses sea salt.
+     * Air transport.
      */
-    SPELEO("Speleo"),
+    PLAIN("Airplane"),
 
     /**
-     * gastro-procedures.
-     * mineral water, juices, vegetables, meet, beer... yes, it's very healthy!!!
+     * Water transport.
      */
-    GASTRO("Gastro");
+    SHIP("Ship"),
+
+    /**
+     * Railway transport.
+     */
+    TRAIN("Train");
 
     /**
      * String that contains name of type.
@@ -26,7 +33,7 @@ public enum HealthCareType {
     /**
      * Enum constructor.
      */
-    HealthCareType(String code) {
+    Transport(String code) {
         this.name = code;
     }
 

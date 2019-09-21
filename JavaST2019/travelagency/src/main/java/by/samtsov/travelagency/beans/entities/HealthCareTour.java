@@ -1,18 +1,23 @@
 package by.samtsov.travelagency.beans.entities;
 
+import by.samtsov.travelagency.beans.enums.Feed;
 import by.samtsov.travelagency.beans.enums.HealthCareType;
+import by.samtsov.travelagency.beans.enums.Transport;
 
 public class HealthCareTour extends Tour {
 
     private HealthCareType healthCareType;
 
-    public Tour createTour(int id, double price, int duration, String name, HealthCareType healthCareType) {
-        return new HealthCareTour(id, price, duration, name, healthCareType);
+    public Tour createTour(String[] values) {
+        return new HealthCareTour(Integer.parseInt(values[0]), Double.parseDouble(values[1])
+                , Integer.parseInt(values[2]), values[3], Transport.valueOf(values[4]), Feed.valueOf(values[5])
+                , HealthCareType.valueOf(values[6]));
 
     }
 
-    private HealthCareTour(int id, double price, int duration, String name, HealthCareType healthCareType) {
-        super(id, price, duration, name);
+    private HealthCareTour(int id, double price, int duration, String name, Transport transport, Feed feed
+            , HealthCareType healthCareType) {
+        super(id, price, duration, name, transport, feed);
         this.healthCareType = healthCareType;
     }
 
@@ -44,9 +49,8 @@ public class HealthCareTour extends Tour {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("HealthCareTour{");
-        sb.append("healthCareType=").append(healthCareType);
-        sb.append('}');
-        return sb.toString();
+        return "HealthCareTour{" + super.toString()
+                + "healthCareType=" + healthCareType
+                + "} " ;
     }
 }

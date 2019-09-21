@@ -1,16 +1,20 @@
 package by.samtsov.travelagency.beans.entities;
 
 import by.samtsov.travelagency.beans.enums.CurrencyEnum;
+import by.samtsov.travelagency.beans.enums.Feed;
+import by.samtsov.travelagency.beans.enums.Transport;
 
 public class ShopingTour extends Tour {
     CurrencyEnum currency;
 
-    public Tour createTour(int id, double price, int duration, String name, CurrencyEnum currency) {
-        return new ShopingTour(id, price, duration, name, currency);
+    public Tour createTour(String[] values) {
+        return new ShopingTour(Integer.parseInt(values[0]), Double.parseDouble(values[1]), Integer.parseInt(values[2])
+                , values[3], Transport.valueOf(values[4]), Feed.valueOf(values[5]), CurrencyEnum.valueOf(values[6]));
     }
 
-    private ShopingTour(int id, double price, int duration, String name,CurrencyEnum currency) {
-        super(id, price, duration, name);
+    private ShopingTour(int id, double price, int duration, String name, Transport transport, Feed feed
+            , CurrencyEnum currency) {
+        super(id, price, duration, name, transport, feed);
         this.currency = currency;
     }
 
@@ -42,9 +46,8 @@ public class ShopingTour extends Tour {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ShopingTour{");
-        sb.append("currency=").append(currency);
-        sb.append('}');
-        return sb.toString();
+        return "ShopingTour{" + super.toString()
+                + "currency=" + currency.toString()
+                + "} ";
     }
 }

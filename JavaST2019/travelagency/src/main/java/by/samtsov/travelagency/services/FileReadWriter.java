@@ -18,6 +18,37 @@ public class FileReadWriter {
                 .collect(Collectors.toList());
     }
 
+
+
+
+    // todo
+/*
+    public class Program {
+
+        public void reader(String[] args) {
+
+            try(FileReader reader = new FileReader("notes3.txt"))
+            {
+                // читаем посимвольно
+                int c;
+                while((c=reader.read())!=-1){
+
+                    System.out.print((char)c);
+                }
+            }
+            catch(IOException ex){
+
+                System.out.println(ex.getMessage());
+            }
+        }
+    }
+
+
+
+
+*/
+
+
     public List<String> readFile(String path) {
         try {
             File inputFile = new File("input.txt");
