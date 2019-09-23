@@ -3,52 +3,72 @@ package by.samtsov.travelagency.beans.entities;
 import by.samtsov.travelagency.beans.enums.Feed;
 import by.samtsov.travelagency.beans.enums.Transport;
 
+import java.util.List;
+
 public class CruiseTour extends Tour {
     private String country;
     private boolean onSea;
 
-    public Tour createTour(String[] values) {
-        return new CruiseTour(Integer.parseInt(values[0]), Double.parseDouble(values[1]), Integer.parseInt(values[2])
-                , values[3], Transport.valueOf(values[4]), Feed.valueOf(values[5]), values[6]
-                , Boolean.getBoolean(values[7]));
-
+    public CruiseTour() {
+        super();
     }
 
-    public CruiseTour(int id, double price, int duration, String name, Transport transport, Feed feed, String country
-            , boolean onSea) {
+
+
+    public CruiseTour(final int id, final double price, final int duration,
+                      final String name, final Transport transport,
+                      final Feed feed, final String country1,
+                      final boolean onSea1) {
         super(id, price, duration, name, transport, feed);
-        this.country = country;
-        this.onSea = onSea;
+        this.country = country1;
+        this.onSea = onSea1;
+    }
+
+    public Tour createTour(final List<String> values) {
+        return new CruiseTour(Integer.parseInt(values.get(0)),
+                Double.parseDouble(values.get(1)),
+                Integer.parseInt(values.get(2)),
+                values.get(3), Transport.valueOf(values.get(4).toUpperCase()),
+                Feed.valueOf(values.get(5).toUpperCase()), values.get(6),
+                Boolean.getBoolean(values.get(7)));
+
     }
 
     public String getCountry() {
         return country;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setCountry(final String country1) {
+        this.country = country1;
     }
 
     public boolean isOnSea() {
         return onSea;
     }
 
-    public void setOnSea(boolean onSea) {
-        this.onSea = onSea;
+    public void setOnSea(final boolean onSea1) {
+        this.onSea = onSea1;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CruiseTour)) return false;
-        if (!super.equals(o)) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof CruiseTour)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
 
         CruiseTour that = (CruiseTour) o;
 
-        if (onSea != that.onSea) return false;
-        if (country != null ? !country.equals(that.country) : that.country != null) return false;
-
-        return true;
+        if (onSea != that.onSea) {
+            return false;
+        }
+        return country != null
+                ? country.equals(that.country) : that.country == null;
     }
 
     @Override

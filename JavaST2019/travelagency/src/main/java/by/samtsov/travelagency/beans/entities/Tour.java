@@ -3,6 +3,8 @@ package by.samtsov.travelagency.beans.entities;
 import by.samtsov.travelagency.beans.enums.Feed;
 import by.samtsov.travelagency.beans.enums.Transport;
 
+import java.util.List;
+
 public abstract class Tour {
     /**
      * A tour identifier.
@@ -21,95 +23,189 @@ public abstract class Tour {
      */
     private String name;
     /**
-     * A tour transport
+     * A tour transport.
      */
     private Transport transport;
     /**
-     * A tour feed
+     * A tour feed.
      */
     private Feed feed;
 
+    /**
+     * Empty constructor.
+     */
+    public Tour() {
 
-    /**Factory method.
+    }
+
+    /**
+     * Full-parameter constructor.
+     *
+     * @param id1        - Tour id
+     * @param price1     - Tour price
+     * @param duration1  - Tour duration
+     * @param name1      - Tour name
+     * @param transport1 - Tour transport
+     * @param feed1      - Tour feed
+     * @see Transport enum
+     * @see Feed enum
+     */
+    public Tour(final int id1, final double price1, final int duration1,
+                final String name1, final Transport transport1,
+                final Feed feed1) {
+        this.id = id1;
+        this.price = price1;
+        this.duration = duration1;
+        this.name = name1;
+        this.transport = transport1;
+        this.feed = feed1;
+    }
+
+    /**
+     * Factory method.
+     *
+     * @param strings - list of input values for creating object
      * @return tour implementation.
      */
 
-    public abstract Tour createTour(String[]strings);
+    public abstract Tour createTour(List<String> strings);
 
-    public Tour(int id, double price, int duration, String name, Transport transport, Feed feed) {
-        this.id = id;
-        this.price = price;
-        this.duration = duration;
-        this.name = name;
-        this.transport = transport;
-        this.feed = feed;
-    }
-
+    /**
+     * Get-method for id.
+     */
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    /**
+     * Set-method for id.
+     *
+     * @param id1 value to set
+     */
+    public void setId(final int id1) {
+        this.id = id1;
     }
 
+    /**
+     * Get-method for price.
+     */
     public double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    /**
+     * Set-method for price.
+     *
+     * @param price1 value to set
+     */
+    public void setPrice(final double price1) {
+        this.price = price1;
     }
 
+    /**
+     * Get-method for duration.
+     */
     public int getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
+    /**
+     * Set-method for duration.
+     *
+     * @param duration1 value to set
+     */
+    public void setDuration(final int duration1) {
+        this.duration = duration1;
     }
 
+    /**
+     * Get-method for name.
+     */
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    /**
+     * Set-method for name.
+     *
+     * @param name1 value to set
+     */
+    public void setName(final String name1) {
+        this.name = name1;
     }
 
+    /**
+     * Get-method for Transport.
+     */
     public Transport getTransport() {
         return transport;
     }
 
-    public void setTransport(Transport transport) {
-        this.transport = transport;
+    /**
+     * Set-method for Transport.
+     *
+     * @param transport1 - a value to set
+     * @see Transport enum.
+     */
+    public void setTransport(final Transport transport1) {
+        this.transport = transport1;
     }
 
+    /**
+     * Get-method for Transport.
+     */
     public Feed getFeed() {
         return feed;
     }
 
-    public void setFeed(Feed feed) {
-        this.feed = feed;
+    /**
+     * Set-method for Feed.
+     *
+     * @param feed1 - a value to set
+     * @see Feed enum.
+     */
+    public void setFeed(final Feed feed1) {
+        this.feed = feed1;
     }
 
+    /**
+     * equals-method for Feed.
+     *
+     * @param o - comparing object
+     * @see Object.equals() method.
+     */
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Tour)) return false;
-
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Tour)) {
+            return false;
+        }
         Tour tour = (Tour) o;
-
-        if (duration != tour.duration) return false;
-        if (id != tour.id) return false;
-        if (Double.compare(tour.price, price) != 0) return false;
-        if (feed != tour.feed) return false;
-        if (name != null ? !name.equals(tour.name) : tour.name != null) return false;
-        if (transport != tour.transport) return false;
-
-        return true;
+        if (duration != tour.duration) {
+            return false;
+        }
+        if (id != tour.id) {
+            return false;
+        }
+        if (Double.compare(tour.price, price) != 0) {
+            return false;
+        }
+        if (feed != tour.feed) {
+            return false;
+        }
+        if (name != null ? !name.equals(tour.name) : tour.name != null) {
+            return false;
+        }
+        return transport == tour.transport;
     }
 
+    /**
+     * hashcode method.
+     *
+     * @return hashcode of object.
+     */
     @Override
     public int hashCode() {
         int result;
@@ -124,15 +220,21 @@ public abstract class Tour {
         return result;
     }
 
+    /**
+     * toString method.
+     *
+     * @return String with all parameters of object.
+     */
     @Override
     public String toString() {
-        return "Tour{" +
-                "id=" + id +
-                ", price=" + price +
-                ", duration=" + duration +
-                ", name='" + name + '\'' +
-                ", transport=" + transport +
-                ", feed=" + feed +
-                '}';
+        return "Tour{"
+                + "id=" + id
+                + ", price=" + price
+                + ", duration=" + duration
+                + ", name='" + name + '\''
+                + ", transport=" + transport
+                + ", feed=" + feed
+                + '}';
     }
+
 }

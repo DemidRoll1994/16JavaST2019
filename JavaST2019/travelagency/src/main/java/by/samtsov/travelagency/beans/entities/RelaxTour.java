@@ -3,34 +3,50 @@ package by.samtsov.travelagency.beans.entities;
 import by.samtsov.travelagency.beans.enums.Feed;
 import by.samtsov.travelagency.beans.enums.Transport;
 
-public class RelaxTour extends Tour{
+import java.util.List;
+
+public class RelaxTour extends Tour {
 
     private boolean onSea;
 
-    public Tour createTour(String[] values) {
-        return new RelaxTour(Integer.parseInt(values[0]), Double.parseDouble(values[1])
-                , Integer.parseInt(values[2]), values[3], Transport.valueOf(values[4]), Feed.valueOf(values[5])
-                , Boolean.valueOf(values[6]));
+    public RelaxTour() {
     }
 
-    private RelaxTour(int id, double price, int duration, String name, Transport transport, Feed feed, boolean onSea) {
+    private RelaxTour(final int id, final double price, final int duration,
+                      final String name, final Transport transport,
+                      final Feed feed, final boolean onSea1) {
         super(id, price, duration, name, transport, feed);
-        this.onSea = onSea;
+        this.onSea = onSea1;
+    }
+
+    public Tour createTour(final List<String> values) {
+        return new RelaxTour(Integer.parseInt(values.get(0)),
+                Double.parseDouble(values.get(1)),
+                Integer.parseInt(values.get(2)), values.get(3),
+                Transport.valueOf(values.get(4).toUpperCase()),
+                Feed.valueOf(values.get(5).toUpperCase()),
+                Boolean.valueOf(values.get(6)));
     }
 
     public boolean isOnSea() {
         return onSea;
     }
 
-    public void setOnSea(boolean onSea) {
-        this.onSea = onSea;
+    public void setOnSea(final boolean onSea1) {
+        this.onSea = onSea1;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof RelaxTour)) return false;
-        if (!super.equals(o)) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof RelaxTour)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
 
         RelaxTour relaxTour = (RelaxTour) o;
 
@@ -46,7 +62,7 @@ public class RelaxTour extends Tour{
 
     @Override
     public String toString() {
-        return "RelaxTour{"  + super.toString()
+        return "RelaxTour{" + super.toString()
                 + "onSea=" + onSea
                 + "} ";
     }

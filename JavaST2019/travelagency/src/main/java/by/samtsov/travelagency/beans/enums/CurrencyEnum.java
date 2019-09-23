@@ -1,4 +1,5 @@
 package by.samtsov.travelagency.beans.enums;
+
 /**
  * Created by samtsov on 21.09.19.
  */
