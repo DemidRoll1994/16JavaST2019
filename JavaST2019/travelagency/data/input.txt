@@ -1,0 +1,6 @@
+Cruise,100,3,Poland weekend,tRain,AI,Poland,true
+Sightseeing,250,4,Old Paris,BUs,AI,France
+Relax,1500,10,Madrid,PLaIN,AI,Russia,false
+Sightseeing,200,4,nepal,PLaIN,AI,Nepal
+cruise,200,4,Poland weekend,BuS,BB,Russia,false
+cruise,300,5,Latvia weekend,shIp,HB,Latvia,true
