@@ -401,40 +401,4 @@
 2019-09-23 04:08:28,977 DEBUG b.s.t.s.TourCreator [main] object [cruise, 200, 4, Poland weekend, BuS, BB, Russia, false] is correct :true
 2019-09-23 04:08:28,977 DEBUG b.s.t.s.TourCreator [main] object [cruise, 300, 5, Latvia weekend, shIp, HB, Latvia, true] is correct :true
 2019-09-23 04:08:28,977 DEBUG b.s.t.s.TourCreator [main] ----correct objects are created------
-2019-09-23 15:56:20,862 WARN b.s.t.s.v.Validator [main] data in file is invalid  (less then 6 parameters)
-2019-09-23 15:56:20,864 WARN b.s.t.s.v.Validator [main] data in file is invalid  (less then 6 parameters)
-2019-09-23 15:56:33,101 WARN b.s.t.s.v.Validator [main] data in file is invalid  (less then 6 parameters)
-2019-09-23 15:56:33,104 WARN b.s.t.s.v.Validator [main] data in file is invalid  (less then 6 parameters)
-2019-09-23 16:20:00,891 WARN b.s.t.s.v.Validator [main] data in file is invalid  (less then 6 parameters)
-2019-09-23 16:20:00,894 WARN b.s.t.s.v.Validator [main] data in file is invalid  (less then 6 parameters)
-2019-09-23 16:29:20,751 WARN b.s.t.s.v.Validator [main] type of tour [﻿cruise, 100, 3, Poland weekend, tRain, AI, Poland, true] is incorrect!
-2019-09-23 16:29:20,753 WARN b.s.t.s.v.Validator [main] type of tour [﻿cruise, 100, 3, Poland weekend, tRain, AI, Poland, true] is incorrect!
-2019-09-23 16:35:17,695 WARN b.s.t.s.v.Validator [main] type of tour [﻿Cruise, 150, 3, Poland weekend, bus, HB, Poland, true] is incorrect!
-2019-09-23 16:35:17,697 WARN b.s.t.s.v.Validator [main] type of tour [﻿Cruise, 150, 3, Poland weekend, bus, HB, Poland, true] is incorrect!
-2019-09-23 16:37:23,732 WARN b.s.t.s.v.Validator [main] type of tour [﻿ Cruise, 150, 3, Poland weekend, bus, HB, Poland, true] is incorrect!
-2019-09-23 16:37:23,735 WARN b.s.t.s.v.Validator [main] type of tour [﻿ Cruise, 150, 3, Poland weekend, bus, HB, Poland, true] is incorrect!
-2019-09-23 16:37:29,242 WARN b.s.t.s.v.Validator [main] type of tour [﻿ Cruise, 150, 3, Poland weekend, bus, HB, Poland, true] is incorrect!
-2019-09-23 16:37:29,245 WARN b.s.t.s.v.Validator [main] type of tour [﻿ Cruise, 150, 3, Poland weekend, bus, HB, Poland, true] is incorrect!
-2019-09-23 16:38:33,990 WARN b.s.t.s.v.Validator [main] type of tour [﻿Cruise, 150, 3, Poland weekend, bus, HB, Poland, true] is incorrect!
-2019-09-23 16:38:33,992 WARN b.s.t.s.v.Validator [main] type of tour [﻿Cruise, 150, 3, Poland weekend, bus, HB, Poland, true] is incorrect!
-2019-09-23 16:40:28,108 WARN b.s.t.s.v.Validator [main] type of tour [﻿Cruise, 150, 3, Poland weekend, bus, HB, Poland, true] is incorrect!
-2019-09-23 16:40:28,112 WARN b.s.t.s.v.Validator [main] type of tour [﻿Cruise, 150, 3, Poland weekend, bus, HB, Poland, true] is incorrect!
-2019-09-23 16:41:26,848 WARN b.s.t.s.v.Validator [main] type of tour [﻿Cruise, 150, 3, Poland weekend, bus, HB, Poland, true] is incorrect!
-2019-09-23 16:41:26,853 WARN b.s.t.s.v.Validator [main] type of tour [﻿Cruise, 150, 3, Poland weekend, bus, HB, Poland, true] is incorrect!
-2019-09-23 16:41:33,333 WARN b.s.t.s.v.Validator [main] type of tour [﻿Cruise, 150, 3, Poland weekend, bus, HB, Poland, true] is incorrect!
-2019-09-23 16:41:33,336 WARN b.s.t.s.v.Validator [main] type of tour [﻿Cruise, 150, 3, Poland weekend, bus, HB, Poland, true] is incorrect!
-2019-09-23 16:48:42,020 WARN b.s.t.s.v.Validator [main] price less then 0 or duration less then 1. tour can't be exist!
-2019-09-23 16:48:42,022 WARN b.s.t.s.v.Validator [main] type of tour [cruse, 200, 4, Poland weekend, BUs, BB, Russia, false] is incorrect!
-2019-09-23 16:48:42,026 WARN b.s.t.s.v.Validator [main] data in file is invalid  (less then 6 parameters)
-2019-09-23 16:48:42,026 WARN b.s.t.s.v.Validator [main] data in file is invalid  (less then 6 parameters)
-2019-09-23 16:49:06,249 ERROR b.s.t.c.Menu [main] java.nio.file.NoSuchFileException: input.txt
-2019-09-23 16:49:51,232 WARN b.s.t.s.v.Validator [main] type of tour [﻿Sightseeing, 150, 3, Poland weekend, bus, HB, Poland, true] is incorrect!
-2019-09-23 16:49:51,234 WARN b.s.t.s.v.Validator [main] type of tour [﻿Sightseeing, 150, 3, Poland weekend, bus, HB, Poland, true] is incorrect!
-2019-09-23 16:51:12,966 WARN b.s.t.s.v.Validator [main] price less then 0 or duration less then 1. tour can't be exist!
-2019-09-23 16:51:12,969 WARN b.s.t.s.v.Validator [main] type of tour [cruse, 200, 4, Poland weekend, BUs, BB, Russia, false] is incorrect!
-2019-09-23 16:51:12,971 WARN b.s.t.s.v.Validator [main] data in file is invalid  (less then 6 parameters)
-2019-09-23 16:51:12,972 WARN b.s.t.s.v.Validator [main] data in file is invalid  (less then 6 parameters)
-2019-09-23 16:51:16,922 WARN b.s.t.s.v.Validator [main] price less then 0 or duration less then 1. tour can't be exist!
-2019-09-23 16:51:16,925 WARN b.s.t.s.v.Validator [main] type of tour [cruse, 200, 4, Poland weekend, BUs, BB, Russia, false] is incorrect!
-2019-09-23 16:51:16,927 WARN b.s.t.s.v.Validator [main] data in file is invalid  (less then 6 parameters)
-2019-09-23 16:51:16,928 WARN b.s.t.s.v.Validator [main] data in file is invalid  (less then 6 parameters)
+

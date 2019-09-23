@@ -72,6 +72,8 @@ public abstract class Tour {
 
     /**
      * Get-method for id.
+     *
+     * @return Tour Id
      */
     public int getId() {
         return id;
@@ -88,6 +90,8 @@ public abstract class Tour {
 
     /**
      * Get-method for price.
+     *
+     * @return Tour price
      */
     public double getPrice() {
         return price;
@@ -104,6 +108,8 @@ public abstract class Tour {
 
     /**
      * Get-method for duration.
+     *
+     * @return Tour duration
      */
     public int getDuration() {
         return duration;
@@ -120,6 +126,8 @@ public abstract class Tour {
 
     /**
      * Get-method for name.
+     *
+     * @return Tour name
      */
     public String getName() {
         return name;
@@ -136,6 +144,8 @@ public abstract class Tour {
 
     /**
      * Get-method for Transport.
+     *
+     * @return Tour transport
      */
     public Transport getTransport() {
         return transport;
@@ -152,7 +162,9 @@ public abstract class Tour {
     }
 
     /**
-     * Get-method for Transport.
+     * Get-method for Feed.
+     *
+     * @return Tour feed
      */
     public Feed getFeed() {
         return feed;
@@ -169,7 +181,7 @@ public abstract class Tour {
     }
 
     /**
-     * equals-method for Feed.
+     * equals-method for Tour.
      *
      * @param o - comparing object
      * @see Object.equals() method.
