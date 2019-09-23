@@ -23,7 +23,7 @@ public class Validator {
             logger.warn(INVALID_DATA_ERROR + " (less then 6 parameters)");
             return false;
         }
-        if (line.get(0).equalsIgnoreCase("Cruise")) {
+        if (line.get(0).trim().equalsIgnoreCase("Cruise")) {
             return isValidTour(line) && isValidCruiseTour(line);
         } else if (line.get(0).equalsIgnoreCase("HealthCare")) {
             return isValidTour(line) && isValidHealthCareTour(line);

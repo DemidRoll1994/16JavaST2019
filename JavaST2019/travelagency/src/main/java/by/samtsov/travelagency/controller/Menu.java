@@ -17,7 +17,7 @@ import java.util.List;
 
 public class Menu {
 
-    private static final String FILE_PATH = "input.txt";
+    private static final String FILE_PATH = "data/input.txt";
     private static final String CHOICE1 = "1";
     private static final String CHOICE2 = "2";
     private static final String CHOICE3 = "3";
