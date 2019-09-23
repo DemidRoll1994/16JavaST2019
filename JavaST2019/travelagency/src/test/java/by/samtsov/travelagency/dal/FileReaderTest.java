@@ -12,7 +12,6 @@ import java.nio.file.NoSuchFileException;
 public class FileReaderTest {
 
 
-
     @Test(expectedExceptions = NoSuchFileException.class)
     public void testReadFile() throws Exception {
         FileReader fileReader = new FileReader();
@@ -23,16 +22,16 @@ public class FileReaderTest {
     public void testReadFile2() throws IOException {
         FileReader fileReader = new FileReader();
         String[] result = fileReader.read("data/emptyFile.txt");
-        String[] expected = new String[]{"\uFEFF"};
-        Assert.assertEquals(result,expected);
+        String[] expected = new String[0];
+        Assert.assertEquals(result, expected);
     }
 
     @Test
     public void testReadFile3() throws Exception {
         FileReader fileReader = new FileReader();
         String[] result = fileReader.read("data/input.txt");
-        String[] expected = {"Cruise,100,3,Poland weekend," +
-                "tRain,AI,Poland,true",
+        String[] expected = {"Sightseeing,150,3,Poland weekend,bus,HB,Poland" +
+                ",true",
                 "Sightseeing,250,4,Old Paris,BUs,AI,France",
                 "Relax,1500,10,Madrid,PLaIN,AI,Russia,false",
                 "Sightseeing,200,4,nepal,PLaIN,AI,Nepal",

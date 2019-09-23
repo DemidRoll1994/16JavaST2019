@@ -1,6 +1,6 @@
-<Configuration status="info" strict="true"
+<Configuration status="debug" strict="true"
                name="XMLConfigTest" packages="org.apache.logging.log4j.test">
-    <Filter type="ThresholdFilter" level="info" />
+    <Filter type="ThresholdFilter" level="debug" />
 
     <Appenders>
         <Console name="STDOUT">
@@ -15,18 +15,17 @@
             <Policies>
                 <TimeBasedTriggeringPolicy interval = "1" />
                 <SizeBasedTriggeringPolicy
-                        size="1 MB" />
+                        size="250 MB" />
             </Policies>
         </RollingFile>
     </Appenders>
 
     <Loggers>
 
-
-        <Logger name="consoleLogger" level="error">
+        <Logger name="7788" level="debug">
             <AppenderRef ref="STDOUT"/>
         </Logger>
-        <Root level="info">
+        <Root level="debug">
             <AppenderRef ref="rollingFile" />
         </Root>
 

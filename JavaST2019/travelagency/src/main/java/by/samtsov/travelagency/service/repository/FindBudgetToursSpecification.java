@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FindBudgetToursSpecification implements Specification {
-    /**
-     * Tour price.
-     */
 
     private static final double BUDGETPRICE = 200.0;
 
@@ -20,6 +17,7 @@ public class FindBudgetToursSpecification implements Specification {
      * @return tours with price less 200.
      */
     public List<Tour> execute(final ToursStorage toursStorage) {
+
         List<Tour> tourList = new ArrayList<>();
         for (Tour tour : toursStorage.selectAll()) {
             if (tour.getPrice() <= BUDGETPRICE) {

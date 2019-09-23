@@ -72,6 +72,7 @@ public abstract class Tour {
 
     /**
      * Get-method for id.
+     *
      * @return Tour Id
      */
     public int getId() {
@@ -89,6 +90,7 @@ public abstract class Tour {
 
     /**
      * Get-method for price.
+     *
      * @return Tour price
      */
     public double getPrice() {
@@ -106,6 +108,7 @@ public abstract class Tour {
 
     /**
      * Get-method for duration.
+     *
      * @return Tour duration
      */
     public int getDuration() {
