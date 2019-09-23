@@ -401,3 +401,11 @@
 2019-09-23 04:08:28,977 DEBUG b.s.t.s.TourCreator [main] object [cruise, 200, 4, Poland weekend, BuS, BB, Russia, false] is correct :true
 2019-09-23 04:08:28,977 DEBUG b.s.t.s.TourCreator [main] object [cruise, 300, 5, Latvia weekend, shIp, HB, Latvia, true] is correct :true
 2019-09-23 04:08:28,977 DEBUG b.s.t.s.TourCreator [main] ----correct objects are created------
+2019-09-23 15:56:20,862 WARN b.s.t.s.v.Validator [main] data in file is invalid  (less then 6 parameters)
+2019-09-23 15:56:20,864 WARN b.s.t.s.v.Validator [main] data in file is invalid  (less then 6 parameters)
+2019-09-23 15:56:33,101 WARN b.s.t.s.v.Validator [main] data in file is invalid  (less then 6 parameters)
+2019-09-23 15:56:33,104 WARN b.s.t.s.v.Validator [main] data in file is invalid  (less then 6 parameters)
+2019-09-23 16:20:00,891 WARN b.s.t.s.v.Validator [main] data in file is invalid  (less then 6 parameters)
+2019-09-23 16:20:00,894 WARN b.s.t.s.v.Validator [main] data in file is invalid  (less then 6 parameters)
+2019-09-23 16:29:20,751 WARN b.s.t.s.v.Validator [main] type of tour [﻿cruise, 100, 3, Poland weekend, tRain, AI, Poland, true] is incorrect!
+2019-09-23 16:29:20,753 WARN b.s.t.s.v.Validator [main] type of tour [﻿cruise, 100, 3, Poland weekend, tRain, AI, Poland, true] is incorrect!

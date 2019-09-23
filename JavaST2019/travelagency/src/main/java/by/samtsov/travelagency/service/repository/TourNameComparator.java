@@ -8,6 +8,6 @@ public class TourNameComparator implements Comparator<Tour> {
 
     public int compare(Tour a, Tour b) {
 
-        return a.getName().compareTo(b.getName());
+        return b.getName().compareTo(a.getName());
     }
 }
