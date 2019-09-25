@@ -7,10 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FindBudgetToursSpecification implements Specification {
+
     private static final double BUDGETPRICE = 200.0;
 
+    /**
+     * method execute selection for price.
+     * max price = 200.0
+     * @param toursStorage - storage that contains all tours
+     * @return tours with price less 200.
+     */
+    public List<Tour> execute(final ToursStorage toursStorage) {
 
-    public List<Tour> execute(ToursStorage toursStorage) {
         List<Tour> tourList = new ArrayList<>();
         for (Tour tour : toursStorage.selectAll()) {
             if (tour.getPrice() <= BUDGETPRICE) {

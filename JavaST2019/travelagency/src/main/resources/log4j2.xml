@@ -22,6 +22,7 @@
 
     <Loggers>
 
+
         <Logger name="consoleLogger" level="error">
             <AppenderRef ref="STDOUT"/>
         </Logger>

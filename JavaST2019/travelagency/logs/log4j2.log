@@ -401,3 +401,4 @@
 2019-09-23 04:08:28,977 DEBUG b.s.t.s.TourCreator [main] object [cruise, 200, 4, Poland weekend, BuS, BB, Russia, false] is correct :true
 2019-09-23 04:08:28,977 DEBUG b.s.t.s.TourCreator [main] object [cruise, 300, 5, Latvia weekend, shIp, HB, Latvia, true] is correct :true
 2019-09-23 04:08:28,977 DEBUG b.s.t.s.TourCreator [main] ----correct objects are created------
+

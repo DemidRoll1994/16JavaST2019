@@ -11,7 +11,7 @@ public class SortByPriceAndNameSpecification implements Specification {
     @Override
     public List<Tour> execute(ToursStorage toursStorage) {
         List<Tour> list = toursStorage.selectAll();
-        list.sort(new TourIdComparator().thenComparing(new TourNameComparator()));
+        list.sort(new TourPriceComparator().thenComparing(new TourNameComparator()));
         return list;
     }
 }

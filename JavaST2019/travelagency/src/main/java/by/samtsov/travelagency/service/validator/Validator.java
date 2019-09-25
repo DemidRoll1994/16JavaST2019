@@ -35,7 +35,7 @@ public class Validator {
             return isValidTour(line) && isValidSightseeingTour(line);
         }
 
-        logger.warn(String.format("type of tour %s is incorrect!",line.toString()));
+        logger.warn(String.format("type of tour %s is incorrect!", line.toString()));
         return false;
     }
 
