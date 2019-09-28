@@ -1,4 +1,4 @@
-package by.samtsov.threads.ex10;
+package by.samtsov.threads.ex11todo;
 
 class Store {
     private int product = 0;
@@ -13,7 +13,7 @@ class Store {
         product++;
         System.out.println("Производитель добавил 1 товар");
         System.out.println("Товаров на складе: " + product);
-        notifyAll();
+        notify();
     }
 
     public synchronized void get() {

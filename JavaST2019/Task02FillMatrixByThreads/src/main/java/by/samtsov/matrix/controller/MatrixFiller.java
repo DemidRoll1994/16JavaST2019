@@ -2,7 +2,6 @@ package by.samtsov.matrix.controller;
 
 import by.samtsov.matrix.view.MatrixPrinter;
 
-import java.util.ArrayList;
 
 public class MatrixFiller {
 
