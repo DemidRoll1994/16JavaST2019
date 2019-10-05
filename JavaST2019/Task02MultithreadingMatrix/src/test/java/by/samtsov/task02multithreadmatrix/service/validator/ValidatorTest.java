@@ -1,10 +1,6 @@
 package by.samtsov.task02multithreadmatrix.service.validator;
 
-import org.testng.Assert;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
-import java.util.Arrays;
 
 public class ValidatorTest {
     @DataProvider(name = "inputDataAndResult")
@@ -30,10 +26,11 @@ public class ValidatorTest {
                 {new String[]{"HealthCare", "200", "4", "BUs"}, false}
         };
     }
-
+/*
     @Test(dataProvider = "inputDataAndResult")
     public void isValidTest(String[] line, boolean isValid) {
-        Assert.assertEquals(new Validator().isValid(Arrays.asList(line)), isValid);
+        Assert.assertEquals(new Validator().isValid(Arrays.asList(line)),
+                isValid);
     }
-
+*/
 }

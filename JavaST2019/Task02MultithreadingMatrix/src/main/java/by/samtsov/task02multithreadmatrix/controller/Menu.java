@@ -1,13 +1,23 @@
 package by.samtsov.task02multithreadmatrix.controller;
 
+import by.samtsov.task02multithreadmatrix.beans.thread.DiagonalFiller;
+import by.samtsov.task02multithreadmatrix.service.MatrixService;
 import by.samtsov.task02multithreadmatrix.view.MenuViewer;
 import by.samtsov.task02multithreadmatrix.view.Printer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
+import java.nio.file.NoSuchFileException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Menu {
 
     private static final String FILE_PATH = "data/input.txt";
+    private static final String SEPARATOR = ",";
+    private static final String FILE_READING_ERROR = "File reading error : ";
+
     private static final String CHOICE1 = "1";
     private static final String CHOICE2 = "2";
     private static final String CHOICE3 = "3";
@@ -27,6 +37,34 @@ public class Menu {
     }
 
     public void mainMenuHandler() {
+        MatrixService matrixService = new MatrixService();
+        try {
+            matrixService.initializeMatrixFromFile(FILE_PATH, SEPARATOR);
+        }catch (NoSuchFileException nsfe){
+            //todo separate types of exceptions
+            logger.error(FILE_READING_ERROR+ nsfe.getMessage());
+            return;
+        }
+        catch (IOException ioe){
+            logger.error(FILE_READING_ERROR+ ioe.getMessage());
+            return;
+        }
+
+
+        List<DiagonalFiller> diagonalFillers = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            diagonalFillers.add(new DiagonalFiller(i + 10
+                    , matrixService));
+        }
+        for (DiagonalFiller d:diagonalFillers) {
+            d.start();
+        }
+        new Printer().printMatrix(matrixService.getMatrix());
+
+
+
+
+
 
         /*
         //List<Tour> tours = new ArrayList<>();
