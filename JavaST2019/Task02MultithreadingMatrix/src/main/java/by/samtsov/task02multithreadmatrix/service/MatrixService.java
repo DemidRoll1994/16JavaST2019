@@ -2,18 +2,16 @@ package by.samtsov.task02multithreadmatrix.service;
 
 import by.samtsov.task02multithreadmatrix.beans.storage.Matrix;
 import by.samtsov.task02multithreadmatrix.service.reader.FileReader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class MatrixService {
 
     Matrix innerMatrix;
 
-    ReentrantLock locker = new ReentrantLock(); // создаем заглушку
-    //Condition condition = locker.newCondition(); // получаем условие,
-    // связанное
-
+    private static final Logger logger = LogManager.getLogger();
 
     public void initializeMatrixFromFile(String path, String delimiterInFile)
             throws IOException {
@@ -23,20 +21,21 @@ public class MatrixService {
         innerMatrix = new Matrix(valuesInLines);
     }
 
-    public void modifyElementWithLock(int x, int y, int value) {
-        locker.lock();
-        if (innerMatrix.getElement(x, y) == 0) {
-            System.out.println(" элемент (" + x + "," + y + ")  свободен!");
-            //condition.signalAll();
 
-        }
-        locker.unlock();
-        System.out.println("Я - поток " + Thread.currentThread().getName() + "и " +
-                "я модернизирую элемент (" + x + ", " + y + ") значением " + value);
-        innerMatrix.setElement(x, y, value);
+    public int getMatrixDimension() {
+        return innerMatrix.getDimension();
     }
 
     public int[][] getMatrix() {
         return innerMatrix.getMatrix();
+    }
+
+    public void assignElementToMatrix(int x, int y, int value)
+            throws IllegalArgumentException {
+        if (x >= 0 && y >= 0) {
+            innerMatrix.setElement(x, y, value);
+        }else{
+            throw new IllegalArgumentException();
+        }
     }
 }

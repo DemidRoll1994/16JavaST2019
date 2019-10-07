@@ -1,3 +1,6 @@
 *.iml
 .idea/
 *.class
+*target/
+*.log
+JavaST2019/Task02MultithreadingMatrix/logs/log4j2.log

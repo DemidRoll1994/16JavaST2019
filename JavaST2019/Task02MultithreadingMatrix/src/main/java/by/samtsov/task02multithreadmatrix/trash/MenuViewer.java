@@ -1,4 +1,4 @@
-package by.samtsov.task02multithreadmatrix.view;
+package by.samtsov.task02multithreadmatrix.trash;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
