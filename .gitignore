@@ -1,4 +1,10 @@
 *.iml
 .idea/
+<<<<<<< Updated upstream
 target/
 out/
+=======
+*.class
+*target/
+*.log
+>>>>>>> Stashed changes
