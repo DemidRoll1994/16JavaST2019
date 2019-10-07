@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.concurrent.CyclicBarrier;
 
 public class Auction {
-    public final int BIDS_NUMBER = 5;
+    public final int BIDS_NUMBER = 4;
     private ArrayList<Bid> bids;
     private CyclicBarrier barrier;
 

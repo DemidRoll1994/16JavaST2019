@@ -5,9 +5,15 @@ import org.apache.logging.log4j.Logger;
 
 public class Parser {
 
-    private static final Logger logger = LogManager.getLogger();
-    private String delimiter;
+    /**
+     * TestNG logger.
+     */
 
+    private static final Logger logger = LogManager.getLogger();
+
+    /**
+     * unsupported operation
+     */
     private String[][] parseLines(String[] parsingLines, String delimiter) {
         logger.debug("------Parsing start------");
         int arrayLength = parsingLines.length;
@@ -19,7 +25,12 @@ public class Parser {
         return parsedValues;
     }
 
-    //it should be modified with Stream API
+    /**
+     * method to parse one-dimension string array to two-dimension array of int
+     * @param parsingLines one-dimension string array
+     * @param delimiter string, that divide values in line
+     * @return two-dimension array of int
+     */
     public int[][] parseLinesToInteger(String[] parsingLines, String delimiter) {
         int arrayLength = parsingLines.length;
         int[][] parsedValues = new int[arrayLength][];

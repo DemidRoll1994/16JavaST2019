@@ -1,120 +1,121 @@
 package by.samtsov.task02multithreadmatrix.controller;
 
-import by.samtsov.task02multithreadmatrix.beans.thread.DiagonalFiller;
+import by.samtsov.task02multithreadmatrix.beans.thread.DiagonalBarrierFiller;
+import by.samtsov.task02multithreadmatrix.beans.thread.FastDiagonalFiller;
+import by.samtsov.task02multithreadmatrix.beans.thread.MatrixDiagonalFiller;
 import by.samtsov.task02multithreadmatrix.service.MatrixService;
-import by.samtsov.task02multithreadmatrix.trash.MenuViewer;
+import by.samtsov.task02multithreadmatrix.service.fillerservice.DiagonalBarrierFillerService;
+import by.samtsov.task02multithreadmatrix.service.fillerservice.FastDiagonalFillerService;
 import by.samtsov.task02multithreadmatrix.view.Printer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Menu {
 
     private static final String FILE_PATH = "data/input.txt";
     private static final String SEPARATOR = ",";
     private static final String FILE_READING_ERROR = "File reading error : ";
+    private static final String STANDARD_ERROR_FORMAT = "%s %s";
 
-    private static final String CHOICE1 = "1";
-    private static final String CHOICE2 = "2";
-    private static final String CHOICE3 = "3";
-    private static final String CHOICE4 = "4";
-    private static final String CHOICE5 = "5";
-    private static final String CHOICE6 = "6";
-    private static final String EXIT_CHOICE = "7";
-    private static final String DEFAULT_MESSAGE = "Select operation:";
-    private static final String ERROR_MESSAGE = "Incorrect choice. Please enter a number from 1 to 7:";
 
     private static final Logger logger = LogManager.getLogger();
-    private static final MenuViewer menuViewer = new MenuViewer();
-    private static final Printer printer = new Printer();
 
     public Menu() {
         mainMenuHandler();
     }
 
-    public void mainMenuHandler() {
-        MatrixService matrixService = new MatrixService();
+
+    public MatrixService fastDiagonalFill(MatrixService matrixService) {
+
+        FastDiagonalFillerService fastDiagonalFillerService =
+                new FastDiagonalFillerService(matrixService);
+
+
+        MatrixDiagonalFiller diagonalFiller1 = new FastDiagonalFiller(11
+                , fastDiagonalFillerService);
+        MatrixDiagonalFiller diagonalFiller2 = new FastDiagonalFiller(23
+                , fastDiagonalFillerService);
+        MatrixDiagonalFiller diagonalFiller3 = new FastDiagonalFiller(34
+                , fastDiagonalFillerService);
+        MatrixDiagonalFiller diagonalFiller4 = new FastDiagonalFiller(86
+                , fastDiagonalFillerService);
+        MatrixDiagonalFiller diagonalFiller5 = new FastDiagonalFiller(887
+                , fastDiagonalFillerService);
+        diagonalFiller1.start();
+        diagonalFiller2.start();
+        diagonalFiller3.start();
+        diagonalFiller4.start();
+        diagonalFiller5.start();
+        try {
+            diagonalFiller1.join();
+            diagonalFiller2.join();
+            diagonalFiller3.join();
+            diagonalFiller4.join();
+            diagonalFiller5.join();
+        } catch (InterruptedException e) {
+            logger.error(String.format(STANDARD_ERROR_FORMAT, Thread.currentThread().getName()
+                    , e.getMessage()));
+        }
+        return matrixService;
+    }
+
+    private void initializeMatrix(MatrixService matrixService) {
+
         try {
             matrixService.initializeMatrixFromFile(FILE_PATH, SEPARATOR);
         } catch (NoSuchFileException nsfe) {
-            //todo separate types of exceptions
-            logger.error(FILE_READING_ERROR + nsfe.getMessage());
-            return;
+            logger.error(String.format(STANDARD_ERROR_FORMAT, FILE_READING_ERROR
+                    , nsfe.getMessage()));
         } catch (IOException ioe) {
-            logger.error(FILE_READING_ERROR + ioe.getMessage());
-            return;
+            logger.error(String.format(STANDARD_ERROR_FORMAT, FILE_READING_ERROR
+                    , ioe.getMessage()));
         }
+    }
 
 
-        List<DiagonalFiller> diagonalFillers = new ArrayList<>();
+    private void barrierDiagonalFill(MatrixService matrixService) {
 
-        diagonalFillers.add(new DiagonalFiller(11, matrixService));
-        diagonalFillers.add(new DiagonalFiller(23, matrixService));
-        diagonalFillers.add(new DiagonalFiller(34, matrixService));
-        diagonalFillers.add(new DiagonalFiller(86, matrixService));
-        diagonalFillers.add(new DiagonalFiller(887, matrixService));
-        for (DiagonalFiller diagonalFiller : diagonalFillers) {
-            diagonalFiller.start();
-        }
+        DiagonalBarrierFillerService diagonalBarierFillerService =
+                new DiagonalBarrierFillerService(matrixService);
+
+        MatrixDiagonalFiller diagonalFiller1 =
+                new DiagonalBarrierFiller(15, diagonalBarierFillerService, 3);
+        MatrixDiagonalFiller diagonalFiller2 =
+                new DiagonalBarrierFiller(27, diagonalBarierFillerService, 3);
+        MatrixDiagonalFiller diagonalFiller3 =
+                new DiagonalBarrierFiller(38, diagonalBarierFillerService, 3);
+        MatrixDiagonalFiller diagonalFiller4 =
+                new DiagonalBarrierFiller(46, diagonalBarierFillerService, 3);
+
+        diagonalFiller1.start();
+        diagonalFiller2.start();
+        diagonalFiller3.start();
+        diagonalFiller4.start();
+
         try {
-            for (DiagonalFiller diagonalFiller : diagonalFillers) {
-                diagonalFiller.join();
-            }
+            diagonalFiller1.join();
+            diagonalFiller2.join();
+            diagonalFiller3.join();
+            diagonalFiller4.join();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.error(String.format(STANDARD_ERROR_FORMAT
+                    , Thread.currentThread().getName(), e.getMessage()));
         }
+    }
+
+    public void mainMenuHandler() {
+        MatrixService matrixService = new MatrixService();
+        initializeMatrix(matrixService);
+        fastDiagonalFill(matrixService);
         new Printer().printMatrix(matrixService.getMatrix());
 
-
-
-
-
-
-        /*
-        //List<Tour> tours = new ArrayList<>();
-        try {
-            List<String> lines = Arrays.asList(new FileReader().read(FILE_PATH));
-            Parser parser = new Parser();
-            List<List<String>> valuesInLines = parser.parseLines(lines);
-            Matrix matrix = new Matrix(valuesInLines);
-
-        } catch (IOException e) {
-            logger.error(e);
-            System.out.println(e);
-        }
-        ToursRepositoryImpl repository = ToursRepositoryImpl.getInstance(tours);
-        String choice = EXIT_CHOICE + "1";
-        String msg = DEFAULT_MESSAGE;
-        while (!choice.equalsIgnoreCase(EXIT_CHOICE)) {
-            choice = menuViewer.printChoice(msg);
-            msg = DEFAULT_MESSAGE;
-            switch (choice) {
-                case CHOICE1:
-                    printer.printTours(repository.query(new SelectAllSpecification()));
-                    break;
-                case CHOICE2:
-                    printer.printTours(repository.query(new FindBusToursSpecification()));
-                    break;
-                case CHOICE3:
-                    printer.printTours(repository.query(new FindShipToursSpecification()));
-                    break;
-                case CHOICE4:
-                    printer.printTours(repository.query(new FindBudgetToursSpecification()));
-                    break;
-                case CHOICE5:
-                    printer.printTours(repository.query(new SortByPriceAndNameSpecification()));
-                    break;
-                case CHOICE6:
-                    printer.printTours(repository.query(new SortByIdSpecification()));
-                    break;
-                default:
-                    msg = ERROR_MESSAGE;
-
-            }
-        }*/
+        initializeMatrix(matrixService);
+        barrierDiagonalFill(matrixService);
+        new Printer().printMatrix(matrixService.getMatrix());
     }
+
+
 }

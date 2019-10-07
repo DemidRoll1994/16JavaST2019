@@ -7,6 +7,13 @@ public class Validator {
 
     private static final Logger logger = LogManager.getLogger();
     private static final String INVALID_DATA_ERROR = "data in file is invalid ";
+    private static final String EMPTY_MATRIX_ERROR = INVALID_DATA_ERROR
+            +" (matrix is empty)";
+    private static final String NON_ZERO_MAIN_DIAGONAL_ERROR
+            = INVALID_DATA_ERROR + " (matrix main diagonal contains non-zero "
+            + "values)";
+    private static final String NOT_SQUARE_MATRIX_ERROR = INVALID_DATA_ERROR
+            + " (matrix is not square)";
 
     public boolean isValid(int[][] matrix) {
 
@@ -15,7 +22,7 @@ public class Validator {
 
     private boolean isInitialized(int[][] matrix) {
         if (matrix == null) {
-            logger.warn(INVALID_DATA_ERROR + " (matrix is empty)");
+            logger.warn(EMPTY_MATRIX_ERROR);
             return false;
         }
         return true;
@@ -26,8 +33,7 @@ public class Validator {
         int matrixDimension = matrix.length;
         for (int i = 0; i < matrixDimension; i++) {
             if (matrix[i][i] != expectedValue) {
-                logger.warn(INVALID_DATA_ERROR + " (matrix main diagonal " +
-                        "contains non-zero values)");
+                logger.warn(NON_ZERO_MAIN_DIAGONAL_ERROR );
                 return false;
             }
         }
@@ -38,7 +44,7 @@ public class Validator {
         int matrixDimension = matrix.length;
         for (int[] line : matrix) {
             if (matrixDimension != line.length) {
-                logger.warn(INVALID_DATA_ERROR + " (matrix is not square)");
+                logger.warn(NOT_SQUARE_MATRIX_ERROR);
                 return false;
             }
         }

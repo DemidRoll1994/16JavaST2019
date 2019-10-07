@@ -1,40 +1,66 @@
 package by.samtsov.task02multithreadmatrix.beans.storage;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class Matrix {
-    private int[][] matrix;
+    private int[][] intMatrix;
     private int dimension;
 
     public Matrix(int[][] newMatrix) {
-        matrix = newMatrix.clone();
-        dimension= matrix.length;
+        intMatrix = newMatrix.clone();
+        dimension = intMatrix.length;
     }
 
-    public int[][] getMatrix() {
-        int[][] newMatrix= new int[dimension][];
+    public int[][] getIntMatrix() {
+        int[][] newMatrix = new int[dimension][];
         for (int i = 0; i < dimension; i++) {
-            newMatrix[i] = Arrays.copyOf(matrix[i],dimension);
-            System.arraycopy( matrix[i], 0, newMatrix[i], 0, dimension );
+            newMatrix[i] = Arrays.copyOf(intMatrix[i], dimension);
+            System.arraycopy(intMatrix[i], 0, newMatrix[i], 0, dimension);
         }
-        return matrix;
+        return intMatrix;
     }
 
-    public void setMatrix(int[][] newMatrix) {
-        matrix = matrix;
-        dimension= matrix.length;
+    public void setIntMatrix(int[][] newMatrix) {
+        intMatrix = newMatrix;
+        dimension = intMatrix.length;
     }
 
     public void setElement(int x, int y, int value) {
-        matrix[x][y] = value;
+        intMatrix[x][y] = value;
     }
 
     public int getElement(int x, int y) {
-        return matrix[x][y];
+        return intMatrix[x][y];
     }
 
     public int getDimension() {
         return dimension;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Matrix)) return false;
+        Matrix matrix = (Matrix) o;
+        return dimension == matrix.dimension &&
+                Arrays.equals(intMatrix, matrix.intMatrix);
+    }
+
+    @Override
+    public String toString() {
+        return super.toString()
+                + "Matrix{"
+                + "intMatrix=" + Arrays.toString(intMatrix)
+                + ", dimension=" + dimension
+                + '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * Objects.hash(dimension);
+        result = 31 * result + Arrays.hashCode(intMatrix);
+        return result;
+    }
 }
