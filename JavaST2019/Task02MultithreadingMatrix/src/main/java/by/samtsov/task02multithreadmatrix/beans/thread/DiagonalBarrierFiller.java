@@ -53,8 +53,9 @@ public class DiagonalBarrierFiller extends MatrixDiagonalFiller {
 
     @Override
     public int hashCode() {
+        final int hashModifier = 31;
         int result = super.hashCode();
-        result = 31 * Objects.hash(numberOfElementToStop);
+        result += hashModifier * Objects.hash(numberOfElementToStop);
         return result;
     }
 
@@ -67,4 +68,6 @@ public class DiagonalBarrierFiller extends MatrixDiagonalFiller {
                 + ", threadNumber=" + threadNumber
                 + "} ";
     }
+
+
 }
