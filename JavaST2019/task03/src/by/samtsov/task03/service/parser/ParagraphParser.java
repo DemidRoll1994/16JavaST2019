@@ -7,7 +7,8 @@ public class ParagraphParser extends Parser {
     private static ParagraphParser instance = new ParagraphParser();
 
     private ParagraphParser() {
-        nextParser = SentenceParser.getInstance();
+        final String NEXT_PARSER_REGULAR_EXPR ="\\s";
+        nextParser = SentenceParser.getInstance(NEXT_PARSER_REGULAR_EXPR);
         currentComposite= new Paragraph();
     }
 
@@ -20,7 +21,7 @@ public class ParagraphParser extends Parser {
         return instance;
     }
 
-
+//todo delete
     /*public Composite parseComposite(String initialString) {
         String[] childsInStrings = initialString.split(regex);
         List<Composite> childsInComposites = new ArrayList<>();

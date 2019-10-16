@@ -7,7 +7,8 @@ public class LexemeParser extends Parser {
     private static LexemeParser instance = new LexemeParser();
 
     private LexemeParser() {
-        nextParser = WordParser.getInstance();
+        final String NEXT_PARSER_REGULAR_EXPR ="\\s";
+        nextParser = WordParser.getInstance(NEXT_PARSER_REGULAR_EXPR);
         currentComposite= new Lexeme();
     }
 

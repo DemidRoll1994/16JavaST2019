@@ -18,12 +18,6 @@ public class FastDiagonalFillerService extends DiagonalFillerService{
         modifiedElements = 0;
     }
 
-    public void modifyElementWithLock(int x, int y, int value) {
-        locker.lock();
-        matrixService.assignElementToMatrix(x, y, value);
-        locker.unlock();
-    }
-
     public void modifyNextElement(int value) {
         int modifyingElement = 0;
         locker.lock();

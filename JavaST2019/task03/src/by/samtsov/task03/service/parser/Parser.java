@@ -11,6 +11,9 @@ public abstract class Parser {
     Parser nextParser;
     Composite currentComposite;
 
+    // todo слишком универсальный.  List<Composite> childsInComposites не
+    //  правильно вроде.
+    //  как он склеит композиты, если уберутся какие-то промежуточные элементы?
 
     public Composite parseComposite(String initialString) {
         String[] childsInStrings = initialString.split(regex);

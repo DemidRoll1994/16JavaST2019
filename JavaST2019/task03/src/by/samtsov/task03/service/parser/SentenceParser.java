@@ -7,7 +7,8 @@ public class SentenceParser extends Parser {
     private static SentenceParser instance = new SentenceParser();
 
     private SentenceParser() {
-        nextParser = LexemeParser.getInstance();
+        nextParser = LexemeParser.getInstance(); // todo заменить на внешнюю
+        // цепочку вызовов
         currentComposite= new Sentence();
     }
 
