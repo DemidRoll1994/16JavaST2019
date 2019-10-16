@@ -2,6 +2,7 @@ package by.samtsov.task02multithreadmatrix.service;
 
 import by.samtsov.task02multithreadmatrix.beans.storage.Matrix;
 import by.samtsov.task02multithreadmatrix.service.reader.FileReader;
+import by.samtsov.task02multithreadmatrix.service.validator.Validator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -22,6 +23,8 @@ public class MatrixService {
      */
     private static final String INDEXOUTOFBOUNDEXCEPTION = "IndexOutOfBound "
             + "exception ";
+    private static final String MATRIX_INVALID_EXCEPTION = "initialization data"
+            + " is not valid!";
     /**
      * matrix class instance.
      */
@@ -35,11 +38,15 @@ public class MatrixService {
      * @throws IOException if file does not exist or it's blocked etc.
      */
     public void initializeMatrixFromFile(String path, String delimiterInFile)
-            throws IOException {
+            throws IOException, IllegalArgumentException {
         String[] lines = new FileReader().read(path);
         int[][] valuesInLines = new Parser().parseLinesToInteger(lines
                 , delimiterInFile);
-        innerMatrix = new Matrix(valuesInLines);
+        if (new Validator().isValid(valuesInLines)) {
+            innerMatrix = new Matrix(valuesInLines);
+        } else {
+            throw new IllegalArgumentException(MATRIX_INVALID_EXCEPTION);
+        }
     }
 
     /**
@@ -71,8 +78,9 @@ public class MatrixService {
         if (x >= 0 && y >= 0) {
             innerMatrix.setElement(x, y, value);
         } else {
-            logger.warn(String.format(STANDARD_ERROR_FORMAT,
-                    Thread.currentThread().getName(), INDEXOUTOFBOUNDEXCEPTION));
+            logger.warn(String.format(STANDARD_ERROR_FORMAT
+                    , Thread.currentThread().getName()
+                    , INDEXOUTOFBOUNDEXCEPTION));
         }
     }
 }

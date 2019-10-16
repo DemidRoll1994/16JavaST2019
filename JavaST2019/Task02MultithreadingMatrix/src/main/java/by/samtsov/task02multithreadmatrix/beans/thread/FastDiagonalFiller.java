@@ -22,9 +22,9 @@ public class FastDiagonalFiller extends MatrixDiagonalFiller {
     public String toString() {
         return super.toString()
                 + "FastDiagonalFiller{"
-                +"diagonalFillerService=" + diagonalFillerService
-                +", threadNumber=" + threadNumber
-                +"} ";
+                + "diagonalFillerService=" + diagonalFillerService
+                + ", threadNumber=" + threadNumber
+                + "} ";
     }
 
     @Override
@@ -32,8 +32,9 @@ public class FastDiagonalFiller extends MatrixDiagonalFiller {
         return super.hashCode();
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof FastDiagonalFiller)) return false;
+        return super.equals(o);
     }
 }
