@@ -1,10 +1,7 @@
 package by.samtsov.task02multithreadmatrix.controller;
 
 import by.samtsov.task02multithreadmatrix.service.MatrixService;
-import by.samtsov.task02multithreadmatrix.service.fillerservice.DiagonalBarrierFillerService;
-import by.samtsov.task02multithreadmatrix.service.fillerservice.DiagonalFillerService;
-import by.samtsov.task02multithreadmatrix.service.fillerservice.FastDiagonalFillerService;
-import by.samtsov.task02multithreadmatrix.service.fillerservice.SemaphoreFillerService;
+import by.samtsov.task02multithreadmatrix.service.fillerservice.*;
 import by.samtsov.task02multithreadmatrix.view.MainMenu;
 import by.samtsov.task02multithreadmatrix.view.Printer;
 import org.apache.logging.log4j.LogManager;
@@ -27,6 +24,7 @@ public class MainController {
     private static final int EXIT_CHOICE = 0;
     private static final int BARRIER_COUNT = 3;
     private static final int SEMAPHORE_COUNT = 2;
+    private static final int COUNT_DOWN_LATCH = 3;
 
 
     private static final Logger logger = LogManager.getLogger();
@@ -82,8 +80,8 @@ public class MainController {
                     break;
                 case CHOICE4:
                     diagonalFillerService
-                            = new SemaphoreFillerService(matrixService
-                            , FILLER_NUMBERS, SEMAPHORE_COUNT);
+                            = new CountDownLatchFillerService(matrixService
+                            , FILLER_NUMBERS, COUNT_DOWN_LATCH);
                     break;
 
                 default:

@@ -1,25 +1,21 @@
 package by.samtsov.task02multithreadmatrix.service.fillerservice;
 
-import by.samtsov.task02multithreadmatrix.beans.thread.DiagonalBarrierFiller;
+import by.samtsov.task02multithreadmatrix.beans.thread.CountDownLatchFiller;
 import by.samtsov.task02multithreadmatrix.service.MatrixService;
 
 import java.util.ArrayList;
-import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.CountDownLatch;
 
-public class DiagonalBarrierFillerService extends DiagonalFillerService {
+public class CountDownLatchFillerService extends DiagonalFillerService {
 
-    private CyclicBarrier barrier;
+    private CountDownLatch countDownLatch;
 
-    public DiagonalBarrierFillerService(MatrixService newMatrixService
-            , int[] newFillerNumbers, int barrierCount) {
+    public CountDownLatchFillerService(MatrixService newMatrixService
+            , int[] newFillerNumbers, int countDown) {
         matrixService = newMatrixService;
         modifiedElements = 0;
-        barrier = new CyclicBarrier(barrierCount);
+        countDownLatch = new CountDownLatch(countDown);
         fillerNumbers = newFillerNumbers;
-    }
-
-    public CyclicBarrier getBarrier() {
-        return barrier;
     }
 
     @Override
@@ -27,10 +23,10 @@ public class DiagonalBarrierFillerService extends DiagonalFillerService {
 
         final int NUMBER_OF_ELEMENT_TO_STOP = 3;
 
-        ArrayList<DiagonalBarrierFiller> diagFillers = new ArrayList<>();
+        ArrayList<CountDownLatchFiller> diagFillers = new ArrayList<>();
 
         for (int i = 0; i < fillerNumbers.length; i++) {
-            diagFillers.add(new DiagonalBarrierFiller(fillerNumbers[i]
+            diagFillers.add(new CountDownLatchFiller(fillerNumbers[i]
                     , this, NUMBER_OF_ELEMENT_TO_STOP));
             diagFillers.get(i).start();
         }
@@ -44,4 +40,7 @@ public class DiagonalBarrierFillerService extends DiagonalFillerService {
         }
     }
 
+    public CountDownLatch getCountDownLatch() {
+        return countDownLatch;
+    }
 }
