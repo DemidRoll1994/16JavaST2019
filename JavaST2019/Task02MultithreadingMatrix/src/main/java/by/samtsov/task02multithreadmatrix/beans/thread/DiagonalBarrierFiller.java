@@ -6,40 +6,54 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
 import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class DiagonalBarrierFiller extends MatrixDiagonalFiller {
 
     private static final Logger logger = LogManager.getLogger();
 
     private static final String STANDARD_ERROR_FORMAT = "%s %s";
+    CyclicBarrier barrier;
     private int numberOfElementToStop;
 
-    public DiagonalBarrierFiller(int newThreadNumber, DiagonalBarrierFillerService
-            diagonalBarrierFillerService, int newNumberOfElementToStop) {
+    public DiagonalBarrierFiller(int newThreadNumber
+            , DiagonalBarrierFillerService diagonalBarrierFillerService
+            , int newNumberOfElementToStop) {
         threadNumber = newThreadNumber;
         diagonalFillerService = diagonalBarrierFillerService;
         numberOfElementToStop = newNumberOfElementToStop;
+        barrier = diagonalBarrierFillerService.getBarrier();
     }
 
     @Override
     public void run() {
         int i = 0;
+        // to avoid a deadlock we don't place a barrier for last non full
+        // pack of elements. Last full-pack element has next index:
+        int lastModifiedWithBarrierElement
+                = diagonalFillerService.getMatrixDimension()
+                - diagonalFillerService.getMatrixDimension()
+                % (numberOfElementToStop * barrier.getParties()) + 1;
         while (diagonalFillerService.getModifiedElements()
                 < diagonalFillerService.getMatrixDimension()) {
+
+
             diagonalFillerService.modifyNextElement(threadNumber);
 
             if (++i % numberOfElementToStop == 0
-                    || diagonalFillerService.getModifiedElements()
-                    == diagonalFillerService.getMatrixDimension() - 1) {
+                    && diagonalFillerService.getModifiedElements()
+                    < lastModifiedWithBarrierElement) {
                 try {
-                    ((DiagonalBarrierFillerService) diagonalFillerService)
-                            .getBarrier().await();
-                } catch (BrokenBarrierException | InterruptedException e) {
+                    barrier.await(1000, TimeUnit.MILLISECONDS);
+                } catch (BrokenBarrierException | InterruptedException | TimeoutException e) {
                     logger.error(String.format(STANDARD_ERROR_FORMAT
                             , Thread.currentThread().getName()
                             , e.getMessage()));
                 }
             }
+
         }
     }
 

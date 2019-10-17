@@ -8,13 +8,12 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public abstract class DiagonalFillerService {
 
+    protected final String STANDARD_ERROR_FORMAT = "%s %s";
+    protected final Logger logger = LogManager.getLogger();
+    protected int[] fillerNumbers;
     protected int modifiedElements;
-
     protected MatrixService matrixService;
-
     ReentrantLock locker = new ReentrantLock();
-
-    private static final Logger logger = LogManager.getLogger();
 
     //public abstract void modifyNextElement(int threadNumber);
 
@@ -35,8 +34,9 @@ public abstract class DiagonalFillerService {
     }
 
     public void modifyNextElement(int value) {
-        int modifyingElement = 0;
+
         locker.lock();
+        int modifyingElement = 0;
         if (modifiedElements < matrixService.getMatrixDimension()) {
             modifyingElement = modifiedElements++;
         }
@@ -48,5 +48,7 @@ public abstract class DiagonalFillerService {
             logger.warn(iae.getMessage());
         }
     }
+
+    public abstract void fillMatrix();
 
 }

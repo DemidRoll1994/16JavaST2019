@@ -19,7 +19,7 @@ public class Matrix {
      * @param newMatrix matrix of init-values
      */
     public Matrix(final int[][] newMatrix) {
-        intMatrix = newMatrix.clone();
+        intMatrix = newMatrix;
         dimension = intMatrix.length;
     }
 

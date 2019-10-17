@@ -6,6 +6,10 @@ public class StarterEx09 {
         Store store = new Store();
         new Producer(store).start();
         new Consumer(store).start();
+        new Consumer(store).start();
+        new Consumer(store).start();
+        new Consumer(store).start();
+        new Consumer(store).start();
 
     }
 }
