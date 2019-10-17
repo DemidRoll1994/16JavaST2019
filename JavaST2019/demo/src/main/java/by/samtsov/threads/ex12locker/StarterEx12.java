@@ -13,6 +13,7 @@ public class StarterEx12 {
         Thread consumer3= new Consumer("Magelan", store, 2);
         consumer3.start();
 
+
         try{
             consumer1.join();
             consumer2.join();

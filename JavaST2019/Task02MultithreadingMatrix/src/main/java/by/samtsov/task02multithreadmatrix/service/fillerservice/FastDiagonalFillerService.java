@@ -1,42 +1,37 @@
 package by.samtsov.task02multithreadmatrix.service.fillerservice;
 
+import by.samtsov.task02multithreadmatrix.beans.thread.FastDiagonalFiller;
+import by.samtsov.task02multithreadmatrix.beans.thread.MatrixDiagonalFiller;
 import by.samtsov.task02multithreadmatrix.service.MatrixService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.ArrayList;
+import java.util.List;
 
-public class FastDiagonalFillerService extends DiagonalFillerService{
+public class FastDiagonalFillerService extends DiagonalFillerService {
 
-    ReentrantLock locker = new ReentrantLock();
-
-    private static final Logger logger = LogManager.getLogger();
-
-
-    public FastDiagonalFillerService(MatrixService newMatrixService) {
+    public FastDiagonalFillerService(MatrixService newMatrixService
+            , int [] newFillerNumbers) {
         matrixService = newMatrixService;
         modifiedElements = 0;
+        fillerNumbers=newFillerNumbers;
     }
 
-    public void modifyElementWithLock(int x, int y, int value) {
-        locker.lock();
-        matrixService.assignElementToMatrix(x, y, value);
-        locker.unlock();
-    }
+    public void fillMatrix() {
 
-    public void modifyNextElement(int value) {
-        int modifyingElement = 0;
-        locker.lock();
-        if (modifiedElements < matrixService.getMatrixDimension()) {
-            modifyingElement = modifiedElements++;
+        List<MatrixDiagonalFiller> diagonalFillers = new ArrayList<>();
+        for (int i = 0; i < fillerNumbers.length; i++) {
+            diagonalFillers.add(new FastDiagonalFiller(fillerNumbers[i]
+                    , this));
         }
-        locker.unlock();
+        for (int i = 0; i < fillerNumbers.length; i++) {
+            diagonalFillers.get(i).start();
+            try {
+                diagonalFillers.get(i).join();
+            } catch (InterruptedException e) {
+                logger.error(String.format(STANDARD_ERROR_FORMAT
+                        , Thread.currentThread().getName(), e.getMessage()));
+            }
+        }
 
-        try {
-            matrixService.assignElementToMatrix(modifyingElement,
-                    modifyingElement, value);
-        } catch (IllegalArgumentException iae) {
-            logger.warn(iae.getMessage());
-        }
     }
 }
