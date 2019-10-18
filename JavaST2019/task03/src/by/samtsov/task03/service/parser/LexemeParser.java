@@ -4,21 +4,18 @@ import by.samtsov.task03.entity.Lexeme;
 
 public class LexemeParser extends Parser {
 
-    private static LexemeParser instance = new LexemeParser();
+    static final String defaultRegex = ".+";
 
-    private LexemeParser() {
-        final String NEXT_PARSER_REGULAR_EXPR ="\\s";
-        nextParser = WordParser.getInstance(NEXT_PARSER_REGULAR_EXPR);
-        currentComposite= new Lexeme();
+    public LexemeParser(Parser nextParser, String matcherRegex) {
+        currentComposite = new Lexeme();
+        this.nextParser = nextParser;
+        currentMatcherRegex = matcherRegex;
     }
 
-    public static LexemeParser getInstance(String newRegex) {
-        regex = newRegex;
-        return instance;
-    }
-
-    public static LexemeParser getInstance() {
-        return instance;
+    public LexemeParser(Parser nextParser) {
+        currentComposite = new Lexeme();
+        this.nextParser = nextParser;
+        currentMatcherRegex = "\\S+";
     }
 
 }

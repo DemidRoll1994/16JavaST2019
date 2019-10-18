@@ -5,22 +5,20 @@ import by.samtsov.task03.entity.Symbol;
 
 public class SymbolParser extends Parser {
 
-    private static SymbolParser instance = new SymbolParser();
+    static final String defaultRegex = ".+";
 
-    private SymbolParser() {
+    public SymbolParser(Parser nextParser, String matcherRegex) {
+        this.nextParser = nextParser;
+        currentMatcherRegex = matcherRegex;
     }
 
-    public static SymbolParser getInstance(String newRegex) {
-        regex = newRegex;
-        return instance;
+    public SymbolParser(Parser nextParser) {
+        this.nextParser = nextParser;
+        currentMatcherRegex = ".+";
     }
-
-    public static SymbolParser getInstance() {
-        return instance;
-    }
-
+    
+    @Override
     public Composite parseComposite(String initialString) {
         return new Symbol(initialString);
     }
-
 }

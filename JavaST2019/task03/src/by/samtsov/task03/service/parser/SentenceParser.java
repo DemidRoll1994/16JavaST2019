@@ -4,30 +4,18 @@ import by.samtsov.task03.entity.Sentence;
 
 public class SentenceParser extends Parser {
 
-    private static SentenceParser instance = new SentenceParser();
+    static final String defaultRegex = ".+";
 
-    private SentenceParser() {
-        nextParser = LexemeParser.getInstance(); // todo заменить на внешнюю
-        // цепочку вызовов
-        currentComposite= new Sentence();
+    public SentenceParser(Parser nextParser, String matcherRegex) {
+        currentComposite = new Sentence();
+        this.nextParser = nextParser;
+        currentMatcherRegex = matcherRegex;
     }
 
-    public static SentenceParser getInstance(String newRegex) {
-        regex = newRegex;
-        return instance;
+    public SentenceParser(Parser nextParser) {
+        currentComposite = new Sentence();
+        this.nextParser = nextParser;
+        currentMatcherRegex = ".+?[\\.!?]+";
     }
 
-    public static SentenceParser getInstance() {
-        return instance;
-    }
-
-    /*public Composite parseComposite(String initialString) {
-        String[] childsInStrings = initialString.split(regex);
-        List<Composite> childsInComposites = new ArrayList<>();
-        SentenceParser sentenceParser = SentenceParser.getInstance();
-        for (String child : childsInStrings) {
-            childsInComposites.add(sentenceParser.parseComposite(child));
-        }
-        return new Paragraph(childsInComposites);
-    }*/
 }

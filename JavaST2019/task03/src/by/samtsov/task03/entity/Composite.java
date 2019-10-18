@@ -20,6 +20,9 @@ public abstract class Composite implements Component{
     public void setChilds(List<Composite> newChilds){
         childs = newChilds;
     }
+    public void addChild(Composite newChild){
+        childs.add(newChild);
+    }
 
     public String concatCurrentComposite() {// todo concat for
         String currentCompositeInString = "";

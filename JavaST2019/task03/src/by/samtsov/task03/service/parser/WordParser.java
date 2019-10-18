@@ -4,20 +4,17 @@ import by.samtsov.task03.entity.Word;
 
 public class WordParser extends Parser {
 
-    private static WordParser instance = new WordParser();
+    static final String defaultRegex = ".+";
 
-    private WordParser() {
-        nextParser = SymbolParser.getInstance();
-        currentComposite= new Word();
+    public WordParser(Parser nextParser, String matcherRegex) {
+        currentComposite = new Word();
+        this.nextParser = nextParser;
+        currentMatcherRegex = matcherRegex;
     }
 
-    public static WordParser getInstance(String newRegex) {
-        regex = newRegex;
-        return instance;
+    public WordParser(Parser nextParser) {
+        currentComposite = new Word();
+        this.nextParser = nextParser;
+        currentMatcherRegex = ".+";
     }
-
-    public static WordParser getInstance() {
-        return instance;
-    }
-
 }

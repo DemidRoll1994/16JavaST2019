@@ -4,31 +4,18 @@ import by.samtsov.task03.entity.Paragraph;
 
 public class ParagraphParser extends Parser {
 
-    private static ParagraphParser instance = new ParagraphParser();
+    static final String defaultRegex = ".+";
 
-    private ParagraphParser() {
-        final String NEXT_PARSER_REGULAR_EXPR ="\\s";
-        nextParser = SentenceParser.getInstance(NEXT_PARSER_REGULAR_EXPR);
-        currentComposite= new Paragraph();
+    public ParagraphParser(Parser nextParser, String matcherRegex) {
+        currentComposite = new Paragraph();
+        this.nextParser = nextParser;
+        currentMatcherRegex = matcherRegex;
     }
 
-    public static ParagraphParser getInstance(String newRegex) {
-        regex = newRegex;
-        return instance;
+    public ParagraphParser(Parser nextParser) {
+        currentComposite = new Paragraph();
+        this.nextParser = nextParser;
+        currentMatcherRegex = ".+";
     }
 
-    public static ParagraphParser getInstance() {
-        return instance;
-    }
-
-//todo delete
-    /*public Composite parseComposite(String initialString) {
-        String[] childsInStrings = initialString.split(regex);
-        List<Composite> childsInComposites = new ArrayList<>();
-        SentenceParser sentenceParser = SentenceParser.getInstance();
-        for (String child : childsInStrings) {
-            childsInComposites.add(sentenceParser.parseComposite(child));
-        }
-        return new Paragraph(childsInComposites);
-    }*/
 }

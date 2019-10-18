@@ -1,6 +1,6 @@
 package by.samtsov.task03.controller;
 
-//import by.samtsov.task03.service.FileReader;
+//import by.samtsov.task03.service.reader.FileReader;
 
 import java.io.*;
 
