@@ -10,7 +10,8 @@ true?? "" №№ ## ; $ % :6 &*()_!@#$%^ &*()_+!"№;%:?*()_+  ☹
 6++7<+9*9&&true
 7+6<+9/-9?"name"!="name":'c'=='с'?
 
-ofcourse, my №6 favorite expression is 7+6<+9/-9?{[("name"!="name")]}:'c'=='с'...
+ofcourse, my №6 favorite expression is 7+6<+9/-9||(true!=true)&true==false...
 
 [\w]+|[\S]+
 [\w+-<*&|()!=%/?"]+|[\S]+
+[?,.!…:;]+|[^\s?,.!…:;]+

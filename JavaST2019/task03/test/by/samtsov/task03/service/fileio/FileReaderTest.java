@@ -1,4 +1,4 @@
-package by.samtsov.task03.service.reader;
+package by.samtsov.task03.service.fileio;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
