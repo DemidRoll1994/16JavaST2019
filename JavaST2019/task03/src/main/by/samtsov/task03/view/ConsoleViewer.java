@@ -101,23 +101,23 @@ public class ConsoleViewer {
 
         switch (choice) {
             case FIRST_LANGUAGE_CHOICE:
-                currentLocale = new Locale(FIRST_LANGUAGE_COUNTRY,
-                        FIRST_LANGUAGE);
+                currentLocale = new Locale(FIRST_LANGUAGE,
+                        FIRST_LANGUAGE_COUNTRY);
                 break;
             case SECOND_LANGUAGE_CHOICE:
-                currentLocale = new Locale(SECOND_LANGUAGE_COUNTRY,
-                        SECOND_LANGUAGE);
+                currentLocale = new Locale(SECOND_LANGUAGE,
+                        SECOND_LANGUAGE_COUNTRY);
                 break;
             case THIRD_LANGUAGE_CHOICE:
-                currentLocale = new Locale(THIRD_LANGUAGE_COUNTRY,
-                        THIRD_LANGUAGE);
+                currentLocale = new Locale(THIRD_LANGUAGE,
+                        THIRD_LANGUAGE_COUNTRY);
                 break;
             default:
                 currentLocale = new Locale(country, language);
                 break;
         }
-        printInfo(rb.getString("chosenLanguageInfo"));
         rb = ResourceBundle.getBundle(RESOURCE_BUNDLE_NAME, currentLocale);
+        printInfo(rb.getString("chosenLanguageInfo"));
     }
 
     /**
@@ -202,8 +202,7 @@ public class ConsoleViewer {
             String answer = askAQuestion(rb.getString("choseCharacterToFind"),
                     "");
             if (answer.length() == 1) {
-                return askAQuestion(rb.getString("choseCharacterToFind"), "")
-                        .charAt(0);
+                return answer.charAt(0);
             }
             tryAgain();
         }

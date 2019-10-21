@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 
 public class MainController {
+
     /**
      * default input path. if user don't chose a path, data will be loaded from
      * this path.
@@ -143,23 +144,35 @@ public class MainController {
                     consoleViewer.askForLanguage();
                     break;
                 case SORT_PARAGRAPHS_ACTION:
-                    textInString = textService.parseTextFromComponent(text);
-                    textInString = textService
-                            .sortParagraphsBySentencesCounts(textInString);
+                    if (text != null) {
+                        textInString = textService.parseTextFromComponent(text);
+                        textInString = textService
+                                .sortParagraphsBySentencesCounts(textInString);
+                    } else {
+                        consoleViewer.tryAgain();
+                    }
                     break;
                 case SORT_WORDS_IN_SENTENCES_ACTION:
-                    textInString = textService.parseTextFromComponent(text);
-                    textInString = textService
-                            .sortWordsInSentences(textInString);
+                    if (text != null) {
+                        textInString = textService.parseTextFromComponent(text);
+                        textInString = textService
+                                .sortWordsInSentences(textInString);
+                    } else {
+                        consoleViewer.tryAgain();
+                    }
                     break;
                 case SORT_LEXEMES_IN_TEXT_ACTION:
-                    textInString = textService.parseTextFromComponent(text);
-                    char c = consoleViewer.askForChar();
-                    if (c == 0) {
-                        break;
+                    if (text != null) {
+                        textInString = textService.parseTextFromComponent(text);
+                        char c = consoleViewer.askForChar();
+                        if (c == 0) {
+                            break;
+                        }
+                        textInString = textService.sortLexemesInText(
+                                textInString, c);
+                    } else {
+                        consoleViewer.tryAgain();
                     }
-                    textInString = textService.sortLexemesInText(textInString,
-                            c);
                     break;
                 default:
                     consoleViewer.tryAgain();
