@@ -12,6 +12,8 @@ public class LeafCombiner implements ComponentCombiner {
         this.suffixString = suffixString;
         this.prefixString = prefixString;
     }
+    public LeafCombiner() {
+    }
 
     @Override
     public String combine(Component componentToCombine) {

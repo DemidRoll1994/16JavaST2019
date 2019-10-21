@@ -21,7 +21,8 @@ public class CompositeParser extends ComponentParser {
     public Component parseComponent(String initialString) {
         Pattern pattern = Pattern.compile(currentMatcherRegex);
         Matcher matcher = pattern.matcher(initialString);
-        Composite composite = compositeFactory.createComponent(componentType);
+        Composite composite =
+                (Composite) compositeFactory.createComponent(componentType);
         while (matcher.find()) {
             composite.addChild(nextParser.parseComponent(matcher.group()));
         }

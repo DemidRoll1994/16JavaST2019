@@ -1,15 +1,33 @@
 package by.samtsov.task03.controller;
 
-import by.samtsov.task03.service.fileio.FileReader;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class TESTSERVICE {
 
+    // todo
+    // • Битовые выражения, встречающиеся в тексте, должны быть вычислены. И в итоговый текст (структуру данных) должно войти вычисленное значение. Использовать Interpreter с применением функциональных интерфейсов.
+    // • Код должен быть покрыт тестами.
+    // чекстайл
+    // сонар
+    // тесты
+    // логи
+    // сущностям доавить equals. hashcode toString
+    // удалить ненужные классы
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* // todo delete class
     private static final Logger logger = LogManager.getLogger();
 
     public void start() {
@@ -56,5 +74,5 @@ public class TESTSERVICE {
             System.out.println(matcher.group() + "|");
         }
     }
-
+*/
 }
