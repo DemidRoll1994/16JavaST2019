@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<tariffs xmlns="http://www.w3.org/2001/XMLSchema"
+         targetNamespace="samtsov.by/task04"
+         xmlns:tns="samtsov.by/task04" tariffs.xsd>
+    <tariff>
+        <name>Comfort S</name>
+        <operator_name>A1</operator_name>
+        <payroll>12.4</payroll>
+        <call_prices>
+            <inner_calls>0</inner_calls>
+            <outer_calls>0.075</outer_calls>
+            <landline_calls>0.075</landline_calls>
+        </call_prices>
+        <sms_price>0.075</sms_price>
+        <Parameters>
+            <favorite_numbers>0</favorite_numbers>
+            <billing>60</billing>
+            <connection_fee>5</connection_fee>
+        </Parameters>
+    </tariff>
+
+    <tariff>
+        <name>Comfort M</name>
+        <operator_name>A1</operator_name>
+        <payroll>20.75</payroll>
+        <call_prices>
+            <inner_calls>0</inner_calls>
+            <outer_calls>0.075</outer_calls>
+            <landline_calls>0.075</landline_calls>
+        </call_prices>
+        <sms_price>0.075</sms_price>
+        <Parameters>
+            <favorite_numbers>0</favorite_numbers>
+            <billing>60</billing>
+            <connection_fee>5</connection_fee>
+        </Parameters>
+    </tariff>
+</tariffs>
+<!--смотрі 405 страніцу блінова-->
