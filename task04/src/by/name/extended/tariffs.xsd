@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://www.example.com/tariffs"
+        xmlns:tnsi="http://www.example.com/tariffs"
+        elementFormDefault="qualified">
+
+    <element name="tariffs">
+        <complexType>
+            <sequence>
+                <element name="Tarif"
+                         type="tnsi:Tarif"
+                         minOccurs="2"
+                         maxOccurs="unbounded"/>
+            </sequence>
+        </complexType>
+    </element>
+
+    <complexType name="Tarif">
+        <sequence>
+            <element type="string" name="name"/>
+            <element type="double" name="payroll"/>
+            <element type="double" name="sms_prices"/>
+        </sequence>
+        <attribute name="parameters" type="tnsi:Parameters"/>
+        <attribute name="call_prices" type="tnsi:Call_prices"/>
+        <attribute name="operator" default="A1">
+            <simpleType>
+                <restriction base="string">
+                    <enumeration value="A1"/>
+                    <enumeration value="MTC"/>
+                    <enumeration value="Life"/>
+                </restriction>
+            </simpleType>
+        </attribute>
+    </complexType>
+
+    <complexType name="Parameters">
+        <sequence>
+            <element type="integer" name="favorite_number_count"/>
+            <element type="integer" name="billing"/>
+            <element type="double" name="prepayment"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="Call_prices">
+        <sequence>
+            <element type="double" name="inner"/>
+            <element type="double" name="outer"/>
+            <element type="double" name="linear"/>
+        </sequence>
+    </complexType>
+
+</schema>

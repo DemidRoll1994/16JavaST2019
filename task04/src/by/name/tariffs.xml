@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<tariffs>
+    <tarif>
+        <name>comfort</name>
+        <operator>A1</operator>
+        <payroll>12.99</payroll>
+        <call_prices>
+            <inner>0</inner>
+            <outer>0.075</outer>
+            <linear>0.075</linear>
+        </call_prices>
+        <sms_prices>0.025</sms_prices>
+        <parameters>
+            <favorite_number_count>0</favorite_number_count>
+            <billing>60</billing>
+            <prepayment>5</prepayment>
+        </parameters>
+    </tarif>
+</tariffs>
