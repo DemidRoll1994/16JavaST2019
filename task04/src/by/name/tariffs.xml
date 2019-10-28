@@ -1,19 +1,70 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<tariffs>
-    <tarif>
-        <name>comfort</name>
+
+<tariffs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="tariffs111..xsd">
+    <mobileVoiceTariff name="Comfort S" id="id1">
         <operator>A1</operator>
         <payroll>12.99</payroll>
-        <call_prices>
+        <callPrices>
             <inner>0</inner>
             <outer>0.075</outer>
             <linear>0.075</linear>
-        </call_prices>
-        <sms_prices>0.025</sms_prices>
+        </callPrices>
+        <smsPrices>0.025</smsPrices>
         <parameters>
-            <favorite_number_count>0</favorite_number_count>
-            <billing>60</billing>
+            <favoriteNumberCount>0</favoriteNumberCount>
+            <billingInSec>60</billingInSec>
             <prepayment>5</prepayment>
         </parameters>
-    </tarif>
+    </mobileVoiceTariff>
+
+    <mobileVoiceTariff name="Comfort M" id="2">
+        <operator>A1</operator>
+        <payroll>17.99</payroll>
+        <callPrices>
+            <inner>0</inner>
+            <outer>0.035</outer>
+            <linear>0.035</linear>
+        </callPrices>
+        <smsPrices>0.025</smsPrices>
+        <parameters>
+            <favoriteNumberCount>0</favoriteNumberCount>
+            <billingInSec>60</billingInSec>
+            <prepayment>5</prepayment>
+        </parameters>
+    </mobileVoiceTariff>
+
+    <mobileVoiceTariff name="Comfort L" id="id3">
+        <operator>A1</operator>
+        <payroll>25.99</payroll>
+        <callPrices>
+            <inner>0</inner>
+            <outer>0.075</outer>
+            <linear>0.075</linear>
+        </callPrices>
+        <smsPrices>0.025</smsPrices>
+        <parameters>
+            <favoriteNumberCount>0</favoriteNumberCount>
+            <billingInSec>60</billingInSec>
+            <prepayment>5</prepayment>
+        </parameters>
+    </mobileVoiceTariff>
+
+    <mobileVoiceTariff name="Lemon" id="id4">
+        <operator>A1</operator>
+        <payroll>29.99</payroll>
+        <callPrices>
+            <inner>0</inner>
+            <outer>0.075</outer>
+            <linear>0.075</linear>
+        </callPrices>
+        <smsPrices>0.025</smsPrices>
+        <parameters>
+            <favoriteNumberCount>0</favoriteNumberCount>
+            <billingInSec>60</billingInSec>
+            <prepayment>5</prepayment>
+        </parameters>
+    </mobileVoiceTariff>
+
+
 </tariffs>
