@@ -1,53 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema"
-        targetNamespace="http://www.example.com/tariffs"
-        xmlns:tnsi="http://www.example.com/tariffs"
-        elementFormDefault="qualified">
-
-    <element name="tariffs">
-        <complexType>
-            <sequence>
-                <element name="Tarif"
-                         type="tnsi:Tarif"
-                         minOccurs="2"
-                         maxOccurs="unbounded"/>
-            </sequence>
-        </complexType>
-    </element>
-
-    <complexType name="Tarif">
-        <sequence>
-            <element type="string" name="name"/>
-            <element type="double" name="payroll"/>
-            <element type="double" name="sms_prices"/>
-        </sequence>
-        <attribute name="parameters" type="tnsi:Parameters"/>
-        <attribute name="call_prices" type="tnsi:Call_prices"/>
-        <attribute name="operator" default="A1">
-            <simpleType>
-                <restriction base="string">
-                    <enumeration value="A1"/>
-                    <enumeration value="MTC"/>
-                    <enumeration value="Life"/>
-                </restriction>
-            </simpleType>
-        </attribute>
-    </complexType>
-
-    <complexType name="Parameters">
-        <sequence>
-            <element type="integer" name="favorite_number_count"/>
-            <element type="integer" name="billing"/>
-            <element type="double" name="prepayment"/>
-        </sequence>
-    </complexType>
-
-    <complexType name="Call_prices">
-        <sequence>
-            <element type="double" name="inner"/>
-            <element type="double" name="outer"/>
-            <element type="double" name="linear"/>
-        </sequence>
-    </complexType>
-
-</schema>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="tariffs" type="tariffsType"/>
+  <xs:complexType name="call_pricesType">
+    <xs:sequence>
+      <xs:element name="inner">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="0"/>
+            <xs:enumeration value="0 s"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element type="xs:string" name="outer"/>
+      <xs:element type="xs:string" name="linear"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="parametersType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="favorite_number_count"/>
+      <xs:element type="xs:string" name="billing"/>
+      <xs:element type="xs:string" name="prepayment"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="tarifType">
+    <xs:sequence>
+      <xs:element name="name">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="comfort"/>
+            <xs:enumeration value="comfort s"/>
+            <xs:enumeration value="comfort m "/>
+            <xs:enumeration value="comfort l"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="operator">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="A1"/>
+            <xs:enumeration value="A1 s"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="payroll">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="12.99"/>
+            <xs:enumeration value="12.99 s"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element type="call_pricesType" name="call_prices"/>
+      <xs:element type="xs:string" name="sms_prices"/>
+      <xs:element type="parametersType" name="parameters"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="tariffsType">
+    <xs:sequence>
+      <xs:element type="tarifType" name="tarif" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
