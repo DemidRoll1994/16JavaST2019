@@ -1,12 +1,9 @@
 package by.samtsov.webxml.service.builder;
 
-import by.samtsov.webxml.beans.Parameter;
-import by.samtsov.webxml.beans.Price;
-import by.samtsov.webxml.beans.Tariff;
+import by.samtsov.webxml.beans.*;
 import by.samtsov.webxml.beans.enums.Operator;
 import by.samtsov.webxml.beans.enums.TariffsXMLTags;
 import by.samtsov.webxml.service.exception.BuilderException;
-import javafx.scene.Group;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -57,7 +54,7 @@ public class TariffDOMBuilder extends Builder {
             NodeList xmlTariffs = root.getElementsByTagName("tariff");
             for (int i = 0; i < xmlTariffs.getLength(); i++) {
                 Element xmlTariffElement = (Element) xmlTariffs.item(i);
-                Tariff tariff = buildtariff(xmlTariffElement);
+                Tariff tariff = buildTariff(xmlTariffElement);
                 tariffs.add(tariff);
             }
         } catch (Exception ex) {
@@ -65,7 +62,7 @@ public class TariffDOMBuilder extends Builder {
         }
     }
 
-    private Tariff buildtariff(final Element element) {
+    private Tariff buildTariff(final Element element) throws BuilderException {
         Tariff tariff = new Tariff();
 
         String id = element.getAttribute(TariffsXMLTags.ID.getValue());
@@ -81,7 +78,7 @@ public class TariffDOMBuilder extends Builder {
 
         List<Price> prices = getPrices(element);
         tariff.setPrices(prices);
-        List<Parameter> parameters = getPararmeters(element);
+        List<Parameter> parameters = getParameters(element);
         tariff.setParameters(parameters);
 
         String creationTariffDay = getElementTextContent(element,
@@ -93,53 +90,112 @@ public class TariffDOMBuilder extends Builder {
         tariff.setSmsPrice(Double.parseDouble(smsPrice));
 
 
-        Group group = Group.valueOf(
-                getElementTextContent(element, "group").toUpperCase());
-        tariff.setGroup(group);
-
-        getAnalogs(element, tariff);
-        FormType[] formTypes = FormType.values();
-        for (FormType formType : formTypes) {
-            String formName = formType.name().toLowerCase();
-
-            Element forms = (Element) element.getElementsByTagName(formName)
-                    .item(0);
-
-            Form tariffForm = new Form(formType);
-            if (forms != null) {
-                tariff.addVersion(tariffForm);
-                NodeList pharmacies = forms.getElementsByTagName("pharmacy");
-
-                for (int i = 0; i < pharmacies.getLength(); i++) {
-                    Element pharmacyElement = (Element) pharmacies.item(i);
-
-                    Pharmacy pharmacy = new Pharmacy();
-
-                    Certificate certificate = getCertificate(pharmacyElement);
-                    String dosage = getElementTextContent(pharmacyElement,
-                            "dosage");
-                    PackageType packageType = getPackage(tariffForm,
-                            pharmacyElement);
-
-                    pharmacy.setCertificate(certificate);
-                    pharmacy.setDosage(Double.parseDouble(dosage));
-                    pharmacy.setType(packageType);
-
-                    tariffForm.addPharmacy(pharmacy);
-                }
-            }
-        }
-
         return tariff;
     }
 
-    private List<Price> getPrices(Element element) {
+    private List<Price> getPrices(Element element) throws BuilderException {
         List<Price> prices = new ArrayList<>();
         NodeList nodeList = element.getChildNodes();
         for (int i = 0; i < nodeList.getLength(); i++) {
-            nodeList.item(i)
-
+            Element currentPriceElement = (Element) nodeList.item(i);
+            Price price;
+            if (TariffsXMLTags.valueOf(element.getTagName()) ==
+                    TariffsXMLTags.CALLPRICES) {
+                price = buildCallPrice(currentPriceElement);
+            } else if (TariffsXMLTags.valueOf(element.getTagName()) ==
+                    TariffsXMLTags.INTERNETPRICES) {
+                price = buildInternetPrice(currentPriceElement);
+            } else {
+                throw new BuilderException("Unexpected Price in node " +
+                        nodeList.item(i).toString());
+            }
+            prices.add(price);
         }
+        return prices;
+    }
+
+    private List<Parameter> getParameters(Element element) throws BuilderException {
+        List<Parameter> parameters = new ArrayList<>();
+        NodeList nodeList = element.getChildNodes();
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Element currentParameterElement = (Element) nodeList.item(i);
+            Parameter parameter;
+            if (TariffsXMLTags.valueOf(element.getTagName()) ==
+                    TariffsXMLTags.CALLPRICES) {
+                parameter = buildVoiceParameters(currentParameterElement);
+            } else if (TariffsXMLTags.valueOf(element.getTagName()) ==
+                    TariffsXMLTags.INTERNETPRICES) {
+                parameter = buildInternetParameters(currentParameterElement);
+            } else {
+                throw new BuilderException("Unexpected Price in node " +
+                        nodeList.item(i).toString());
+            }
+            parameters.add(parameter);
+        }
+        return parameters;
+    }
+
+    private Price buildCallPrice(Element element) {
+        CallPrices price = new CallPrices();
+        price.setInner(
+                Double.parseDouble(
+                        getElementTextContent(
+                                element, TariffsXMLTags.INNER.getValue())));
+        price.setOuter(
+                Double.parseDouble(
+                        getElementTextContent(
+                                element, TariffsXMLTags.OUTER.getValue())));
+        price.setLinear(
+                Double.parseDouble(
+                        getElementTextContent(
+                                element, TariffsXMLTags.LINEAR.getValue())));
+        return price;
+    }
+
+    private Price buildInternetPrice(Element element) {
+        InternetPrices price = new InternetPrices();
+        price.setOverspendingFeeValueForMb(
+                Double.parseDouble(
+                        getElementTextContent(element,
+                                TariffsXMLTags.OVERSPENDINGFEEVALUEFORMB
+                                        .getValue())));
+
+        return price;
+    }
+
+    private Parameter buildVoiceParameters(Element element) {
+        VoiceParameters parameters = new VoiceParameters();
+        parameters.setBillingInSec(
+                Integer.parseInt(
+                        getElementTextContent(element,
+                                TariffsXMLTags.BILLINGINSEC.getValue())));
+        parameters.setFavoriteNumberCount(
+                Integer.parseInt(
+                        getElementTextContent(element,
+                                TariffsXMLTags.FAVORITENUBERCOUNT.getValue())));
+        parameters.setPrepayment(
+                Double.parseDouble(
+                        getElementTextContent(element,
+                                TariffsXMLTags.PREPAYMENT.getValue())));
+        return parameters;
+    }
+
+    private Parameter buildInternetParameters(Element element) {
+        InternetParameters parameters = new InternetParameters();
+        parameters.setBillingInMB(
+                Double.parseDouble(
+                        getElementTextContent(element,
+                                TariffsXMLTags.BILLINGINMB.getValue())));
+        parameters.setIncludedTraffic(
+                Integer.parseInt(
+                        getElementTextContent(element,
+                                TariffsXMLTags.INCLUDEDTRAFFIC.getValue())));
+        parameters.setPrepayment(
+                Double.parseDouble(
+                        getElementTextContent(element,
+                                TariffsXMLTags.PREPAYMENT.getValue())));
+
+        return parameters;
     }
 
 }

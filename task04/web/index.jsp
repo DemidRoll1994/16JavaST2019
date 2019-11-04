@@ -11,7 +11,6 @@
     <title>Title</title>
 </head>
 <body>
- попробуйте вызвать сервлет через <br>
- http://localhost:8080/task04_Web_exploded/hello
+
 </body>
 </html>

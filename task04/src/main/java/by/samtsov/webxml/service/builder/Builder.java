@@ -1,6 +1,7 @@
 package by.samtsov.webxml.service.builder;
 
 import by.samtsov.webxml.beans.Tariff;
+import by.samtsov.webxml.service.exception.BuilderException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,5 +44,5 @@ public abstract class Builder {
      *
      * @param filename the provided xml-document.
      */
-    public abstract void buildSetDrugs(String filename);
+    public abstract void buildTariffs(String filename)throws BuilderException;
 }
