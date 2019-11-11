@@ -1,8 +1,5 @@
 package by.samtsov.webxml.beans;
 
-import java.math.BigInteger;
-
-
 /**
  * <p>Java class for VoiceParameters complex type.
  *

@@ -2,7 +2,7 @@
 
 <tariffs xmlns="http://www.example.com/tariffs"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://www.example.com/tariffs tariffs111.xsd">
+         xsi:schemaLocation="http://www.example.com/tariffs tariffs.xsd">
     <tariff name="Comfort S" id="tariff1">
         <creationTariffDay>2019-08-19</creationTariffDay>
         <operator>A1</operator>

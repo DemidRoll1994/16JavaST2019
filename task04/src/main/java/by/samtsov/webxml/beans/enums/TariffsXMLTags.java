@@ -50,4 +50,6 @@ public enum TariffsXMLTags {
     public String toString() {
         return value;
     }
+
+
 }

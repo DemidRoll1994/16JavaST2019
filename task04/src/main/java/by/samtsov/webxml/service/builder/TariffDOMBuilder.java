@@ -19,6 +19,8 @@ import java.util.List;
 
 public class TariffDOMBuilder extends Builder {
 
+    private final static String PARSER_CONFIGURATION_EXCEPTION
+            = "Creating DOMBuilder exception";
     /**
      * Defines a factory API that enables applications to obtain a parser that
      * produces DOM object trees from XML documents.
@@ -28,17 +30,35 @@ public class TariffDOMBuilder extends Builder {
      * Defines the API to obtain DOM Document instances from an XML document.
      */
     private DocumentBuilder builder;
-    private List<Tariff> tariffs = new ArrayList<>();
 
 
-    public TariffDOMBuilder() throws ParserConfigurationException {
-        factory = DocumentBuilderFactory.newInstance();
-        factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-        builder = factory.newDocumentBuilder();
+    public TariffDOMBuilder() throws BuilderException {
+        try {
+            tariffs = new ArrayList<>();
+            factory = DocumentBuilderFactory.newInstance();
+            factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            builder = factory.newDocumentBuilder();
+        } catch (ParserConfigurationException pce) {
+            throw new BuilderException(PARSER_CONFIGURATION_EXCEPTION, pce);
+        }
+
     }
 
 
     private static String getElementTextContent(Element element, String elementName) {
+        NodeList nList = element.getElementsByTagName(elementName);
+        Node node = nList.item(0);
+        String text = node.getTextContent();
+        return text;
+    }
+
+    /**
+     * method is under construction todo
+     * @param element
+     * @param elementName
+     * @return
+     */
+    private static String getChildElement(Element element, String elementName) {
         NodeList nList = element.getElementsByTagName(elementName);
         Node node = nList.item(0);
         String text = node.getTextContent();
@@ -53,30 +73,35 @@ public class TariffDOMBuilder extends Builder {
 
             NodeList xmlTariffs = root.getElementsByTagName("tariff");
             for (int i = 0; i < xmlTariffs.getLength(); i++) {
-                Element xmlTariffElement = (Element) xmlTariffs.item(i);
-                Tariff tariff = buildTariff(xmlTariffElement);
-                tariffs.add(tariff);
+                if (xmlTariffs.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                    Element xmlTariffElement = (Element) xmlTariffs.item(i);
+                    Tariff tariff = buildTariff(xmlTariffElement);
+                    tariffs.add(tariff);
+                }
             }
         } catch (Exception ex) {
-            throw new BuilderException("Exception via xml I/O. check");
+            throw new BuilderException("Exception via xml I/O. check "
+                    + ex.getMessage());
         }
     }
 
     private Tariff buildTariff(final Element element) throws BuilderException {
         Tariff tariff = new Tariff();
-
         String id = element.getAttribute(TariffsXMLTags.ID.getValue());
         tariff.setId(id);
         String name = element.getAttribute(TariffsXMLTags.NAME.getValue());
         tariff.setName(name);
         String operator = getElementTextContent(element,
                 TariffsXMLTags.OPERATOR.getValue());
-        tariff.setOperator(Operator.valueOf(operator));
+        tariff.setOperator(Operator.valueOf(operator.toUpperCase()));
         String payroll = getElementTextContent(element,
                 TariffsXMLTags.PAYROLL.getValue());
         tariff.setPayroll(Double.parseDouble(payroll));
 
-        List<Price> prices = getPrices(element);
+        /*List<Price> prices = getPrices(getElementTextContent(element,
+                TariffsXMLTags.PRICES.getValue()));*/
+        List<Price> prices = getPrices(element); // todo передаются тарифы, а
+        // не цены. исправить.
         tariff.setPrices(prices);
         List<Parameter> parameters = getParameters(element);
         tariff.setParameters(parameters);
@@ -84,12 +109,9 @@ public class TariffDOMBuilder extends Builder {
         String creationTariffDay = getElementTextContent(element,
                 TariffsXMLTags.CREATIONTARIFFDAY.getValue());
         tariff.setCreationTariffDay(LocalDate.parse(creationTariffDay));
-
         String smsPrice = getElementTextContent(element,
                 TariffsXMLTags.SMSPRICES.getValue());
         tariff.setSmsPrice(Double.parseDouble(smsPrice));
-
-
         return tariff;
     }
 
@@ -97,13 +119,16 @@ public class TariffDOMBuilder extends Builder {
         List<Price> prices = new ArrayList<>();
         NodeList nodeList = element.getChildNodes();
         for (int i = 0; i < nodeList.getLength(); i++) {
+            if (nodeList.item(i).getNodeType() != Node.ELEMENT_NODE) {
+                continue;
+            }
             Element currentPriceElement = (Element) nodeList.item(i);
             Price price;
-            if (TariffsXMLTags.valueOf(element.getTagName()) ==
+            if (TariffsXMLTags.valueOf(element.getTagName().toUpperCase()) ==
                     TariffsXMLTags.CALLPRICES) {
                 price = buildCallPrice(currentPriceElement);
-            } else if (TariffsXMLTags.valueOf(element.getTagName()) ==
-                    TariffsXMLTags.INTERNETPRICES) {
+            } else if (TariffsXMLTags.valueOf(element.getTagName()
+                    .toUpperCase()) == TariffsXMLTags.INTERNETPRICES) {
                 price = buildInternetPrice(currentPriceElement);
             } else {
                 throw new BuilderException("Unexpected Price in node " +
@@ -118,13 +143,16 @@ public class TariffDOMBuilder extends Builder {
         List<Parameter> parameters = new ArrayList<>();
         NodeList nodeList = element.getChildNodes();
         for (int i = 0; i < nodeList.getLength(); i++) {
+            if (nodeList.item(i).getNodeType() != Node.ELEMENT_NODE) {
+                continue;
+            }
             Element currentParameterElement = (Element) nodeList.item(i);
             Parameter parameter;
-            if (TariffsXMLTags.valueOf(element.getTagName()) ==
+            if (TariffsXMLTags.valueOf(element.getTagName().toUpperCase()) ==
                     TariffsXMLTags.CALLPRICES) {
                 parameter = buildVoiceParameters(currentParameterElement);
-            } else if (TariffsXMLTags.valueOf(element.getTagName()) ==
-                    TariffsXMLTags.INTERNETPRICES) {
+            } else if (TariffsXMLTags.valueOf(element.getTagName()
+                    .toUpperCase()) == TariffsXMLTags.INTERNETPRICES) {
                 parameter = buildInternetParameters(currentParameterElement);
             } else {
                 throw new BuilderException("Unexpected Price in node " +
@@ -159,7 +187,6 @@ public class TariffDOMBuilder extends Builder {
                         getElementTextContent(element,
                                 TariffsXMLTags.OVERSPENDINGFEEVALUEFORMB
                                         .getValue())));
-
         return price;
     }
 
@@ -194,7 +221,6 @@ public class TariffDOMBuilder extends Builder {
                 Double.parseDouble(
                         getElementTextContent(element,
                                 TariffsXMLTags.PREPAYMENT.getValue())));
-
         return parameters;
     }
 

@@ -1,13 +1,7 @@
-
 package by.samtsov.webxml.beans;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 
 
 /**
@@ -26,8 +20,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 public class Tariffs {//todo delete classs
 
@@ -52,8 +44,6 @@ public class Tariffs {//todo delete classs
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link Tariff }
-     *
-     *
      */
     public List<Tariff> getTariff() {
         if (tariff == null) {
