@@ -112,5 +112,245 @@
         <smsPrices>0.025</smsPrices>
     </tariff>
 
+    <tariff name="Super" id="tariff6">
+        <creationTariffDay>2017-07-05</creationTariffDay>
+        <operator>MTC</operator>
+        <payroll>10.40</payroll>
+        <prices>
+            <callPrices>
+                <inner>0.0469</inner>
+                <outer>0.1147</outer>
+                <linear>0.1147</linear>
+            </callPrices>
+            <internetPrices>
+                <overspendingFeeValueForMb>0.0175</overspendingFeeValueForMb>
+            </internetPrices>
+        </prices>
+        <parameters>
+            <internetParameters>
+                <includedTraffic>1024</includedTraffic>
+                <billingInMB>0.01</billingInMB>
+                <prepayment>5</prepayment>
+            </internetParameters>
+        </parameters>
+        <smsPrices>0.0595</smsPrices>
+    </tariff>
+
+
+    <tariff name="Super 8" id="tariff7">
+        <creationTariffDay>2017-07-05</creationTariffDay>
+        <operator>MTC</operator>
+        <payroll>17.70</payroll>
+        <prices>
+            <callPrices>
+                <inner>0.0365</inner>
+                <outer>0.0938</outer>
+                <linear>0.0938</linear>
+            </callPrices>
+            <internetPrices>
+                <overspendingFeeValueForMb>0.0175</overspendingFeeValueForMb>
+            </internetPrices>
+        </prices>
+        <parameters>
+            <internetParameters>
+                <includedTraffic>8216</includedTraffic>
+                <billingInMB>0.01</billingInMB>
+                <prepayment>5</prepayment>
+            </internetParameters>
+        </parameters>
+        <smsPrices>0.0595</smsPrices>
+    </tariff>
+
+    <tariff name="Super Max+" id="tariff8">
+        <creationTariffDay>2017-07-05</creationTariffDay>
+        <operator>MTC</operator>
+        <payroll>25.00</payroll>
+        <prices>
+            <callPrices>
+                <inner>0</inner>
+                <outer>0</outer>
+                <linear>0</linear>
+            </callPrices>
+            <internetPrices>
+                <overspendingFeeValueForMb>0.0175</overspendingFeeValueForMb>
+            </internetPrices>
+        </prices>
+        <parameters>
+            <internetParameters>
+                <includedTraffic>20480</includedTraffic>
+                <billingInMB>0.01</billingInMB>
+                <prepayment>5</prepayment>
+            </internetParameters>
+        </parameters>
+        <smsPrices>0.0595</smsPrices>
+    </tariff>
+
+    <tariff name="Ultra" id="tariff9">
+        <creationTariffDay>2017-08-15</creationTariffDay>
+        <operator>MTC</operator>
+        <payroll>52.98</payroll>
+        <prices>
+            <callPrices>
+                <inner>0.0236</inner>
+                <outer>0.0960</outer>
+                <linear>0.0960</linear>
+            </callPrices>
+            <internetPrices>
+                <overspendingFeeValueForMb>0.0175</overspendingFeeValueForMb>
+            </internetPrices>
+        </prices>
+        <parameters>
+            <internetParameters>
+                <includedTraffic>10240</includedTraffic>
+                <billingInMB>0.01</billingInMB>
+                <prepayment>5</prepayment>
+            </internetParameters>
+        </parameters>
+        <smsPrices>0.047</smsPrices>
+    </tariff>
+
+    <tariff name="Absolut" id="tariff10">
+        <creationTariffDay>2017-08-15</creationTariffDay>
+        <operator>MTC</operator>
+        <payroll>143.41</payroll>
+        <prices>
+            <callPrices>
+                <inner>0</inner>
+                <outer>0</outer>
+                <linear>0</linear>
+            </callPrices>
+            <internetPrices>
+                <overspendingFeeValueForMb>0.0</overspendingFeeValueForMb>
+            </internetPrices>
+        </prices>
+        <parameters>
+            <internetParameters>
+                <includedTraffic>9999999</includedTraffic>
+                <billingInMB>0.01</billingInMB>
+                <prepayment>5</prepayment>
+            </internetParameters>
+        </parameters>
+        <smsPrices>0.00</smsPrices>
+    </tariff>
+
+    <tariff name="yo1200" id="tariff11">
+        <creationTariffDay>2016-01-01</creationTariffDay>
+        <operator>Life</operator>
+        <payroll>15.00</payroll>
+        <prices>
+            <callPrices>
+                <inner>0</inner>
+                <outer>0.10</outer>
+                <linear>0.10</linear>
+            </callPrices>
+            <internetPrices>
+                <overspendingFeeValueForMb>0.01</overspendingFeeValueForMb>
+            </internetPrices>
+        </prices>
+        <parameters>
+            <internetParameters>
+                <includedTraffic>9</includedTraffic>
+                <billingInMB>0.05</billingInMB>
+                <prepayment>5</prepayment>
+            </internetParameters>
+        </parameters>
+        <smsPrices>0.048</smsPrices>
+    </tariff>
+
+    <tariff name="sto" id="tariff12">
+        <creationTariffDay>2016-01-01</creationTariffDay>
+        <operator>Life</operator>
+        <payroll>10.00</payroll>
+        <prices>
+            <callPrices>
+                <inner>0</inner>
+                <outer>0.10</outer>
+                <linear>0.10</linear>
+            </callPrices>
+            <internetPrices>
+                <overspendingFeeValueForMb>0.01</overspendingFeeValueForMb>
+            </internetPrices>
+        </prices>
+        <parameters>
+            <internetParameters>
+                <includedTraffic>100</includedTraffic>
+                <billingInMB>0.05</billingInMB>
+                <prepayment>5</prepayment>
+            </internetParameters>
+        </parameters>
+        <smsPrices>0.048</smsPrices>
+    </tariff>
+
+    <tariff name="SHAKE" id="tariff13">
+        <creationTariffDay>2016-01-01</creationTariffDay>
+        <operator>Life</operator>
+        <payroll>11.90</payroll>
+        <prices>
+            <callPrices>
+                <inner>0</inner>
+                <outer>0.10</outer>
+                <linear>0.10</linear>
+            </callPrices>
+            <internetPrices>
+                <overspendingFeeValueForMb>0.01</overspendingFeeValueForMb>
+            </internetPrices>
+        </prices>
+        <parameters>
+            <internetParameters>
+                <includedTraffic>100</includedTraffic>
+                <billingInMB>0.05</billingInMB>
+                <prepayment>5</prepayment>
+            </internetParameters>
+        </parameters>
+        <smsPrices>0.048</smsPrices>
+    </tariff>
+
+    <tariff name="SHAKE+" id="tariff14">
+        <creationTariffDay>2016-01-01</creationTariffDay>
+        <operator>Life</operator>
+        <payroll>11.90</payroll>
+        <prices>
+            <callPrices>
+                <inner>0</inner>
+                <outer>0.10</outer>
+                <linear>0.10</linear>
+            </callPrices>
+            <internetPrices>
+                <overspendingFeeValueForMb>0.01</overspendingFeeValueForMb>
+            </internetPrices>
+        </prices>
+        <parameters>
+            <internetParameters>
+                <includedTraffic>100</includedTraffic>
+                <billingInMB>0.05</billingInMB>
+                <prepayment>5</prepayment>
+            </internetParameters>
+        </parameters>
+        <smsPrices>0.048</smsPrices>
+    </tariff>
+
+    <tariff name="play" id="tariff15">
+        <creationTariffDay>2016-01-01</creationTariffDay>
+        <operator>Life</operator>
+        <payroll>19.90</payroll>
+        <prices>
+            <callPrices>
+                <inner>0</inner>
+                <outer>0.10</outer>
+                <linear>0.10</linear>
+            </callPrices>
+            <internetPrices>
+                <overspendingFeeValueForMb>0.01</overspendingFeeValueForMb>
+            </internetPrices>
+        </prices>
+        <parameters>
+            <internetParameters>
+                <includedTraffic>100</includedTraffic>
+                <billingInMB>0.05</billingInMB>
+                <prepayment>5</prepayment>
+            </internetParameters>
+        </parameters>
+        <smsPrices>0.048</smsPrices>
+    </tariff>
 
 </tariffs>
