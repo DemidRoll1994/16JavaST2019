@@ -1,4 +1,4 @@
-package by.samtsov;
+package by.samtsov.controller;
 
 import java.sql.*;
 
