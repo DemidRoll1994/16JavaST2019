@@ -39,11 +39,9 @@ CREATE TABLE `orders`
     STATUS  TINYINT DEFAULT 0 NOT NULL CHECK (`STATUS` IN (0, 1, 2, 3, 4)),
     PRIMARY KEY (`id`),
     Foreign KEY (user_id) REFERENCES users (id)
-        ON UPDATE CASCADE
         ON DELETE RESTRICT
 ) ENGINE = INNODB
   DEFAULT CHARACTER SET utf8;
-
 
 
 
@@ -55,7 +53,7 @@ CREATE TABLE `OPTIONS`
       1-integer
       2-double
       3-boolean*/
-    `option_type` tinyint CHECK (`option_type` IN (0, 1, 2, 3)) default 0,
+    `option_type` tinyint CHECK (`option_type` IN (0, 1, 2, 3)),
     PRIMARY KEY (`id`)
 ) ENGINE = INNODB
   DEFAULT CHARACTER SET utf8;
@@ -63,14 +61,13 @@ CREATE TABLE `OPTIONS`
 
 CREATE TABLE `OPTION_VALUES`
 (
-    `id`         INTEGER        NOT NULL AUTO_INCREMENT,
-    `name`       VARCHAR(255)   NOT NULL,
-    `description`      text     NOT NULL,
-    `price`      double         NOT NULL,
-    `OPTION_ID`  INTEGER        NOT NULL,
+    `id`          INTEGER      NOT NULL AUTO_INCREMENT,
+    `name`        VARCHAR(255) NOT NULL,
+    `description` text         NOT NULL,
+    `price`       double       NOT NULL,
+    `OPTION_ID`   INTEGER      NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (OPTION_ID) REFERENCES OPTIONS (id)
-        ON UPDATE CASCADE
         ON DELETE RESTRICT
 ) ENGINE = INNODB
   DEFAULT CHARACTER SET utf8;
@@ -88,14 +85,12 @@ CREATE TABLE `Models`
 
 CREATE TABLE `available_model_OPTION_Values`
 (
-    `model_ID`          INTEGER NOT NULL,
-    `OPTION_values_ID`       INTEGER NOT NULL,
+    `model_ID`         INTEGER NOT NULL,
+    `OPTION_values_ID` INTEGER NOT NULL,
     PRIMARY KEY (`model_ID`, `OPTION_values_ID`),
     FOREIGN KEY (`model_ID`) REFERENCES `Models` (`ID`)
-        ON UPDATE CASCADE
         ON DELETE RESTRICT,
     FOREIGN KEY (`OPTION_values_ID`) REFERENCES `OPTION_VALUES` (`ID`)
-        ON UPDATE CASCADE
         ON DELETE RESTRICT
 
 ) ENGINE = INNODB
@@ -103,19 +98,17 @@ CREATE TABLE `available_model_OPTION_Values`
 
 
 
-
 CREATE TABLE `CONFIGURATIONS`
 (
     `id`               INTEGER NOT NULL AUTO_INCREMENT,
+    `name`               varchar(255) not null,
     `ORDER_ID`         INTEGER,
     `MODEL_ID`         INTEGER,
     `is_Common_config` tinyint(1) default 0,
     PRIMARY KEY (`id`),
     FOREIGN KEY (ORDER_ID) REFERENCES ORDERS (id)
-        ON UPDATE CASCADE
         ON DELETE RESTRICT,
     FOREIGN KEY (MODEL_ID) REFERENCES Models (id)
-        ON UPDATE CASCADE
         ON DELETE RESTRICT
 ) ENGINE = INNODB
   DEFAULT CHARACTER SET utf8;
@@ -123,14 +116,12 @@ CREATE TABLE `CONFIGURATIONS`
 
 CREATE TABLE `selected_config_OPTION_Values`
 (
-    `config_ID`             INTEGER NOT NULL,
-    `OPTION_value_ID`       INTEGER NOT NULL,
+    `config_ID`       INTEGER NOT NULL,
+    `OPTION_value_ID` INTEGER NOT NULL,
     PRIMARY KEY (`config_ID`, `OPTION_value_ID`),
     FOREIGN KEY (`config_ID`) REFERENCES `CONFIGURATIONS` (`ID`)
-        ON UPDATE CASCADE
         ON DELETE RESTRICT,
     FOREIGN KEY (`OPTION_value_ID`) REFERENCES `OPTION_VALUES` (`ID`)
-        ON UPDATE CASCADE
         ON DELETE RESTRICT
 ) ENGINE = INNODB
   DEFAULT CHARACTER SET utf8;

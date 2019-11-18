@@ -1,5 +1,5 @@
 /* Next values are optional for start application */
-
+USE `vehiclessales`;
 
 INSERT INTO `models` (`id`, `model_name`, `basic_price`)
 VALUES (1, 'МАЗ 5440М5', 75000),
@@ -19,7 +19,7 @@ VALUES (1, 'Тип дисков', 0),
 
 
 
-INSERT INTO `OPTIONS_VALUES` (`id`, `OPTIONS_ID`, `name`, `description`,                              `price`)
+INSERT INTO `OPTION_VALUES` (`id`, `OPTION_ID`, `name`, `description`, `price`)
 VALUES (1, 1, 'Легкосплавные',        '4 легкосплавных диска для грузового автомобиля производсвта ф. Continental',4000),
        (2, 1, 'Штампованные',        '4 штампованных диска для грузового автомобиля производсвта БМЗ', 2000),
        (3, 1, 'Легкосплавные',        '6 легкосплавных дисков для автобуса производсвта ф. Continental',        6000),
@@ -83,7 +83,6 @@ VALUES (1, 1),
        (5, 11),
        (5, 12),
 
-
        (2, 13),
        (2, 14),
        (2, 15),
@@ -104,12 +103,11 @@ VALUES (1, 1),
        (5, 25);
 
 
-
-INSERT INTO `CONFIGURATIONS` (`id`, `MODEL_ID`, `is_common_config`)
-VALUES (1, 'МАЗ 257 школьный автобус', 1),
-       (2, 'МАЗ 5440М5. Базовая комлектация', 1),
-       (3, 'МАЗ 5440М5. Полная комлектация', 1),
-       (4, 'МАЗ 303. Бери не пожалеешь!!!', 1);
+INSERT INTO `CONFIGURATIONS` (`id`, `name`, `MODEL_ID`, `is_common_config`)
+VALUES (1, 'МАЗ 257 школьный автобус', 5, 1),
+       (2, 'МАЗ 5440М5. Базовая комлектация',1, 1),
+       (3, 'МАЗ 5440М5. Полная комлектация', 1, 1),
+       (4, 'МАЗ 303. Бери не пожалеешь!!!', 4, 1);
 
 INSERT INTO `selected_config_OPTION_Values` (`config_ID`, `OPTION_value_ID`)
 VALUES (1, 6),
