@@ -1,4 +1,4 @@
-package by.samtsov.bean;
+package by.samtsov.bean.enums;
 
 public enum OrderStatus {
     FORMING,
