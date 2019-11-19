@@ -1,7 +1,16 @@
 package by.samtsov.bean.enums;
 
 public enum Role {
-    ADMIN(0),
-    BUYER(1),
-    SALER(2)
+    ADMIN,
+    BUYER,
+    VENDOR;
+
+    public Integer getIdentity() {
+        return ordinal();
+    }
+
+    public static Role getByIdentity(Integer identity) {
+        return Role.values()[identity];
+        
+    }
 }

@@ -5,6 +5,14 @@ public enum OrderStatus {
     FORMED,
     CONFIRMED,
     IN_PROCESS,
-    READY
+    READY;
+
+    public Integer getIdentity() {
+        return ordinal();
+    }
+
+    public static Role getByIdentity(Integer identity) {
+        return Role.values()[identity];
+    }
 
 }
