@@ -11,7 +11,7 @@ public class User {
     private UserStatus status;
     private Role role;
     private String companyName;
-    private long phoneNumber;
+    private long phoneNumber = -1;
     private String address;
 
 
