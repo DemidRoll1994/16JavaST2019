@@ -6,7 +6,7 @@ public class BaseDaoImpl  {
 
     Connection connection = null;
 
-    void setConnection(Connection newConnection){
+    public void setConnection(Connection newConnection){
         connection=newConnection;
     }
 
