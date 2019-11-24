@@ -11,7 +11,7 @@ CREATE TABLE `users`
      * 1 - активирован 
      * 2 - заблокирован 
      */
-    `status`        TINYINT      NOT NULL CHECK (`role` IN (0, 1, 2)),
+    `status`        TINYINT      NOT NULL CHECK (`status` IN (0, 1, 2)),
     /*
      * 0 - администратор
      * 1 - покупатель

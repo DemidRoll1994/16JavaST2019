@@ -1,60 +1,64 @@
 package by.samtsov.dao.impl;
 
-import by.samtsov.bean.User;
-import by.samtsov.bean.enums.Role;
-import by.samtsov.bean.enums.UserStatus;
+import by.samtsov.bean.Model;
 import by.samtsov.dao.Dao;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDaoImpl extends BaseDaoImpl implements Dao<User>{
+public class ModelDaoImpl extends BaseDaoImpl implements Dao<Model> {
+
+
+    /*
+    *
+    * select distinct
+    `models`.id, `models`.model_name, `models`.basic_price,
+                (select `options`.id          from `options` where `options`.id =(select `option_values`.OPTION_ID from option_values where `option_values`.id=OPTION_values_ID )),
+                (select `options`.name        from `options` where `options`.id =(select `option_values`.OPTION_ID from option_values where `option_values`.id=OPTION_values_ID )),
+                (select `options`.option_type from `options` where `options`.id =(select `option_values`.OPTION_ID from option_values where `option_values`.id=OPTION_values_ID ))
+from
+    models
+        join available_model_option_values  on models.id = available_model_option_values.model_ID
+where `models`.id=1;
+    *
+    *
+    * */
 
 
     @Override
-    public User get(int id) {
-        String sql = "SELECT `id`, `login`, `password_hash`, `salt`, " +
-                "`status`, `role`,`company`,`Phone_number`,`address` FROM " +
-                "`users` where `id` =?";
+    public Model get(int id) {
+        String sql = "SELECT `id`, `model_name`, `basic_price` " +
+                "FROM `model` join" +
+                "where `id` =?";
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
             statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
             resultSet = statement.executeQuery();
-            User user = null;
-            if(resultSet.next()) {
-                user = new User();
-                user.setId(resultSet.getInt("id"));
-                user.setLogin(resultSet.getString("login"));
-                user.setPasswordHash(resultSet.getString("password_hash"));
-                user.setSalt(resultSet.getString("salt"));
-                user.setStatus(UserStatus.valueOf(resultSet.getString("status")));
-                user.setRole(Role.valueOf(resultSet.getString("role")));
-                String company = resultSet.getString("company");
-                if(!resultSet.wasNull()) {
-                    user.setCompanyName(company);
-                }
-                long phone_number = resultSet.getLong("Phone_number");
-                if(!resultSet.wasNull()) {
-                    user.setPhoneNumber(phone_number);
-                }
-                String address = resultSet.getString("address");
-                if(!resultSet.wasNull()) {
-                    user.setAddress(address);
-                }
+            Model model = null;
+            if (resultSet.next()) {
+                model = new Model();
+                model.setId(resultSet.getInt("id"));
+                model.setName(resultSet.getString("model_name"));
+                model.setPrice(resultSet.getDouble("basic_price"));
+
+                model.setAvailableOptions(resultSet.getString("salt"));
+
             }
-            return user;
-        } catch(SQLException e) {
+            return model;
+        } catch (SQLException e) {
             throw new PersistentException(e);
         } finally {
             try {
                 resultSet.close();
-            } catch(SQLException | NullPointerException e) {}
+            } catch (SQLException | NullPointerException e) {
+            }
             try {
                 statement.close();
-            } catch(SQLException | NullPointerException e) {}
+            } catch (SQLException | NullPointerException e) {
+            }
         }
     }
 
@@ -79,15 +83,15 @@ public class UserDaoImpl extends BaseDaoImpl implements Dao<User>{
                 user.setStatus(UserStatus.valueOf(resultSet.getString("status")));
                 user.setRole(Role.valueOf(resultSet.getString("role")));
                 String company = resultSet.getString("company");
-                if(!resultSet.wasNull()) {
+                if (!resultSet.wasNull()) {
                     user.setCompanyName(company);
                 }
                 long phone_number = resultSet.getLong("Phone_number");
-                if(!resultSet.wasNull()) {
+                if (!resultSet.wasNull()) {
                     user.setPhoneNumber(phone_number);
                 }
                 String address = resultSet.getString("address");
-                if(!resultSet.wasNull()) {
+                if (!resultSet.wasNull()) {
                     user.setAddress(address);
                 }
                 users.add(user);
@@ -193,12 +197,13 @@ public class UserDaoImpl extends BaseDaoImpl implements Dao<User>{
             }
             statement.setInt(9, user.getId());
             statement.executeUpdate();
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             throw new PersistentException(e);
         } finally {
             try {
                 statement.close();
-            } catch(SQLException | NullPointerException e) {}
+            } catch (SQLException | NullPointerException e) {
+            }
         }
     }
 
@@ -210,14 +215,15 @@ public class UserDaoImpl extends BaseDaoImpl implements Dao<User>{
             statement = connection.prepareStatement(sql);
             statement.setInt(1, userId);
             statement.executeUpdate();
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             throw new PersistentException(e);
         } finally {
             try {
                 statement.close();
-            } catch(SQLException | NullPointerException e) {
+            } catch (SQLException | NullPointerException e) {
 
             }
         }
     }
+
 }
