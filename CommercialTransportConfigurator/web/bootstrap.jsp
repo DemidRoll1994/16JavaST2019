@@ -16,6 +16,27 @@
     XML Parser
 </head>
 <body>
+
+<div class ="row">
+    <div class="col-6"> Первый </div>
+    <div class="col-6" > второй </div>
+</div>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="#" class="navbar-brand">название меню</a>
+        </div>
+        <div>
+            <ul class ="nav navbar-nav">
+                <li><a href="#"> войти</a> </li>
+                <li><a href="#"> выйти</a> </li>
+                <li><a href="#"> войти и выйти</a> </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
 <form name="parser-chooser" method="post" enctype="multipart/form-data"
           action="${pageContext.request.contextPath}/ControllerServlet">
 
