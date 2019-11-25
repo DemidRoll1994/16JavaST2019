@@ -3,6 +3,8 @@ package by.samtsov.dao.factory;
 import by.samtsov.bean.User;
 import by.samtsov.dao.Dao;
 import by.samtsov.dao.impl.ModelDaoImpl;
+import by.samtsov.dao.impl.OptionDaoImpl;
+import by.samtsov.dao.impl.OptionValueDaoImpl;
 import by.samtsov.dao.impl.UserDaoImpl;
 import by.samtsov.dao.pool.ConnectionPool;
 
@@ -12,7 +14,7 @@ import java.sql.SQLException;
 import static com.mysql.cj.conf.PropertyKey.logger;
 
 public class DaoFactory {
-    public <Type extends Dao<?>> Type createDao(DaoType daoType) {
+    public static <Type extends Dao<?>> Type createDao(DaoType daoType) {
         Connection conn;
         try {
             conn = ConnectionPool.getInstance().getConnection(); // todo choose one

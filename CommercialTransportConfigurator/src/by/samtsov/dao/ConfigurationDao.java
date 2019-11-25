@@ -1,4 +1,6 @@
 package by.samtsov.dao;
 
-public interface ConfigurationDao extends Dao<ConfigurationDao>{
+import by.samtsov.bean.Configuration;
+
+public interface ConfigurationDao extends Dao<Configuration>{
 }

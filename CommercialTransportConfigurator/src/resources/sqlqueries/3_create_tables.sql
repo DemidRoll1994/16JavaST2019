@@ -49,11 +49,12 @@ CREATE TABLE `OPTIONS`
 (
     `id`          INTEGER      NOT NULL AUTO_INCREMENT,
     `NAME`        VARCHAR(255) NOT NULL,
-    /*0-string
+    /*now is unavailable
+    0-string
       1-integer
       2-double
       3-boolean*/
-    `option_type` tinyint CHECK (`option_type` IN (0, 1, 2, 3)),
+    `option_type` tinyint NOT NULL CHECK (`option_type` IN (0, 1, 2, 3)),
     PRIMARY KEY (`id`)
 ) ENGINE = INNODB
   DEFAULT CHARACTER SET utf8;
@@ -62,7 +63,7 @@ CREATE TABLE `OPTIONS`
 CREATE TABLE `OPTION_VALUES`
 (
     `id`          INTEGER      NOT NULL AUTO_INCREMENT,
-    `name`        VARCHAR(255) NOT NULL,
+    `value`       VARCHAR(255) NOT NULL,
     `description` text         NOT NULL,
     `price`       double       NOT NULL,
     `OPTION_ID`   INTEGER      NOT NULL,

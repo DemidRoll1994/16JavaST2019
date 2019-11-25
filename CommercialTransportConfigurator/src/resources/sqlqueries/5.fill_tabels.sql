@@ -19,7 +19,7 @@ VALUES (1, 'Тип дисков', 0),
 
 
 
-INSERT INTO `OPTION_VALUES` (`id`, `OPTION_ID`, `name`, `description`, `price`)
+INSERT INTO `OPTION_VALUES` (`id`, `OPTION_ID`, `value`, `description`, `price`)
 VALUES (1, 1, 'Легкосплавные',        '4 легкосплавных диска для грузового автомобиля производсвта ф. Continental',4000),
        (2, 1, 'Штампованные',        '4 штампованных диска для грузового автомобиля производсвта БМЗ', 2000),
        (3, 1, 'Легкосплавные',        '6 легкосплавных дисков для автобуса производсвта ф. Continental',        6000),
