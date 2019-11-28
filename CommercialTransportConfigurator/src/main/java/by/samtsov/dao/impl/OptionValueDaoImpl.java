@@ -2,7 +2,7 @@ package by.samtsov.dao.impl;
 
 import by.samtsov.bean.OptionValue;
 import by.samtsov.bean.exceptions.PersistentException;
-import by.samtsov.dao.Dao;
+import by.samtsov.dao.OptionValueDao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OptionValueDaoImpl extends BaseDaoImpl implements Dao<OptionValue> {
+public class OptionValueDaoImpl extends BaseDaoImpl implements OptionValueDao {
 
 
     @Override

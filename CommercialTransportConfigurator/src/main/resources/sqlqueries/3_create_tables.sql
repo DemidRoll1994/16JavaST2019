@@ -4,7 +4,7 @@ CREATE TABLE `users`
     `id`            INTEGER      NOT NULL AUTO_INCREMENT,
     `login`         VARCHAR(255) NOT NULL UNIQUE,
     `password_Hash` text(512)    NOT NULL,
-    `salt`          text(512)    NOT NULL,
+    `salt`          varchar(255) NOT NULL,
 
     /*
      * 0 - не активирован

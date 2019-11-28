@@ -4,13 +4,13 @@ import by.samtsov.bean.User;
 import by.samtsov.bean.enums.Role;
 import by.samtsov.bean.enums.UserStatus;
 import by.samtsov.bean.exceptions.PersistentException;
-import by.samtsov.dao.Dao;
+import by.samtsov.dao.UserDao;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDaoImpl extends BaseDaoImpl implements Dao<User> {
+public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
 
     @Override
@@ -182,6 +182,48 @@ public class UserDaoImpl extends BaseDaoImpl implements Dao<User> {
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new PersistentException(e);
+        }
+    }
+
+    @Override
+    public User getByLogin(String login) throws PersistentException {
+        String sql = "SELECT `id`, `login`, `password_hash`, `salt`, " +
+                "`status`, `role`,`company`,`Phone_number`,`address` FROM " +
+                "`users` where `login` =?";
+        ResultSet resultSet = null;
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, login);
+            resultSet = statement.executeQuery();
+            User user = null;
+            if (resultSet.next()) {
+                user = new User();
+                user.setId(resultSet.getInt("id"));
+                user.setLogin(resultSet.getString("login"));
+                user.setPasswordHash(resultSet.getString("password_hash"));
+                user.setSalt(resultSet.getString("salt"));
+                user.setStatus(UserStatus.valueOf(resultSet.getString("status")));
+                user.setRole(Role.valueOf(resultSet.getString("role")));
+                String company = resultSet.getString("company");
+                if (!resultSet.wasNull()) {
+                    user.setCompanyName(company);
+                }
+                long phoneNumber = resultSet.getLong("Phone_number");
+                if (!resultSet.wasNull()) {
+                    user.setPhoneNumber(phoneNumber);
+                }
+                String address = resultSet.getString("address");
+                if (!resultSet.wasNull()) {
+                    user.setAddress(address);
+                }
+            }
+            return user;
+        } catch (SQLException e) {
+            throw new PersistentException(e);
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+            } catch (SQLException e) {
+            }
         }
     }
 }

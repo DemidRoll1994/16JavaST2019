@@ -1,6 +1,6 @@
-package by.samtsov.dao.factory;
+package by.samtsov.bean.enums;
 
-public enum DaoType {
+public enum EntityType {
     CONFIGURATION,
     MODEL,
     OPTION,

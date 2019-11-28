@@ -1,6 +1,7 @@
-package by.samtsov.service;
+package by.samtsov.service.impl;
 
 import by.samtsov.bean.Configuration;
+import by.samtsov.service.ConfigurationService;
 
 import java.util.List;
 
