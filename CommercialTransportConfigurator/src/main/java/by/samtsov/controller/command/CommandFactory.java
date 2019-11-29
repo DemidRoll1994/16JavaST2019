@@ -7,7 +7,7 @@ public class CommandFactory {
     public static Command createCommand(AvailableCommands availableCommands) {
         Command command;
         switch (availableCommands) {
-            case INDEX:
+           /* case INDEX:
                 command = new IndexCommand();
                 break;
             case LOGIN:
@@ -18,8 +18,10 @@ public class CommandFactory {
                 break;
             case REGISTER:
                 command = new RegisterUserCommand();
-                break;
+                break;*/
         }
+
+        command = new LoginCommand();
 
         return command;
     }

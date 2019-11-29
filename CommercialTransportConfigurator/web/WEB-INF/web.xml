@@ -17,6 +17,14 @@
         <servlet-name>ControllerServlet</servlet-name>
         <url-pattern>/parseXML</url-pattern>
     </servlet-mapping>
+    <filter>
+        <filter-name>ActionFromUriFilter</filter-name>
+        <filter-class>by.samtsov.controller.filter.ActionFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ActionFromUriFilter</filter-name>
+        <url-pattern>*.html</url-pattern>
+    </filter-mapping>
 
     <resource-ref>
         <res-ref-name>jdbc/appname</res-ref-name>

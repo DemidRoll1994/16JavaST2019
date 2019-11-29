@@ -99,7 +99,8 @@ public class TariffDOMBuilder extends Builder {
         tariff.setPayroll(Double.parseDouble(payroll));
 
         /*List<Price> prices = getPrices(getElementTextContent(element,
-                TariffsXMLTags.PRICES.getValue()));*/
+                TariffsXMLTags.PRICES.getValue())); эту строку можно
+                раскомментить и переделать*/
         List<Price> prices = getPrices(element); // todo передаются тарифы, а
         // не цены. исправить.
         tariff.setPrices(prices);

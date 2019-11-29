@@ -2,6 +2,8 @@ package by.samtsov.controller.command;
 
 import by.samtsov.bean.User;
 import by.samtsov.bean.enums.Role;
+import by.samtsov.bean.exceptions.IncorrectDataException;
+import by.samtsov.bean.exceptions.PersistentException;
 import by.samtsov.service.ServiceFactory;
 
 import javax.servlet.http.HttpServletRequest;
@@ -66,6 +68,6 @@ public abstract class Command {
         this.factory = factory;
     }
 
-    abstract public void execute(HttpServletRequest request, HttpServletResponse response);
+    abstract public void execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException, IncorrectDataException;
 
 }

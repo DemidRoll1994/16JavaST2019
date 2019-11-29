@@ -3,6 +3,9 @@ package by.samtsov.controller.filter;
 import by.samtsov.controller.command.AvailableCommands;
 import by.samtsov.controller.command.Command;
 import by.samtsov.controller.command.CommandFactory;
+import by.samtsov.controller.servlet.DispatcherServlet;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +14,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ActionFilter implements Filter {
+    private static Logger logger = LogManager.getLogger(DispatcherServlet.class);
 
     private static Map<String, AvailableCommands> commands = new ConcurrentHashMap<>();
 
@@ -65,11 +69,10 @@ public class ActionFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        if(servletRequest instanceof HttpServletRequest) {
-            HttpServletRequest httpRequest = (HttpServletRequest)servletRequest;
+        if (servletRequest instanceof HttpServletRequest) {
+            HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
             String contextPath = httpRequest.getContextPath();
             String uri = httpRequest.getRequestURI();
-            logger.debug(String.format("Starting of processing of request for URI \"%s\"", uri));
             String commandShortUri;
             int beginAction = contextPath.length();
             /*int endAction = uri.lastIndexOf('.');
@@ -80,17 +83,19 @@ public class ActionFilter implements Filter {
             //todo del}
 
             try {
+                logger.debug("short uri" + commandShortUri + "is selected");
                 Command command = CommandFactory.createCommand(commands.get(commandShortUri));
+                logger.debug("commmand" + commandShortUri + "is created");
                 command.setShortUri(commandShortUri);
                 httpRequest.setAttribute("command", command);
+                logger.debug("commmand" + commandShortUri + "is set as " +
+                        "attribute for httpRequest");
                 filterChain.doFilter(servletRequest, servletResponse);
-            } catch (InstantiationException | IllegalAccessException | NullPointerException e) {
-                logger.error("It is impossible to create action handler object", e);
+            } catch (NullPointerException e) {
                 httpRequest.setAttribute("error", String.format("Запрошенный адрес %s не может быть обработан сервером", uri));
                 httpRequest.getServletContext().getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(servletRequest, servletResponse);
             }
         } else {
-            logger.error("It is impossible to use HTTP filter");
             servletRequest.getServletContext().getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(servletRequest, servletResponse);
         }
     }

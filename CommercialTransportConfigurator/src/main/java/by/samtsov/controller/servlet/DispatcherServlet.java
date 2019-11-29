@@ -1,18 +1,11 @@
-package controller;
+package by.samtsov.controller.servlet;
 
+import by.samtsov.bean.exceptions.IncorrectDataException;
+import by.samtsov.bean.exceptions.PersistentException;
 import by.samtsov.controller.command.Command;
-import dao.mysql.TransactionFactoryImpl;
-import dao.pool.ConnectionPool;
-import exception.PersistentException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.Layout;
-import org.apache.logging.log4j.core.appender.ConsoleAppender;
-import org.apache.logging.log4j.core.appender.FileAppender;
-import org.apache.logging.log4j.core.layout.PatternLayout;
-import service.ServiceFactory;
-import service.ServiceFactoryImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -37,7 +30,7 @@ public class DispatcherServlet extends HttpServlet {
     public static final int DB_POOL_MAX_SIZE = 1000;
     public static final int DB_POOL_CHECK_CONNECTION_TIMEOUT = 0;
 
-    public void init() {
+    /*public void init() {
         try {
             Logger root = LogManager.getRootLogger();
             Layout layout = new PatternLayout(LOG_MESSAGE_FORMAT);
@@ -53,7 +46,7 @@ public class DispatcherServlet extends HttpServlet {
 
     public ServiceFactory getFactory() throws PersistentException {
         return new ServiceFactoryImpl(new TransactionFactoryImpl());
-    }
+    }*/
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         process(request, response); // todo запретиить какое-то действие, если вручную передают параметры в строке
@@ -113,7 +106,7 @@ public class DispatcherServlet extends HttpServlet {
                 logger.debug(String.format("Request for URI \"%s\" is forwarded to JSP \"%s\"", requestedUri, jspPage));
                 getServletContext().getRequestDispatcher(jspPage).forward(request, response);
             }
-        } catch (PersistentException e) {
+        } catch (PersistentException | IncorrectDataException e) {
             logger.error("It is impossible to process request", e);
             request.setAttribute("error", "Ошибка обработки данных");
             getServletContext().getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
