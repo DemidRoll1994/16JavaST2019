@@ -353,4 +353,28 @@
         <smsPrices>0.048</smsPrices>
     </tariff>
 
+    <tariff name="way" id="tariff16">
+        <creationTariffDay>2016-01-01</creationTariffDay>
+        <operator>Life</operator>
+        <payroll>21.90</payroll>
+        <prices>
+            <callPrices>
+                <inner>0</inner>
+                <outer>0.10</outer>
+                <linear>0.10</linear>
+            </callPrices>
+            <internetPrices>
+                <overspendingFeeValueForMb>0.01</overspendingFeeValueForMb>
+            </internetPrices>
+        </prices>
+        <parameters>
+            <internetParameters>
+                <includedTraffic>1000</includedTraffic>
+                <billingInMB>0.05</billingInMB>
+                <prepayment>5</prepayment>
+            </internetParameters>
+        </parameters>
+        <smsPrices>0.088</smsPrices>
+    </tariff>
+
 </tariffs>

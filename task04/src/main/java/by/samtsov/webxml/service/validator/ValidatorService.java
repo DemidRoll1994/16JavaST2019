@@ -16,8 +16,7 @@ import java.io.IOException;
 
 public class ValidatorService {
 
-    private static final String SCHEMA_NAME = "WEB-INF/classes/data/tariffs" +
-            ".xsd";
+    private static final String SCHEMA_NAME = "WEB-INF/classes/data/tariffs.xsd"; // todo что за путь???
 
     private static final Logger LOGGER = LogManager.getLogger(
             ValidatorService.class);
@@ -29,13 +28,12 @@ public class ValidatorService {
     }
 
 
-    public boolean isValidDocument(final String fileName) /*throws todo
-            ValidateException */ {
+    public boolean isValidDocument(final String fileName) throws
+            ValidateException {
         String language = XMLConstants.W3C_XML_SCHEMA_NS_URI;
         LOGGER.debug("path of validating document is: " + fileName);
-        LOGGER.debug("path of schema is: " + fileName);
-        LOGGER.debug("path of schema is exist: "
-                + new File("path/to/file.txt").isFile());
+        LOGGER.debug("path of schema is: " + SCHEMA_NAME);
+        LOGGER.debug("is schema exist: " + new File(SCHEMA_NAME).isFile());
 
         SchemaFactory factory = SchemaFactory.newInstance(language);
         File schemaLocation = new File(SCHEMA_NAME);
