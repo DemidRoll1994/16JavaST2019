@@ -92,7 +92,7 @@ public class ControllerServlet extends HttpServlet {
             List<Tariff> tariffs = tariffXMLParser.parseXML(
                     filePath, req.getParameter("parserName"));
 
-            LOGGER.debug("tariffs list size is "+ tariffs.size());
+            LOGGER.debug("tariffs list size is " + tariffs.size());
             req.setAttribute("tariffs", tariffs);
         } catch (ValidateException e) {
             e.printStackTrace();
