@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<tariffs xmlns="http://www.example.com/tariffs"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.example.com/tariffs tariffs.xsd">
+    <tariff name="Comfort S" id="tariff1">
+        <creationTariffDay>2019-08-19</creationTariffDay>
+        <operator>A1</operator>
+        <payroll>12.99</payroll>
+        <smsPrices>0.25</smsPrices>
+        <prices>
+            <callPrices>
+                <inner>0</inner>
+                <outer>0.75</outer>
+                <linear>0.75</linear>
+            </callPrices>
+        </prices>
+        <parameters>
+            <voiceParameters>
+                <favoriteNumberCount>0</favoriteNumberCount>
+                <billingInSec>60</billingInSec>
+                <prepayment>5</prepayment>
+            </voiceParameters>
+        </parameters>
+    </tariff>
+
+
+    <tariff name="play" id="tariff15">
+        <creationTariffDay>2016-01-01</creationTariffDay>
+        <operator>Life</operator>
+        <payroll>19.90</payroll>
+        <prices>
+            <callPrices>
+                <inner>0</inner>
+                <outer>0.10</outer>
+                <linear>0.10</linear>
+            </callPrices>
+            <internetPrices>
+                <overspendingFeeValueForMb>0.01</overspendingFeeValueForMb>
+            </internetPrices>
+        </prices>
+        <parameters>
+            <internetParameters>
+                <includedTraffic>100</includedTraffic>
+                <billingInMB>0.05</billingInMB>
+                <prepayment>5</prepayment>
+            </internetParameters>
+        </parameters>
+        <smsPrices>0.048</smsPrices>
+    </tariff>
+
+
+</tariffs>

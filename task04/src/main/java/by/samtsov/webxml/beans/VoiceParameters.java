@@ -1,5 +1,7 @@
 package by.samtsov.webxml.beans;
 
+import java.util.Objects;
+
 /**
  * <p>Java class for VoiceParameters complex type.
  *
@@ -19,7 +21,7 @@ package by.samtsov.webxml.beans;
  * &lt;/complexType>
  * </pre>
  */
-public class VoiceParameters extends Parameter {
+public class VoiceParameters extends Parameters {
     /**
      * number of favorite numbers with special prices
      */
@@ -87,4 +89,18 @@ public class VoiceParameters extends Parameter {
         this.prepayment = value;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof VoiceParameters)) return false;
+        VoiceParameters that = (VoiceParameters) o;
+        return favoriteNumberCount == that.favoriteNumberCount &&
+                billingInSec == that.billingInSec &&
+                Double.compare(that.prepayment, prepayment) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(favoriteNumberCount, billingInSec, prepayment);
+    }
 }

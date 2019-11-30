@@ -1,5 +1,7 @@
 package by.samtsov.webxml.beans;
 
+import java.util.Objects;
+
 /**
  * <p>Java class for InternetParameters complex type.
  *
@@ -20,7 +22,7 @@ package by.samtsov.webxml.beans;
  * </pre>
  */
 public class InternetParameters
-        extends Parameter {
+        extends Parameters {
 
     protected int includedTraffic;
     protected double billingInMB;
@@ -86,4 +88,18 @@ public class InternetParameters
         this.prepayment = value;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof InternetParameters)) return false;
+        InternetParameters that = (InternetParameters) o;
+        return includedTraffic == that.includedTraffic &&
+                Double.compare(that.billingInMB, billingInMB) == 0 &&
+                Double.compare(that.prepayment, prepayment) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(includedTraffic, billingInMB, prepayment);
+    }
 }

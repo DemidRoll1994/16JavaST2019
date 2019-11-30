@@ -3,8 +3,8 @@ package by.samtsov.webxml.beans;
 import by.samtsov.webxml.beans.enums.Operator;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -77,7 +77,7 @@ public class Tariff {
     /**
      * prices for using some functions (calls,internet, etc.).
      */
-    protected List<Price> prices;
+    protected List<Prices> prices;
     /**
      * sms price using.
      */
@@ -85,7 +85,7 @@ public class Tariff {
     /**
      * other parameters of tariff as a billing, included traffic and other.
      */
-    protected List<Parameter> parameters;
+    protected List<Parameters> parameters;
     /**
      * date of tariff creation.
      */
@@ -140,7 +140,7 @@ public class Tariff {
      *
      * @return List of Prices
      */
-    public List<Price> getPrices() {
+    public List<Prices> getPrices() {
         return prices;
     }
 
@@ -149,7 +149,7 @@ public class Tariff {
      *
      * @param newPrices list of prices
      */
-    public void setPrices(List<Price> newPrices) {
+    public void setPrices(List<Prices> newPrices) {
         prices = newPrices;
     }
 
@@ -176,7 +176,7 @@ public class Tariff {
      *
      * @return list of parameters
      */
-    public List<Parameter> getParameters() {
+    public List<Parameters> getParameters() {
         return parameters;
     }
 
@@ -185,7 +185,7 @@ public class Tariff {
      *
      * @param newParameters list of new parameters
      */
-    public void setParameters(List<Parameter> newParameters) {
+    public void setParameters(List<Parameters> newParameters) {
         this.parameters = newParameters;
     }
 
@@ -243,4 +243,23 @@ public class Tariff {
         this.id = newId;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Tariff)) return false;
+        Tariff tariff = (Tariff) o;
+        return Double.compare(tariff.payroll, payroll) == 0 &&
+                Double.compare(tariff.smsPrice, smsPrice) == 0 &&
+                operator == tariff.operator &&
+                Objects.equals(prices, tariff.prices) &&
+                Objects.equals(parameters, tariff.parameters) &&
+                creationTariffDay.equals( tariff.creationTariffDay) &&
+                Objects.equals(name, tariff.name) &&
+                Objects.equals(id, tariff.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(operator, payroll, prices, smsPrice, parameters, creationTariffDay, name, id);
+    }
 }

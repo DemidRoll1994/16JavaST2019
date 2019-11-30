@@ -1,5 +1,7 @@
 package by.samtsov.webxml.beans;
 
+import java.util.Objects;
+
 /**
  * <p>Java class for CallPrices complex type.
  *
@@ -20,7 +22,7 @@ package by.samtsov.webxml.beans;
  * </pre>
  */
 public class CallPrices
-        extends Price {
+        extends Prices {
 
     protected double inner;
     protected double outer;
@@ -80,4 +82,18 @@ public class CallPrices
         this.linear = newValue;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CallPrices)) return false;
+        CallPrices that = (CallPrices) o;
+        return Double.compare(that.inner, inner) == 0 &&
+                Double.compare(that.outer, outer) == 0 &&
+                Double.compare(that.linear, linear) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(inner, outer, linear);
+    }
 }

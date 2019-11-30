@@ -52,8 +52,45 @@ public class TariffDOMBuilder extends Builder {
         return text;
     }
 
+    // принимает тариф
+    private static List<Prices> getPrices(Element priceElement) {
+        List<Prices> pricesList = new ArrayList<>();
+
+        CallPrices callPrices = new CallPrices();
+        Element callPricesElement = getFirstNodeElement(priceElement,
+                TariffsXMLTags.CALLPRICES.getValue());
+        if (callPricesElement != null) {
+            callPrices.setInner(Double.parseDouble(getElementTextContent(
+                    callPricesElement, TariffsXMLTags.INNER.getValue())));
+            callPrices.setOuter(Double.parseDouble(getElementTextContent(
+                    callPricesElement, TariffsXMLTags.OUTER.getValue())));
+            callPrices.setLinear(Double.parseDouble(getElementTextContent(
+                    callPricesElement, TariffsXMLTags.LINEAR.getValue())));
+        }
+
+        InternetPrices internetPrices = new InternetPrices();
+        Element internetPricesElement = getFirstNodeElement(priceElement,
+                TariffsXMLTags.INTERNETPRICES.getValue());
+        if (internetPricesElement != null) {
+            internetPrices.setOverspendingFeeValueForMb(Double.parseDouble(
+                    getElementTextContent(internetPricesElement, TariffsXMLTags
+                            .OVERSPENDINGFEEVALUEFORMB.getValue())));
+        }
+        return pricesList;
+    }
+
+    private static Element getFirstNodeElement(Element priceElement, String childElementName) {
+        NodeList nodeList = priceElement.getElementsByTagName(childElementName);
+        if (nodeList.getLength() > 0
+                && nodeList.item(0).getNodeType() == Node.ELEMENT_NODE) {
+            return (Element) nodeList.item(0);
+        }
+        return null;
+    }
+
     /**
      * method is under construction todo
+     *
      * @param element
      * @param elementName
      * @return
@@ -80,7 +117,7 @@ public class TariffDOMBuilder extends Builder {
                 }
             }
         } catch (Exception ex) {
-            throw new BuilderException("Exception via xml I/O. check "
+            throw new BuilderException("Exception via xml I/O. "
                     + ex.getMessage());
         }
     }
@@ -98,13 +135,12 @@ public class TariffDOMBuilder extends Builder {
                 TariffsXMLTags.PAYROLL.getValue());
         tariff.setPayroll(Double.parseDouble(payroll));
 
-        /*List<Price> prices = getPrices(getElementTextContent(element,
-                TariffsXMLTags.PRICES.getValue())); эту строку можно
-                раскомментить и переделать*/
-        List<Price> prices = getPrices(element); // todo передаются тарифы, а
-        // не цены. исправить.
+        NodeList nList = element
+                .getElementsByTagName(TariffsXMLTags.PRICES.getValue());
+        List<Prices> prices = getPrices((Element) nList.item(0));
+
         tariff.setPrices(prices);
-        List<Parameter> parameters = getParameters(element);
+        List<Parameters> parameters = getParameters(element);
         tariff.setParameters(parameters);
 
         String creationTariffDay = getElementTextContent(element,
@@ -116,15 +152,53 @@ public class TariffDOMBuilder extends Builder {
         return tariff;
     }
 
-    private List<Price> getPrices(Element element) throws BuilderException {
-        List<Price> prices = new ArrayList<>();
+
+    private static List<Parameters> getParameters(Element priceElement) {
+        List<Parameters> parametersList = new ArrayList<>();
+
+        VoiceParameters voiceParameters = new VoiceParameters();
+        Element voiceParametersElement = getFirstNodeElement(priceElement,
+                TariffsXMLTags.VOICEPARAMETERS.getValue());
+        if (voiceParametersElement != null) {
+            voiceParameters.setBillingInSec(Integer.parseInt(
+                    getElementTextContent(voiceParametersElement,
+                            TariffsXMLTags.BILLINGINSEC.getValue())));
+            voiceParameters.setFavoriteNumberCount(Integer.parseInt(
+                    getElementTextContent(voiceParametersElement,
+                            TariffsXMLTags.FAVORITENUBERCOUNT.getValue())));
+            voiceParameters.setPrepayment(Double.parseDouble(
+                    getElementTextContent(voiceParametersElement,
+                            TariffsXMLTags.PREPAYMENT.getValue())));
+        }
+        parametersList.add(voiceParameters);
+        InternetParameters internetParameters = new InternetParameters();
+        Element internetParametersElement = getFirstNodeElement(priceElement,
+                TariffsXMLTags.INTERNETPARAMETERS.getValue());
+        if (internetParametersElement != null) {
+            internetParameters.setBillingInMB(Double.parseDouble(
+                    getElementTextContent(internetParametersElement,
+                            TariffsXMLTags.BILLINGINMB.getValue())));
+            internetParameters.setIncludedTraffic(Integer.parseInt(
+                    getElementTextContent(internetParametersElement,
+                            TariffsXMLTags.INCLUDEDTRAFFIC.getValue())));
+            internetParameters.setPrepayment(Double.parseDouble(
+                    getElementTextContent(internetParametersElement,
+                            TariffsXMLTags.PREPAYMENT.getValue())));
+        }
+        parametersList.add(internetParameters);
+
+        return parametersList;
+    }
+
+    /*private List<Prices> getPrices(Element element) throws BuilderException {
+        List<Prices> prices = new ArrayList<>();
         NodeList nodeList = element.getChildNodes();
         for (int i = 0; i < nodeList.getLength(); i++) {
             if (nodeList.item(i).getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             Element currentPriceElement = (Element) nodeList.item(i);
-            Price price;
+            Prices price;
             if (TariffsXMLTags.valueOf(element.getTagName().toUpperCase()) ==
                     TariffsXMLTags.CALLPRICES) {
                 price = buildCallPrice(currentPriceElement);
@@ -140,15 +214,15 @@ public class TariffDOMBuilder extends Builder {
         return prices;
     }
 
-    private List<Parameter> getParameters(Element element) throws BuilderException {
-        List<Parameter> parameters = new ArrayList<>();
+    private List<Parameters> getParameters(Element element) throws BuilderException {
+        List<Parameters> parameters = new ArrayList<>();
         NodeList nodeList = element.getChildNodes();
         for (int i = 0; i < nodeList.getLength(); i++) {
             if (nodeList.item(i).getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
             Element currentParameterElement = (Element) nodeList.item(i);
-            Parameter parameter;
+            Parameters parameter;
             if (TariffsXMLTags.valueOf(element.getTagName().toUpperCase()) ==
                     TariffsXMLTags.CALLPRICES) {
                 parameter = buildVoiceParameters(currentParameterElement);
@@ -163,8 +237,8 @@ public class TariffDOMBuilder extends Builder {
         }
         return parameters;
     }
-
-    private Price buildCallPrice(Element element) {
+*/
+    private Prices buildCallPrice(Element element) {
         CallPrices price = new CallPrices();
         price.setInner(
                 Double.parseDouble(
@@ -181,7 +255,7 @@ public class TariffDOMBuilder extends Builder {
         return price;
     }
 
-    private Price buildInternetPrice(Element element) {
+    private Prices buildInternetPrice(Element element) {
         InternetPrices price = new InternetPrices();
         price.setOverspendingFeeValueForMb(
                 Double.parseDouble(
@@ -191,7 +265,7 @@ public class TariffDOMBuilder extends Builder {
         return price;
     }
 
-    private Parameter buildVoiceParameters(Element element) {
+    private Parameters buildVoiceParameters(Element element) {
         VoiceParameters parameters = new VoiceParameters();
         parameters.setBillingInSec(
                 Integer.parseInt(
@@ -208,7 +282,7 @@ public class TariffDOMBuilder extends Builder {
         return parameters;
     }
 
-    private Parameter buildInternetParameters(Element element) {
+    private Parameters buildInternetParameters(Element element) {
         InternetParameters parameters = new InternetParameters();
         parameters.setBillingInMB(
                 Double.parseDouble(

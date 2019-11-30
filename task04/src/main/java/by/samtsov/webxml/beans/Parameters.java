@@ -14,7 +14,7 @@ package by.samtsov.webxml.beans;
  * &lt;/complexType>
  * </pre>
  */
-public abstract class Parameter {
+public abstract class Parameters {
 
 
 }

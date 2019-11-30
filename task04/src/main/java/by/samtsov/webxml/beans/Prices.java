@@ -14,7 +14,7 @@ package by.samtsov.webxml.beans;
  * &lt;/complexType>
  * </pre>
  */
-public abstract class Price {
+public abstract class Prices {
 
 
 }
