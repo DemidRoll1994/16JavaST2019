@@ -27,11 +27,12 @@ public class ControllerServlet extends HttpServlet {
 
     private static final Logger LOGGER = LogManager.getLogger(
             ControllerServlet.class);
-    private static final String PARSING_ERROR = "XML-parsing Error";
-    private static final String VALIDATION_ERROR = "File is invalid";
-    private static final String BUILDING_ERROR = "File building error";
+    private static final String PARSING_ERROR = "XML-parsing Error: ";
+    private static final String VALIDATION_ERROR = "File is invalid: ";
+    private static final String BUILDING_ERROR = "File building error: ";
 
     private static final String UPLOAD_DIRECTORY = "uploaded files";
+    private static final String DEFAULT_XML_PATH = "dexfaultxml.xml";
 
     @Override
     protected void doGet(final HttpServletRequest req,
@@ -52,11 +53,15 @@ public class ControllerServlet extends HttpServlet {
     private String getFileName(Part part) {
         for (String content : part.getHeader("content-disposition")
                 .split(";")) {
-            if (content.trim().startsWith("filename"))
-                return content.substring(content.indexOf("=") + 2,
+            if (content.trim().startsWith("filename")) {
+                String filename = content.substring(content.indexOf("=") + 2,
                         content.length() - 1);
+                if (!filename.isEmpty()) {
+                    return filename;
+                }
+            }
         }
-        return "dexfaultxml.xml";
+        return null;
     }
 
 
@@ -76,16 +81,28 @@ public class ControllerServlet extends HttpServlet {
     private void processPostRequest(final HttpServletRequest req,
                                     final HttpServletResponse resp)
             throws ServletException, IOException {
+        String error;
         try {
             String uploadPath = getServletContext().getRealPath("") +
                     File.separator + UPLOAD_DIRECTORY;
             String filePath = "";
             File uploadDir = new File(uploadPath);
             if (!uploadDir.exists()) uploadDir.mkdir();
+            String filename="";
             for (Part part : req.getParts()) {
-                filePath = uploadPath + File.separator + getFileName(part);
-                part.write(filePath);
+                filename = getFileName(part);
+                filePath = uploadPath + File.separator + filename;
+                if (filename != null) {
+                    part.write(filePath);
+                } else {
+                    /*throw new ValidateException("file is not selected. " +
+                            "Try again");*/
+                }
                 LOGGER.debug(filePath);
+            }
+            if (filename == null) {
+                throw new ValidateException("file is not selected. " +
+                        "Try again");
             }
             LOGGER.debug(filePath);
             TariffXMLParser tariffXMLParser = new TariffXMLParser();
@@ -95,17 +112,17 @@ public class ControllerServlet extends HttpServlet {
             LOGGER.debug("tariffs list size is " + tariffs.size());
             req.setAttribute("tariffs", tariffs);
         } catch (ValidateException e) {
-            e.printStackTrace();
-            LOGGER.error(VALIDATION_ERROR + e.getMessage());
-            req.setAttribute("errorMessage", VALIDATION_ERROR);
+            error = VALIDATION_ERROR + e.getMessage();
+            LOGGER.error(error);
+            req.setAttribute("errorMessage", error);
         } catch (BuilderException e) {
-            e.printStackTrace();
-            LOGGER.error(BUILDING_ERROR + e.getMessage());
-            req.setAttribute("errorMessage", BUILDING_ERROR);
+            error = BUILDING_ERROR + e.getMessage();
+            LOGGER.error(error);
+            req.setAttribute("errorMessage", error);
         } catch (ServiceException e) {
-            e.printStackTrace();
-            LOGGER.error(PARSING_ERROR + e.getMessage());
-            req.setAttribute("errorMessage", PARSING_ERROR);
+            error = PARSING_ERROR + e.getMessage();
+            LOGGER.error(error);
+            req.setAttribute("errorMessage", error);
         }
 
         RequestDispatcher dispatcher = req.getRequestDispatcher("/index.jsp");

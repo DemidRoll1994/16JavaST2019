@@ -24,6 +24,7 @@ import java.util.Objects;
 public class InternetPrices
         extends Prices {
 
+    protected Map<String, Double> map=null;
     protected double overspendingFeeValueForMb;
 
     /**
@@ -54,7 +55,7 @@ public class InternetPrices
     }
 
     @Override
-    Map<String, Double> getMap() {
+    public Map<String, Double> getMap() {
         HashMap<String, Double> hashMap = new HashMap<>();
         hashMap.put("overspendingFeeValueForMb", overspendingFeeValueForMb);
         return hashMap;

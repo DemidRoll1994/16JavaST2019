@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="debug">
+<Configuration status="info">
     <Properties>
         <Property name="basePath">logs</Property>
     </Properties>
@@ -19,11 +19,11 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="by.samtsov.webxml.controller.servlet" level="debug"
+        <Logger name="by.samtsov.webxml.controller.servlet" level="info"
                 additivity="true">
-            <appender-ref ref="fileLogger" level="ERROR" />
+            <appender-ref ref="fileLogger" level="info" />
         </Logger>
-        <Root level="debug">
+        <Root level="error">
             <appender-ref ref="console"/>
         </Root>
     </Loggers>

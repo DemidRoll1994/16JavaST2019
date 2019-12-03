@@ -23,9 +23,9 @@ import java.util.Objects;
  * &lt;/complexType>
  * </pre>
  */
-public class CallPrices
-        extends Prices {
+public class CallPrices        extends Prices {
 
+    protected Map<String, Double> map;
     protected double inner;
     protected double outer;
     protected double linear;
@@ -100,7 +100,7 @@ public class CallPrices
     }
 
     @Override
-    Map<String, Double> getMap() {
+    public Map<String, Double> getMap() {
         HashMap<String, Double> hashMap = new HashMap<>();
         hashMap.put("inner",inner);
         hashMap.put("outer",outer);

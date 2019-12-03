@@ -18,6 +18,5 @@ import java.util.Map;
  */
 public abstract class Prices {
 
-
-    abstract Map<String, Double> getMap();
+ abstract Map<String, Double> getMap();
 }

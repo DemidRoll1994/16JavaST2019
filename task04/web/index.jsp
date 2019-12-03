@@ -50,55 +50,53 @@
             </tr>
             <c:forEach items="${tariffs}" var="tariff">
                 <tr>
-                    <td>${tariff.Id}</td>
+                    <td>${tariff.id}</td>
                     <td>${tariff.name}</td>
                     <td>${tariff.operator}</td>
                     <td>${tariff.payroll}</td>
-                    <td>${tariff.CreationTariffDay}</td>
-                    <td>${tariff.getSmsPrice}</td>
+                    <td>${tariff.creationTariffDay}</td>
+                    <td>${tariff.smsPrice}</td>
 
                     <td>
-                        <table>
+                        <table class="data" border="1">
 
-                            <c:forEach items="${tariffs.prices}" var="prices">
-                                <tr>
-                                    <c:forEach items="${prices.map}"
-                                               var="pricesMap">
+                            <c:forEach items="${tariff.prices}" var="prices">
+
+                                <c:forEach items="${prices.map}"
+                                           var="pricesMap">
+                                    <tr>
                                         <td>
                                             <c:out value="${pricesMap.key}"/>
                                         </td>
                                         <td>
                                             <c:out value="${pricesMap.value}"/>
                                         </td>
-                                    </c:forEach>
-                                </tr>
+                                    </tr>
+                                </c:forEach>
                             </c:forEach>
                         </table>
                     </td>
 
                     <td>
-                        <table>
+                        <table class="data" border="1">
 
-                            <c:forEach items="${tariffs.parameters}"
+                            <c:forEach items="${tariff.parameters}"
                                        var="parameters">
-                                <tr>
-                                    <c:forEach items="${parameters.map}"
-                                               var="paramsMap">
+                                <c:forEach items="${parameters.map}"
+                                           var="paramsMap">
+                                    <tr>
                                         <td>
                                             <c:out value="${paramsMap.key}"/>
                                         </td>
                                         <td>
                                             <c:out value="${paramsMap.value}"/>
                                         </td>
-                                    </c:forEach>
-                                </tr>
+                                    </tr>
+                                </c:forEach>
                             </c:forEach>
                         </table>
                     </td>
 
-
-                    <td>${tariff.prices}</td>
-                    <td>${tariff.parameters}</td>
                 </tr>
             </c:forEach>
 

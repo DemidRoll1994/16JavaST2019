@@ -107,7 +107,7 @@ public class VoiceParameters extends Parameters {
     }
 
     @Override
-    Map<String, Object> getMap() {
+    public Map<String, Object> getMap() {
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("favoriteNumberCount", favoriteNumberCount);
         hashMap.put("billingInSec", billingInSec);
