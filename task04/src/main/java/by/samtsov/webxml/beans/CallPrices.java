@@ -1,5 +1,9 @@
 package by.samtsov.webxml.beans;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
 /**
  * <p>Java class for CallPrices complex type.
  *
@@ -19,9 +23,9 @@ package by.samtsov.webxml.beans;
  * &lt;/complexType>
  * </pre>
  */
-public class CallPrices
-        extends Price {
+public class CallPrices        extends Prices {
 
+    protected Map<String, Double> map;
     protected double inner;
     protected double outer;
     protected double linear;
@@ -78,6 +82,30 @@ public class CallPrices
      */
     public void setLinear(double newValue) {
         this.linear = newValue;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CallPrices)) return false;
+        CallPrices that = (CallPrices) o;
+        return Double.compare(that.inner, inner) == 0 &&
+                Double.compare(that.outer, outer) == 0 &&
+                Double.compare(that.linear, linear) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(inner, outer, linear);
+    }
+
+    @Override
+    public Map<String, Double> getMap() {
+        HashMap<String, Double> hashMap = new HashMap<>();
+        hashMap.put("inner",inner);
+        hashMap.put("outer",outer);
+        hashMap.put("linear",linear);
+        return hashMap;
     }
 
 }

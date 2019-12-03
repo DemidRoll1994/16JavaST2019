@@ -1,5 +1,9 @@
 package by.samtsov.webxml.beans;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
 /**
  * <p>Java class for InternetPrices complex type.
  *
@@ -18,8 +22,9 @@ package by.samtsov.webxml.beans;
  * </pre>
  */
 public class InternetPrices
-        extends Price {
+        extends Prices {
 
+    protected Map<String, Double> map=null;
     protected double overspendingFeeValueForMb;
 
     /**
@@ -36,4 +41,23 @@ public class InternetPrices
         this.overspendingFeeValueForMb = value;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof InternetPrices)) return false;
+        InternetPrices that = (InternetPrices) o;
+        return Double.compare(that.overspendingFeeValueForMb, overspendingFeeValueForMb) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(overspendingFeeValueForMb);
+    }
+
+    @Override
+    public Map<String, Double> getMap() {
+        HashMap<String, Double> hashMap = new HashMap<>();
+        hashMap.put("overspendingFeeValueForMb", overspendingFeeValueForMb);
+        return hashMap;
+    }
 }

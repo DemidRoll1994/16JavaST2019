@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://www.example.com/tariffs"
+        xmlns:xsi="http://www.example.com/tariffs"
+        elementFormDefault="qualified">
+
+
+    <element name="tariffs">
+        <complexType>
+            <sequence>
+                <element ref="xsi:tariff"
+                         minOccurs="0"
+                         maxOccurs="unbounded"/>
+            </sequence>
+        </complexType>
+    </element>
+
+    <!-- Tariffs hierarchy-->
+
+    <element name="tariff">
+        <complexType>
+            <all>
+                <element name="operator" default="A1">
+                    <simpleType>
+                        <restriction base="string">
+                            <enumeration value="A1"/>
+                            <enumeration value="MTC"/>
+                            <enumeration value="Life"/>
+                        </restriction>
+                    </simpleType>
+                </element>
+                <element type="xsi:price" name="payroll"/>
+                <element name="prices">
+                    <complexType>
+                        <sequence>
+                            <element ref="xsi:prices" maxOccurs="unbounded"/>
+                        </sequence>
+                    </complexType>
+                </element>
+                <element type="xsi:price" name="smsPrices"/>
+                <element name="parameters">
+                    <complexType>
+                        <sequence>
+                            <element ref="xsi:parameters" maxOccurs="unbounded"/>
+                        </sequence>
+                    </complexType>
+                </element>
+                <element type="date" name="creationTariffDay"/>
+            </all>
+            <attribute type="string" name="name" use="required"/>
+            <attribute name="id" use="required">
+                <simpleType>
+                    <restriction base="ID">
+                        <pattern value="(tariff)[1-9][\d]{0,5}"/>
+                    </restriction>
+                </simpleType>
+            </attribute>
+        </complexType>
+    </element>
+
+
+    <!-- Tariff parameters hierarchy-->
+
+    <element name="parameters" type="xsi:Parameters" abstract="true"/>
+    <element name="voiceParameters"
+             type="xsi:VoiceParameters"
+             substitutionGroup="xsi:parameters"/>
+    <element name="internetParameters"
+             type="xsi:InternetParameters"
+             substitutionGroup="xsi:parameters"/>
+
+
+    <complexType name="Parameters"/>
+
+    <complexType name="VoiceParameters">
+        <complexContent>
+            <extension base="xsi:Parameters">
+                <all>
+                    <element type="nonNegativeInteger"
+                             name="favoriteNumberCount"/>
+                    <element type="nonNegativeInteger" name="billingInSec"
+                             default="60"/>
+                    <element type="double" name="prepayment"/>
+                </all>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <complexType name="InternetParameters">
+        <complexContent>
+            <extension base="xsi:Parameters">
+                <all>
+                    <element type="nonNegativeInteger" name="includedTraffic"/>
+                    <element type="decimal" name="billingInMB"/>
+                    <element type="xsi:price" name="prepayment"/>
+                </all>
+            </extension>
+        </complexContent>
+    </complexType>
+
+
+    <!-- Tariff prices hierarchy-->
+
+    <element name="prices" type="xsi:Prices" abstract="true"/>
+    <element name="callPrices"
+             type="xsi:CallPrices"
+             substitutionGroup="xsi:prices"/>
+    <element name="internetPrices"
+             type="xsi:InternetPrices"
+             substitutionGroup="xsi:prices"/>
+
+
+    <complexType name="Prices"/>
+
+    <complexType name="CallPrices">
+        <complexContent>
+            <extension base="xsi:Prices">
+                <all>
+                    <element type="xsi:price" name="inner"/>
+                    <element type="xsi:price" name="outer"/>
+                    <element type="xsi:price" name="linear"/>
+                </all>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <complexType name="InternetPrices">
+        <complexContent>
+            <extension base="xsi:Prices">
+                <all>
+                    <element type="double" name="overspendingFeeValueForMb"/>
+                </all>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <!-- simpleTypes definition -->
+
+    <simpleType name="price">
+        <restriction base="decimal">
+            <pattern value="[0-9]*([.][0-9]{2,4})?"/>
+        </restriction>
+    </simpleType>
+
+
+</schema>

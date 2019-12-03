@@ -1,7 +1,8 @@
 package by.samtsov.webxml.beans;
 
-import java.math.BigInteger;
-
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * <p>Java class for VoiceParameters complex type.
@@ -22,7 +23,7 @@ import java.math.BigInteger;
  * &lt;/complexType>
  * </pre>
  */
-public class VoiceParameters extends Parameter {
+public class VoiceParameters extends Parameters {
     /**
      * number of favorite numbers with special prices
      */
@@ -90,4 +91,27 @@ public class VoiceParameters extends Parameter {
         this.prepayment = value;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof VoiceParameters)) return false;
+        VoiceParameters that = (VoiceParameters) o;
+        return favoriteNumberCount == that.favoriteNumberCount &&
+                billingInSec == that.billingInSec &&
+                Double.compare(that.prepayment, prepayment) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(favoriteNumberCount, billingInSec, prepayment);
+    }
+
+    @Override
+    public Map<String, Object> getMap() {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("favoriteNumberCount", favoriteNumberCount);
+        hashMap.put("billingInSec", billingInSec);
+        hashMap.put("prepayment", prepayment);
+        return hashMap;
+    }
 }

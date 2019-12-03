@@ -3,8 +3,8 @@ package by.samtsov.webxml.beans;
 import by.samtsov.webxml.beans.enums.Operator;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -69,35 +69,35 @@ public class Tariff {
     /**
      * operator name. stored in enum Operator.
      */
-    protected Operator operator;
+    private Operator operator;
     /**
      * tariff subscription fee.
      */
-    protected double payroll;
+    private double payroll;
     /**
      * prices for using some functions (calls,internet, etc.).
      */
-    protected List<Price> prices;
+    private List<Prices> prices;
     /**
      * sms price using.
      */
-    protected double smsPrice;
+    private double smsPrice;
     /**
      * other parameters of tariff as a billing, included traffic and other.
      */
-    protected List<Parameter> parameters;
+    private List<Parameters> parameters;
     /**
      * date of tariff creation.
      */
-    protected LocalDate creationTariffDay;
+    private LocalDate creationTariffDay;
     /**
      * tariff name.
      */
-    protected String name;
+    private String name;
     /**
      * tariff id.
      */
-    protected String id;
+    private String id;
 
     /**
      * Gets operator name.
@@ -140,7 +140,7 @@ public class Tariff {
      *
      * @return List of Prices
      */
-    public List<Price> getPrices() {
+    public List<Prices> getPrices() {
         return prices;
     }
 
@@ -149,7 +149,7 @@ public class Tariff {
      *
      * @param newPrices list of prices
      */
-    public void setPrices(List<Price> newPrices) {
+    public void setPrices(List<Prices> newPrices) {
         prices = newPrices;
     }
 
@@ -176,7 +176,7 @@ public class Tariff {
      *
      * @return list of parameters
      */
-    public List<Parameter> getParameters() {
+    public List<Parameters> getParameters() {
         return parameters;
     }
 
@@ -185,7 +185,7 @@ public class Tariff {
      *
      * @param newParameters list of new parameters
      */
-    public void setParameters(List<Parameter> newParameters) {
+    public void setParameters(List<Parameters> newParameters) {
         this.parameters = newParameters;
     }
 
@@ -243,4 +243,45 @@ public class Tariff {
         this.id = newId;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Tariff)) return false;
+        Tariff tariff = (Tariff) o;
+        if (Objects.equals(id, tariff.id) &&
+                Double.compare(tariff.payroll, payroll) == 0 &&
+                Double.compare(tariff.smsPrice, smsPrice) == 0 &&
+                operator == tariff.operator &&
+                creationTariffDay.equals(tariff.creationTariffDay) &&
+                Objects.equals(name, tariff.name)) {
+            if (prices != null && tariff.getPrices() != null && tariff.getPrices().size() == prices.size()) {
+                for (int i = 0; i < prices.size(); i++) {
+                    if (!prices.get(i).equals(tariff.getPrices().get(i))) {
+                        return false;
+                    }
+                }
+            } else {
+                return false;
+            }
+            if (parameters != null && tariff.getParameters() != null
+                    && tariff.getParameters().size() == parameters.size()) {
+                for (int i = 0; i < parameters.size(); i++) {
+                    if (!parameters.get(i).equals(tariff.getParameters().get(i))) {
+                        return false;
+                    }
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(operator, payroll, prices, smsPrice, parameters, creationTariffDay, name, id);
+    }
 }
