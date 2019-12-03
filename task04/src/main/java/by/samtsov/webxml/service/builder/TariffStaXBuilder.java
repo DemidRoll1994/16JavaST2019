@@ -5,6 +5,6 @@ import by.samtsov.webxml.service.exception.BuilderException;
 public class TariffStaXBuilder extends Builder {
     @Override
     public void buildTariffs(String filename) throws BuilderException {
-        //todo
+        throw new BuilderException("this method is unsupported yet");
     }
 }

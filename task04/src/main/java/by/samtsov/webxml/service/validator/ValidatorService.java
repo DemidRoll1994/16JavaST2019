@@ -16,7 +16,7 @@ import java.io.IOException;
 
 public class ValidatorService {
 
-    private static final String SCHEMA_NAME = "WEB-INF/classes/data/tariffs.xsd"; // todo что за путь???
+    private static final String SCHEMA_NAME = "WEB-INF/classes/data/tariffs.xsd";
 
     private static final Logger LOGGER = LogManager.getLogger(
             ValidatorService.class);
@@ -49,7 +49,7 @@ public class ValidatorService {
             validator.validate(source);
             return true;
         } catch (SAXException | IOException e) {
-            return false; // todo
+            return false;
         }
     }
 }

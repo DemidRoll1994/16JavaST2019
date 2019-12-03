@@ -152,7 +152,7 @@ public class TariffDOMBuilder extends Builder {
         }
     }
 
-    private Tariff buildTariff(final Element element) throws BuilderException {
+    private Tariff buildTariff(final Element element)  {
         Tariff tariff = new Tariff();
         String id = element.getAttribute(TariffsXMLTags.ID.getValue());
         tariff.setId(id);
@@ -182,128 +182,5 @@ public class TariffDOMBuilder extends Builder {
         return tariff;
     }
 
-
-    /**
-     * method is under construction todo
-     *
-     * @param element
-     * @param elementName
-     * @return
-     */
-    private static String getChildElement(Element element, String elementName) {
-        NodeList nList = element.getElementsByTagName(elementName);
-        Node node = nList.item(0);
-        String text = node.getTextContent();
-        return text;
-    }
-
-    /*private List<Prices> getPrices(Element element) throws BuilderException {
-        List<Prices> prices = new ArrayList<>();
-        NodeList nodeList = element.getChildNodes();
-        for (int i = 0; i < nodeList.getLength(); i++) {
-            if (nodeList.item(i).getNodeType() != Node.ELEMENT_NODE) {
-                continue;
-            }
-            Element currentPriceElement = (Element) nodeList.item(i);
-            Prices price;
-            if (TariffsXMLTags.valueOf(element.getTagName().toUpperCase()) ==
-                    TariffsXMLTags.CALLPRICES) {
-                price = buildCallPrice(currentPriceElement);
-            } else if (TariffsXMLTags.valueOf(element.getTagName()
-                    .toUpperCase()) == TariffsXMLTags.INTERNETPRICES) {
-                price = buildInternetPrice(currentPriceElement);
-            } else {
-                throw new BuilderException("Unexpected Price in node " +
-                        nodeList.item(i).toString());
-            }
-            prices.add(price);
-        }
-        return prices;
-    }
-
-    private List<Parameters> getParameters(Element element) throws BuilderException {
-        List<Parameters> parameters = new ArrayList<>();
-        NodeList nodeList = element.getChildNodes();
-        for (int i = 0; i < nodeList.getLength(); i++) {
-            if (nodeList.item(i).getNodeType() != Node.ELEMENT_NODE) {
-                continue;
-            }
-            Element currentParameterElement = (Element) nodeList.item(i);
-            Parameters parameter;
-            if (TariffsXMLTags.valueOf(element.getTagName().toUpperCase()) ==
-                    TariffsXMLTags.CALLPRICES) {
-                parameter = buildVoiceParameters(currentParameterElement);
-            } else if (TariffsXMLTags.valueOf(element.getTagName()
-                    .toUpperCase()) == TariffsXMLTags.INTERNETPRICES) {
-                parameter = buildInternetParameters(currentParameterElement);
-            } else {
-                throw new BuilderException("Unexpected Price in node " +
-                        nodeList.item(i).toString());
-            }
-            parameters.add(parameter);
-        }
-        return parameters;
-    }
-*/
-    private Prices buildCallPrice(Element element) {
-        CallPrices price = new CallPrices();
-        price.setInner(
-                Double.parseDouble(
-                        getElementTextContent(
-                                element, TariffsXMLTags.INNER.getValue())));
-        price.setOuter(
-                Double.parseDouble(
-                        getElementTextContent(
-                                element, TariffsXMLTags.OUTER.getValue())));
-        price.setLinear(
-                Double.parseDouble(
-                        getElementTextContent(
-                                element, TariffsXMLTags.LINEAR.getValue())));
-        return price;
-    }
-
-    private Prices buildInternetPrice(Element element) {
-        InternetPrices price = new InternetPrices();
-        price.setOverspendingFeeValueForMb(
-                Double.parseDouble(
-                        getElementTextContent(element,
-                                TariffsXMLTags.OVERSPENDINGFEEVALUEFORMB
-                                        .getValue())));
-        return price;
-    }
-
-    private Parameters buildVoiceParameters(Element element) {
-        VoiceParameters parameters = new VoiceParameters();
-        parameters.setBillingInSec(
-                Integer.parseInt(
-                        getElementTextContent(element,
-                                TariffsXMLTags.BILLINGINSEC.getValue())));
-        parameters.setFavoriteNumberCount(
-                Integer.parseInt(
-                        getElementTextContent(element,
-                                TariffsXMLTags.FAVORITENUBERCOUNT.getValue())));
-        parameters.setPrepayment(
-                Double.parseDouble(
-                        getElementTextContent(element,
-                                TariffsXMLTags.PREPAYMENT.getValue())));
-        return parameters;
-    }
-
-    private Parameters buildInternetParameters(Element element) {
-        InternetParameters parameters = new InternetParameters();
-        parameters.setBillingInMB(
-                Double.parseDouble(
-                        getElementTextContent(element,
-                                TariffsXMLTags.BILLINGINMB.getValue())));
-        parameters.setIncludedTraffic(
-                Integer.parseInt(
-                        getElementTextContent(element,
-                                TariffsXMLTags.INCLUDEDTRAFFIC.getValue())));
-        parameters.setPrepayment(
-                Double.parseDouble(
-                        getElementTextContent(element,
-                                TariffsXMLTags.PREPAYMENT.getValue())));
-        return parameters;
-    }
 
 }
