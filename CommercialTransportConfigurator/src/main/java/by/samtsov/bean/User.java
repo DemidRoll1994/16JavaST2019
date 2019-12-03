@@ -4,12 +4,12 @@ import by.samtsov.bean.enums.Role;
 import by.samtsov.bean.enums.UserStatus;
 
 public class User {
-    private int id;
-    private String login;
-    private String passwordHash;
-    private String salt;
-    private UserStatus status;
-    private Role role;
+    private int id; //not null
+    private String login; //not null
+    private String passwordHash; //not null
+    private String salt; //not null
+    private UserStatus status; //not null
+    private Role role; //not null
     private String companyName;
     private long phoneNumber = -1;
     private String address;
