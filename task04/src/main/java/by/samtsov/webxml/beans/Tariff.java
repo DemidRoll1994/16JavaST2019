@@ -69,35 +69,35 @@ public class Tariff {
     /**
      * operator name. stored in enum Operator.
      */
-    protected Operator operator;
+    private Operator operator;
     /**
      * tariff subscription fee.
      */
-    protected double payroll;
+    private double payroll;
     /**
      * prices for using some functions (calls,internet, etc.).
      */
-    protected List<Prices> prices;
+    private List<Prices> prices;
     /**
      * sms price using.
      */
-    protected double smsPrice;
+    private double smsPrice;
     /**
      * other parameters of tariff as a billing, included traffic and other.
      */
-    protected List<Parameters> parameters;
+    private List<Parameters> parameters;
     /**
      * date of tariff creation.
      */
-    protected LocalDate creationTariffDay;
+    private LocalDate creationTariffDay;
     /**
      * tariff name.
      */
-    protected String name;
+    private String name;
     /**
      * tariff id.
      */
-    protected String id;
+    private String id;
 
     /**
      * Gets operator name.
@@ -248,14 +248,36 @@ public class Tariff {
         if (this == o) return true;
         if (!(o instanceof Tariff)) return false;
         Tariff tariff = (Tariff) o;
-        return Double.compare(tariff.payroll, payroll) == 0 &&
+        if (Objects.equals(id, tariff.id) &&
+                Double.compare(tariff.payroll, payroll) == 0 &&
                 Double.compare(tariff.smsPrice, smsPrice) == 0 &&
                 operator == tariff.operator &&
-                Objects.equals(prices, tariff.prices) &&
-                Objects.equals(parameters, tariff.parameters) &&
-                creationTariffDay.equals( tariff.creationTariffDay) &&
-                Objects.equals(name, tariff.name) &&
-                Objects.equals(id, tariff.id);
+                creationTariffDay.equals(tariff.creationTariffDay) &&
+                Objects.equals(name, tariff.name)) {
+            if (prices != null && tariff.getPrices() != null && tariff.getPrices().size() == prices.size()) {
+                for (int i = 0; i < prices.size(); i++) {
+                    if (!prices.get(i).equals(tariff.getPrices().get(i))) {
+                        return false;
+                    }
+                }
+            } else {
+                return false;
+            }
+            if (parameters != null && tariff.getParameters() != null
+                    && tariff.getParameters().size() == parameters.size()) {
+                for (int i = 0; i < parameters.size(); i++) {
+                    if (!parameters.get(i).equals(tariff.getParameters().get(i))) {
+                        return false;
+                    }
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+        return true;
     }
 
     @Override

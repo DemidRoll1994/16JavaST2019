@@ -66,7 +66,10 @@ public class TariffDOMBuilderTest {
         callPrices2.setOuter(0.1);
         callPrices2.setInner(0);
         List<Prices> prices2 = new ArrayList<>();
+        InternetPrices internetPrices = new InternetPrices();
+        internetPrices.setOverspendingFeeValueForMb(0.01);
         prices2.add(callPrices2);
+        prices2.add(internetPrices);
         tariff2.setPrices(prices2);
 
         tariffs.add(tariff2);
@@ -77,7 +80,7 @@ public class TariffDOMBuilderTest {
         TariffDOMBuilder tariffDOMBuilder = new TariffDOMBuilder();
         tariffDOMBuilder.buildTariffs(XML_PATH);
         List<Tariff> tariffs1 = tariffDOMBuilder.getTariffs();
-        Assert.assertTrue(tariffs1.get(0).getId().equals(tariffs.get(0).getId())
+/*        Assert.assertTrue(tariffs1.get(0).getId().equals(tariffs.get(0).getId())
                 && tariffs1.get(0).getCreationTariffDay().equals(tariffs.get(0).getCreationTariffDay())
                 && tariffs1.get(0).getName().equals(tariffs.get(0).getName())
                 && tariffs1.get(0).getOperator().equals(tariffs.get(0).getOperator())
@@ -85,5 +88,8 @@ public class TariffDOMBuilderTest {
                 && tariffs1.get(0).getPayroll() == tariffs.get(0).getPayroll()
                 && tariffs1.get(0).getPrices().equals(tariffs.get(0).getPrices())
                 && tariffs1.get(0).getSmsPrice() == tariffs.get(0).getSmsPrice());
+  */
+        Boolean b = tariffs1.equals(tariffs);
+        Assert.assertTrue(tariffs1.equals(tariffs));
     }
 }

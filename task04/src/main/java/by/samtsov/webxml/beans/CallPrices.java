@@ -1,5 +1,7 @@
 package by.samtsov.webxml.beans;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -96,4 +98,14 @@ public class CallPrices
     public int hashCode() {
         return Objects.hash(inner, outer, linear);
     }
+
+    @Override
+    Map<String, Double> getMap() {
+        HashMap<String, Double> hashMap = new HashMap<>();
+        hashMap.put("inner",inner);
+        hashMap.put("outer",outer);
+        hashMap.put("linear",linear);
+        return hashMap;
+    }
+
 }

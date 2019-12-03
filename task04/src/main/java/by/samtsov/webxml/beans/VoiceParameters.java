@@ -1,5 +1,7 @@
 package by.samtsov.webxml.beans;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -102,5 +104,14 @@ public class VoiceParameters extends Parameters {
     @Override
     public int hashCode() {
         return Objects.hash(favoriteNumberCount, billingInSec, prepayment);
+    }
+
+    @Override
+    Map<String, Object> getMap() {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("favoriteNumberCount", favoriteNumberCount);
+        hashMap.put("billingInSec", billingInSec);
+        hashMap.put("prepayment", prepayment);
+        return hashMap;
     }
 }

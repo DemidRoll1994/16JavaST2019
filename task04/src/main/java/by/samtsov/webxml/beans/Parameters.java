@@ -1,5 +1,7 @@
 package by.samtsov.webxml.beans;
 
+import java.util.Map;
+
 /**
  * <p>Java class for Parameters complex type.
  *
@@ -17,4 +19,5 @@ package by.samtsov.webxml.beans;
 public abstract class Parameters {
 
 
+    abstract Map<String, Object> getMap();
 }

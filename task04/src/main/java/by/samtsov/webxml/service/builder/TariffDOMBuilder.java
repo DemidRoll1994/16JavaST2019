@@ -56,27 +56,70 @@ public class TariffDOMBuilder extends Builder {
     private static List<Prices> getPrices(Element priceElement) {
         List<Prices> pricesList = new ArrayList<>();
 
-        CallPrices callPrices = new CallPrices();
         Element callPricesElement = getFirstNodeElement(priceElement,
                 TariffsXMLTags.CALLPRICES.getValue());
+
         if (callPricesElement != null) {
+            CallPrices callPrices = new CallPrices();
             callPrices.setInner(Double.parseDouble(getElementTextContent(
                     callPricesElement, TariffsXMLTags.INNER.getValue())));
             callPrices.setOuter(Double.parseDouble(getElementTextContent(
                     callPricesElement, TariffsXMLTags.OUTER.getValue())));
             callPrices.setLinear(Double.parseDouble(getElementTextContent(
                     callPricesElement, TariffsXMLTags.LINEAR.getValue())));
+            pricesList.add(callPrices);
         }
 
-        InternetPrices internetPrices = new InternetPrices();
+
         Element internetPricesElement = getFirstNodeElement(priceElement,
                 TariffsXMLTags.INTERNETPRICES.getValue());
         if (internetPricesElement != null) {
+            InternetPrices internetPrices = new InternetPrices();
             internetPrices.setOverspendingFeeValueForMb(Double.parseDouble(
                     getElementTextContent(internetPricesElement, TariffsXMLTags
                             .OVERSPENDINGFEEVALUEFORMB.getValue())));
+            pricesList.add(internetPrices);
         }
+
         return pricesList;
+    }
+
+    // принимает тариф
+    private static List<Parameters> getParameters(Element paramsElement) {
+        List<Parameters> parametersList = new ArrayList<>();
+
+        Element voiceParametersElement = getFirstNodeElement(paramsElement,
+                TariffsXMLTags.VOICEPARAMETERS.getValue());
+        if (voiceParametersElement != null) {
+            VoiceParameters voiceParameters = new VoiceParameters();
+            voiceParameters.setBillingInSec(Integer.parseInt(
+                    getElementTextContent(voiceParametersElement,
+                            TariffsXMLTags.BILLINGINSEC.getValue())));
+            voiceParameters.setFavoriteNumberCount(Integer.parseInt(
+                    getElementTextContent(voiceParametersElement,
+                            TariffsXMLTags.FAVORITENUBERCOUNT.getValue())));
+            voiceParameters.setPrepayment(Double.parseDouble(
+                    getElementTextContent(voiceParametersElement,
+                            TariffsXMLTags.PREPAYMENT.getValue())));
+            parametersList.add(voiceParameters);
+        }
+        Element internetParametersElement = getFirstNodeElement(paramsElement,
+                TariffsXMLTags.INTERNETPARAMETERS.getValue());
+        if (internetParametersElement != null) {
+            InternetParameters internetParameters = new InternetParameters();
+            internetParameters.setBillingInMB(Double.parseDouble(
+                    getElementTextContent(internetParametersElement,
+                            TariffsXMLTags.BILLINGINMB.getValue())));
+            internetParameters.setIncludedTraffic(Integer.parseInt(
+                    getElementTextContent(internetParametersElement,
+                            TariffsXMLTags.INCLUDEDTRAFFIC.getValue())));
+            internetParameters.setPrepayment(Double.parseDouble(
+                    getElementTextContent(internetParametersElement,
+                            TariffsXMLTags.PREPAYMENT.getValue())));
+            parametersList.add(internetParameters);
+        }
+
+        return parametersList;
     }
 
     private static Element getFirstNodeElement(Element priceElement, String childElementName) {
@@ -88,19 +131,6 @@ public class TariffDOMBuilder extends Builder {
         return null;
     }
 
-    /**
-     * method is under construction todo
-     *
-     * @param element
-     * @param elementName
-     * @return
-     */
-    private static String getChildElement(Element element, String elementName) {
-        NodeList nList = element.getElementsByTagName(elementName);
-        Node node = nList.item(0);
-        String text = node.getTextContent();
-        return text;
-    }
 
     public void buildTariffs(final String filename) throws BuilderException {
         Document document;
@@ -153,41 +183,18 @@ public class TariffDOMBuilder extends Builder {
     }
 
 
-    private static List<Parameters> getParameters(Element priceElement) {
-        List<Parameters> parametersList = new ArrayList<>();
-
-        VoiceParameters voiceParameters = new VoiceParameters();
-        Element voiceParametersElement = getFirstNodeElement(priceElement,
-                TariffsXMLTags.VOICEPARAMETERS.getValue());
-        if (voiceParametersElement != null) {
-            voiceParameters.setBillingInSec(Integer.parseInt(
-                    getElementTextContent(voiceParametersElement,
-                            TariffsXMLTags.BILLINGINSEC.getValue())));
-            voiceParameters.setFavoriteNumberCount(Integer.parseInt(
-                    getElementTextContent(voiceParametersElement,
-                            TariffsXMLTags.FAVORITENUBERCOUNT.getValue())));
-            voiceParameters.setPrepayment(Double.parseDouble(
-                    getElementTextContent(voiceParametersElement,
-                            TariffsXMLTags.PREPAYMENT.getValue())));
-        }
-        parametersList.add(voiceParameters);
-        InternetParameters internetParameters = new InternetParameters();
-        Element internetParametersElement = getFirstNodeElement(priceElement,
-                TariffsXMLTags.INTERNETPARAMETERS.getValue());
-        if (internetParametersElement != null) {
-            internetParameters.setBillingInMB(Double.parseDouble(
-                    getElementTextContent(internetParametersElement,
-                            TariffsXMLTags.BILLINGINMB.getValue())));
-            internetParameters.setIncludedTraffic(Integer.parseInt(
-                    getElementTextContent(internetParametersElement,
-                            TariffsXMLTags.INCLUDEDTRAFFIC.getValue())));
-            internetParameters.setPrepayment(Double.parseDouble(
-                    getElementTextContent(internetParametersElement,
-                            TariffsXMLTags.PREPAYMENT.getValue())));
-        }
-        parametersList.add(internetParameters);
-
-        return parametersList;
+    /**
+     * method is under construction todo
+     *
+     * @param element
+     * @param elementName
+     * @return
+     */
+    private static String getChildElement(Element element, String elementName) {
+        NodeList nList = element.getElementsByTagName(elementName);
+        Node node = nList.item(0);
+        String text = node.getTextContent();
+        return text;
     }
 
     /*private List<Prices> getPrices(Element element) throws BuilderException {

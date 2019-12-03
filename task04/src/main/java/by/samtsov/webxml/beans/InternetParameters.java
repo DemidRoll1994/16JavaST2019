@@ -1,5 +1,7 @@
 package by.samtsov.webxml.beans;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -101,5 +103,15 @@ public class InternetParameters
     @Override
     public int hashCode() {
         return Objects.hash(includedTraffic, billingInMB, prepayment);
+    }
+
+
+    @Override
+    Map<String, Object> getMap() {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("includedTraffic", includedTraffic);
+        hashMap.put("billingInMB", billingInMB);
+        hashMap.put("prepayment", prepayment);
+        return hashMap;
     }
 }

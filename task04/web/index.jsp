@@ -7,21 +7,21 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"
          pageEncoding="utf8" %>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
     XML Parser
 </head>
 <body>
 <form name="parser-chooser" method="post" enctype="multipart/form-data"
-          action="${pageContext.request.contextPath}/ControllerServlet">
+      action="${pageContext.request.contextPath}/ControllerServlet">
 
-        Select xml-parser:
-        <select id="parser" size="1" name="parserName">
-            <option value="DOM">DOM</option>
-            <option value="SAX">SAX</option>
-            <option value="STAX">StAX</option>
-        </select>
+    Select xml-parser:
+    <select id="parser" size="1" name="parserName">
+        <option value="DOM">DOM</option>
+        <option value="SAX">SAX</option>
+        <option value="STAX">StAX</option>
+    </select>
 
     <br/>
 
@@ -56,6 +56,47 @@
                     <td>${tariff.payroll}</td>
                     <td>${tariff.CreationTariffDay}</td>
                     <td>${tariff.getSmsPrice}</td>
+
+                    <td>
+                        <table>
+
+                            <c:forEach items="${tariffs.prices}" var="prices">
+                                <tr>
+                                    <c:forEach items="${prices.map}"
+                                               var="pricesMap">
+                                        <td>
+                                            <c:out value="${pricesMap.key}"/>
+                                        </td>
+                                        <td>
+                                            <c:out value="${pricesMap.value}"/>
+                                        </td>
+                                    </c:forEach>
+                                </tr>
+                            </c:forEach>
+                        </table>
+                    </td>
+
+                    <td>
+                        <table>
+
+                            <c:forEach items="${tariffs.parameters}"
+                                       var="parameters">
+                                <tr>
+                                    <c:forEach items="${parameters.map}"
+                                               var="paramsMap">
+                                        <td>
+                                            <c:out value="${paramsMap.key}"/>
+                                        </td>
+                                        <td>
+                                            <c:out value="${paramsMap.value}"/>
+                                        </td>
+                                    </c:forEach>
+                                </tr>
+                            </c:forEach>
+                        </table>
+                    </td>
+
+
                     <td>${tariff.prices}</td>
                     <td>${tariff.parameters}</td>
                 </tr>
@@ -65,14 +106,7 @@
     </c:if>
 
 
-
-
-
-
-
-
-
-${errorMessage}
+    ${errorMessage}
     <br/>
     ${wrongCommand}
     <br/>
