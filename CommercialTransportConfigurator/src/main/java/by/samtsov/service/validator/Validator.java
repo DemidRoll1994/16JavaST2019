@@ -2,7 +2,7 @@ package by.samtsov.service.validator;
 
 import by.samtsov.bean.exceptions.IncorrectDataException;
 
-public abstract class Validator<T> {
+public interface Validator<T> {
 
-    abstract boolean isValid(T entity) throws IncorrectDataException;
+    boolean isValid(T entity) throws IncorrectDataException;
 }

@@ -10,7 +10,7 @@ public enum UserStatus {
         return ordinal();
     }
 
-    public static Role getByIdentity(Integer identity) {
-        return Role.values()[identity];
+    public static UserStatus getByIdentity(Integer identity) {
+        return UserStatus.values()[identity];
     }
 }

@@ -17,7 +17,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     }
 
     @Override
-    public int add(Configuration configuration) {
+    public int save(Configuration configuration) {
         return 0;
     }
 

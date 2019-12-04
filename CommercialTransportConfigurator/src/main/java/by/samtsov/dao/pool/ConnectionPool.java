@@ -1,5 +1,7 @@
 package by.samtsov.dao.pool;
 
+import by.samtsov.bean.exceptions.PersistentException;
+
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
@@ -22,7 +24,11 @@ public class ConnectionPool {
         ds = (DataSource) initContext.lookup("java:comp/env/jdbc/dbconnect");
     }
 
-    public Connection getConnection() throws SQLException {
-        return ds.getConnection();
+    public Connection getConnection() throws PersistentException {
+        try {
+            return ds.getConnection();
+        } catch (SQLException e) {
+            throw new PersistentException("Can't create connection", e);
+        }
     }
 }

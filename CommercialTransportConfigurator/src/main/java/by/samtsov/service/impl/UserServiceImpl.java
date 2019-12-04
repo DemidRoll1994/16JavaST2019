@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int add(User user) {
+    public int save(User user) {
         try {
             return userDao.add(user);
         } catch (PersistentException e) {

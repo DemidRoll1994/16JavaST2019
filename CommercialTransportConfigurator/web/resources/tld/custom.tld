@@ -8,11 +8,11 @@
     <body-content>empty</body-content>
 </tag>
     <tag>
-    <name>hello</name>
+    <name>ratingtag</name>
     <tag-class>by.samtsov.view.tag.HelloTag</tag-class>
     <body-content>empty</body-content>
     <attribute>
-    <name>role</name>
+    <name>map</name>
         <required>true</required>
         <rtexprvalue>true</rtexprvalue>
     </attribute>
