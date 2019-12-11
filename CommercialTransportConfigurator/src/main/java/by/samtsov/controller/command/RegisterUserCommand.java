@@ -29,7 +29,7 @@ public class RegisterUserCommand extends Command {
             UserService service = ServiceFactory.createService(USER_ENTITY_TYPE);
             if (validator.isValid(user))
             {
-                if (user.getId() !=service.save(user)){
+                if (user.getId() != service.save(user)){
 
                 }
                 forward.getAttributes().put("identity", user.getIdentity());

@@ -7,85 +7,164 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"
          pageEncoding="utf8" %>
-<%@ taglib prefix="ctg" uri="customtags"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="ctg" uri="customtags" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" >
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" ></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" ></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          rel="stylesheet">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     XML Parser
 </head>
 <body>
-<ctg:hello role="${ user }"/>
+<!-- HEADER -->
+<header>
 
-<form name="parser-chooser" method="post" enctype="multipart/form-data"
-          action="${pageContext.request.contextPath}/ControllerServlet">
 
-        Select xml-parser:
-        <select id="parser" size="1" name="parserName">
-            <option value="DOM">DOM</option>
-            <option value="SAX">SAX</option>
-            <option value="STAX">StAX</option>
-        </select>
+    <div class="container fixed-top">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="/index"><span
+                        class="glyphicon glyphicon-cog"
+                        aria-hidden="true"></span> Конфигуратор </a>
+                <button class="navbar-toggler" type="button"
+                        data-toggle="collapse" data-target="#navbarsExample07"
+                        aria-controls="navbarsExample07" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-    <br/>
+                <div class="collapse navbar-collapse" id="navbarsExample07">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/index">Модельный ряд</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/index">Сервисы и допуслуги</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/index">Автомобили в наличии</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/index">Финансовые решения</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle"
+                               href="http://example.com" id="dropdown07"
+                               data-toggle="dropdown" aria-haspopup="true"
+                               aria-expanded="false">Заказ</a>
+                            <div class="dropdown-menu"
+                                 aria-labelledby="dropdown07">
+                                <a class="dropdown-item" href="#">Конфигурация 1</a>
+                                <a class="dropdown-item" href="#">Конфигурация 2</a>
+                                <a class="dropdown-item" href="#">Конфигурация 3</a>
+                            </div>
+                        </li>
+                    </ul>
 
-    <label for="xml-document">Choose a xml-document:</label>
-    <input type="file" id="xml-document" name="path"
-           accept="application/xml">
-    <br/>
 
-    <div style="text-align: left">
-        <input type="submit" value="Send">
+                    <a href="#" class="btn btn-link"
+                       role="button">Регистрация</a>
+
+                    <a href="#" class="btn btn-success" role="button">Войти</a>
+                    </form>
+
+                </div>
+            </div>
+        </nav>
     </div>
-    <br/>
+
+</header>
+<!-- ОСНОВНОЕ СОДЕРЖИМОЕ -->
+<main>
+    <div class="row">
+
+        <div class="col-2"></div>
+        <div class="col-8">
+
+            <div id="carouselIndicators" class="carousel slide"
+                 data-ride="carousel" align="center">
+                <ol class="carousel-indicators">
+                    <li data-target="#carouselIndicators"
+                        data-slide-to="0" class="active"></li>
+                    <li data-target="#carouselIndicators"
+                        data-slide-to="1"></li>
+                    <li data-target="#carouselIndicators"
+                        data-slide-to="2"></li>
+                </ol>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img class="d-block img-fluid"
+                             src="../../resources/img/index-bg-1.jpg"
+                             alt="Первый слайд">
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block img-fluid"
+                             src="../../resources/img/index-bg-2.jpg"
+                             alt="Второй слайд">
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block img-fluid"
+                             src="../../resources/img/index-bg-3.jpg"
+                             alt="Третий слайд">
+                    </div>
+                </div>
+                <a class="carousel-control-prev"
+                   href="#carouselIndicators" role="button"
+                   data-slide="prev">
+                    <span class="carousel-control-prev-icon"
+                          aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next"
+                   href="#carouselIndicators" role="button"
+                   data-slide="next">
+                    <span class="carousel-control-next-icon"
+                          aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+
+            <!--
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a href="#" class="navbar-brand">название меню</a>
+                    </div>
+                    <div>
+                        <ul class ="nav navbar-nav">
+                            <li><a href="#"> войти</a> </li>
+                            <li><a href="#"> выйти</a> </li>
+                            <li><a href="#"> войти и выйти</a> </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            -->
 
 
-    <c:if test="${!empty tariffs}">
-        <table class="data" border="1">
-            <tr>
-                <th>id</th>
-                <th>name</th>
-                <th>operator</th>
-                <th>payroll</th>
-                <th>creationTariffDay</th>
-                <th>smsPrice</th>
-                <th>prices</th>
-                <th>parameters</th>
-            </tr>
-            <c:forEach items="${tariffs}" var="tariff">
-                <tr>
-                    <td>${tariff.Id}</td>
-                    <td>${tariff.name}</td>
-                    <td>${tariff.operator}</td>
-                    <td>${tariff.payroll}</td>
-                    <td>${tariff.CreationTariffDay}</td>
-                    <td>${tariff.getSmsPrice}</td>
-                    <td>${tariff.prices}</td>
-                    <td>${tariff.parameters}</td>
-                </tr>
-            </c:forEach>
-
-        </table>
-    </c:if>
+        </div>
+        <div class="col-2"></div>
+    </div>
 
 
+</main>
+<!-- FOOTER -->
+<footer>
+    <div class="row fixed-bottom">
+        <div class="col-9"></div>
+        <div class="col-3 "><ctg:info-time/></div>
+    </div>
+</footer>
 
 
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 
 
-
-
-
-${errorMessage}
-    <br/>
-    ${wrongCommand}
-    <br/>
-    ${nullPage}
-    <br/>
-</form>
-
-<ctg:info-time />
 </body>
 </html>
