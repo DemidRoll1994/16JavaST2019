@@ -10,12 +10,9 @@ public class Footer extends TagSupport {
     public int doStartTag() throws JspException {
         try {
             JspWriter out = pageContext.getOut();
-            out.write(" <br> ОЛЕГ <br> <br>");
-            out.write(" <br> ОЛЕГ <br> <br>");
-
             out.write( "<!--FOOTER-->  ");
             out.write( "<footer> ");
-            out.write( "<div class=\"row\"> ");
+            out.write( "<div class=\"row navbar-fixed-bottom\"> ");
             out.write( "<div class=\"col-9\"> </div>  ");
             out.write( "<div class=\"col-3\"> Artyom Samtsov, <br> " +
                     "training.by, 2019 </div> ");

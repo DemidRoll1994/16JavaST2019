@@ -3,7 +3,7 @@
 <short-name>ctg</short-name>
 <uri>customtags</uri>
 <tag>
-    <name>info-time</name>
+    <name>footer</name>
     <tag-class>by.samtsov.view.tag.Footer</tag-class>
     <body-content>empty</body-content>
 </tag>

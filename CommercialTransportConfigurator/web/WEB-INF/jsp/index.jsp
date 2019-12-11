@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Артём
-  Date: 31.10.19
-  Time: 19:16
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"
          pageEncoding="utf8" %>
 <%@ taglib prefix="ctg" uri="customtags" %>
@@ -13,19 +6,21 @@
 <head>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           rel="stylesheet">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
-    XML Parser
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/superhero/bootstrap.min.css"
+          rel="stylesheet">
+
 </head>
 <body>
 <!-- HEADER -->
 <header>
 
 
-    <div class="container fixed-top">
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="row">
+        <nav class="fixed-top navbar navbar-expand navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="/index"><span
+                <a class="navbar-brand" href="#"><span
                         class="glyphicon glyphicon-cog"
                         aria-hidden="true"></span> Конфигуратор </a>
                 <button class="navbar-toggler" type="button"
@@ -38,20 +33,20 @@
                 <div class="collapse navbar-collapse" id="navbarsExample07">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="/index">Модельный ряд</a>
+                            <a class="nav-link" href="#">Модельный ряд</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/index">Сервисы и допуслуги</a>
+                            <a class="nav-link" href="#">Сервисы и допуслуги</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/index">Автомобили в наличии</a>
+                            <a class="nav-link" href="#">Автомобили в наличии</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/index">Финансовые решения</a>
+                            <a class="nav-link" href="#">Финансовые решения</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle"
-                               href="http://example.com" id="dropdown07"
+                               href="#" id="dropdown07"
                                data-toggle="dropdown" aria-haspopup="true"
                                aria-expanded="false">Заказ</a>
                             <div class="dropdown-menu"
@@ -96,18 +91,21 @@
                 <div class="carousel-inner">
                     <div class="carousel-item active">
                         <img class="d-block img-fluid"
-                             src="../../resources/img/index-bg-1.jpg"
+                             src="<c:url
+                             value="/resources/img/index-bg-1.jpg"/>"
                              alt="Первый слайд">
                     </div>
                     <div class="carousel-item">
                         <img class="d-block img-fluid"
-                             src="../../resources/img/index-bg-2.jpg"
+                             src="<c:url
+                             value="/resources/img/index-bg-2.jpg"/>"
                              alt="Второй слайд">
                     </div>
                     <div class="carousel-item">
                         <img class="d-block img-fluid"
-                             src="../../resources/img/index-bg-3.jpg"
-                             alt="Третий слайд">
+                             src="<c:url
+                             value="/resources/img/index-bg-3.jpg"/>"
+                             alt="Второй слайд">
                     </div>
                 </div>
                 <a class="carousel-control-prev"
@@ -150,13 +148,7 @@
 
 
 </main>
-<!-- FOOTER -->
-<footer>
-    <div class="row fixed-bottom">
-        <div class="col-9"></div>
-        <div class="col-3 "><ctg:info-time/></div>
-    </div>
-</footer>
+<ctg:footer/>
 
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"
