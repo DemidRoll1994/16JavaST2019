@@ -1,9 +1,8 @@
 package by.samtsov.controller.servlet;
 
+import by.samtsov.bean.exceptions.IncorrectDataException;
 import by.samtsov.bean.exceptions.PersistentException;
 import by.samtsov.controller.command.Command;
-import dao.mysql.TransactionFactoryImpl;
-import dao.pool.ConnectionPool;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -108,6 +107,10 @@ public class DispatcherServlet extends HttpServlet {
                 getServletContext().getRequestDispatcher(jspPage).forward(request, response);
             }
         } catch (PersistentException e) {
+            logger.error("It is impossible to process request" + e.getMessage());
+            request.setAttribute("error", "Ошибка обработки данных");
+            getServletContext().getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
+        } catch (IncorrectDataException e) {
             logger.error("It is impossible to process request" + e.getMessage());
             request.setAttribute("error", "Ошибка обработки данных");
             getServletContext().getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);

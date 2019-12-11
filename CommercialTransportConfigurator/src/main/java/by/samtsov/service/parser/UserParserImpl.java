@@ -21,24 +21,24 @@ public class UserParserImpl implements UserParser {
     private final String ADDRESS_NAME="address";
 
     @Override
-    public User parse(HttpServletRequest request) { //todo
+    public User parse(HttpServletRequest request) throws IncorrectDataException{ //todo
         User user = new User();
         String parameter = request.getParameter(ID_NAME);
         if (parameter != null && !parameter.isEmpty()) {
             try {
                 user.setId(Integer.parseInt(parameter));
             } catch (NumberFormatException e) {
-                throw new IncorrectDataException(ID_NAME, parameter);
+                throw new IncorrectDataException(ID_NAME, e);
             }
         } else {
-            throw new IncorrectDataException(ID_NAME, parameter);
+            throw new IncorrectDataException(ID_NAME);
         }
 
         parameter = request.getParameter(LOGIN_NAME);
         if (parameter != null && !parameter.isEmpty()) {
             user.setLogin(parameter);
         } else {
-            throw new IncorrectDataException(LOGIN_NAME, parameter);
+            throw new IncorrectDataException(LOGIN_NAME);
         }
 
         parameter = request.getParameter(ROLE_NAME);
@@ -46,10 +46,10 @@ public class UserParserImpl implements UserParser {
             try {
                 user.setRole(Role.getByIdentity(Integer.parseInt(parameter)));
             } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-                throw new IncorrectDataException(ROLE_NAME, parameter);
+                throw new IncorrectDataException(ROLE_NAME, e);
             }
         } else {
-            throw new IncorrectDataException(ROLE_NAME, parameter);
+            throw new IncorrectDataException(ROLE_NAME);
         }
 
         parameter = request.getParameter(STATUS_NAME);
@@ -57,10 +57,10 @@ public class UserParserImpl implements UserParser {
             if (parameter != null && !parameter.isEmpty()) {
                 user.setStatus(UserStatus.getByIdentity(Integer.parseInt(parameter)));
             } else {
-                throw new IncorrectDataException(STATUS_NAME, parameter);
+                throw new IncorrectDataException(STATUS_NAME);
             }
         } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-            throw new IncorrectDataException(STATUS_NAME, parameter);
+            throw new IncorrectDataException(STATUS_NAME, e);
         }
 
         parameter = request.getParameter(COMPANY_NAME);
@@ -72,7 +72,7 @@ public class UserParserImpl implements UserParser {
                 user.setPhoneNumber(Long.parseLong(parameter));
             }
         } catch (NumberFormatException e) {
-            throw new IncorrectDataException(PHONE_NAME, parameter);
+            throw new IncorrectDataException(PHONE_NAME, e);
         }
 
         parameter = request.getParameter(ADDRESS_NAME);
@@ -81,7 +81,7 @@ public class UserParserImpl implements UserParser {
                 user.setPhoneNumber(Long.parseLong(parameter));
             }
         } catch (NumberFormatException e) {
-            throw new IncorrectDataException(ADDRESS_NAME, parameter);
+            throw new IncorrectDataException(ADDRESS_NAME, e);
         }
         return user;
     }

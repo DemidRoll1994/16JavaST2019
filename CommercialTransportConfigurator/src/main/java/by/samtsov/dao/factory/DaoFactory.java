@@ -9,7 +9,7 @@ import by.samtsov.dao.impl.UserDaoImpl;
 
 public class DaoFactory {
     public static <Type extends Dao<?>> Type createDao(EntityType entityType) {
-            switch (entityType) {
+            /*switch (entityType) { todo create daos
                 case USER:
                     UserDaoImpl userDao = new UserDaoImpl();
                     return (Type) userDao;
@@ -28,7 +28,7 @@ public class DaoFactory {
                 case CONFIGURATION:
                     ConfigurationDaoImpl configurationDao = new ConfigurationDaoImpl();
                     return (Type) configurationDao;
-            }
+            }*/
             return null;
         }
     }
