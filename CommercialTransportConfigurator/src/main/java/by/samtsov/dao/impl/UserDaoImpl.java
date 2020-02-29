@@ -1,6 +1,6 @@
 package by.samtsov.dao.impl;
 
-import by.samtsov.bean.User;
+import by.samtsov.bean.entity.User;
 import by.samtsov.bean.enums.Role;
 import by.samtsov.bean.enums.UserStatus;
 import by.samtsov.bean.exceptions.PersistentException;

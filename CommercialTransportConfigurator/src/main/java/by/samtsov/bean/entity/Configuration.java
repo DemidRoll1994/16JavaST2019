@@ -1,14 +1,12 @@
-package by.samtsov.bean;
-
-import by.samtsov.bean.enums.OptionType;
+package by.samtsov.bean.entity;
 
 import java.util.List;
 
-public class Option {
+public class Configuration {
     int id;
-    String name;
-    OptionType type;
+    Model model;
     List<OptionValue> optionValues;
+    double price;
 
     public int getId() {
         return id;
@@ -18,20 +16,12 @@ public class Option {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Model getModel() {
+        return model;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public OptionType getType() {
-        return type;
-    }
-
-    public void setType(OptionType type) {
-        this.type = type;
+    public void setModel(Model model) {
+        this.model = model;
     }
 
     public List<OptionValue> getOptionValues() {
@@ -40,5 +30,13 @@ public class Option {
 
     public void setOptionValues(List<OptionValue> optionValues) {
         this.optionValues = optionValues;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

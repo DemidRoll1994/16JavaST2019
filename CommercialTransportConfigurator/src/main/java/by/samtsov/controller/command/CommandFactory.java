@@ -1,13 +1,10 @@
 package by.samtsov.controller.command;
 
-import by.samtsov.controller.command.AvailableCommands;
-import by.samtsov.controller.command.Command;
-
 public class CommandFactory {
     public static Command createCommand(AvailableCommands availableCommands) {
         Command command;
         switch (availableCommands) {
-           /* case INDEX:
+            /*case INDEX:
                 command = new IndexCommand();
                 break;
             case LOGIN:
@@ -21,7 +18,7 @@ public class CommandFactory {
                 break;*/
         }
 
-        command = new LoginCommand();
+        command = new IndexCommand();
 
         return command;
     }

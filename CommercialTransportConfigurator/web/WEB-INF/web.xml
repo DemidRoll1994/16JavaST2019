@@ -8,15 +8,24 @@
         <welcome-file>/WEB-INF/jsp/index.jsp</welcome-file>
     </welcome-file-list>
     <servlet>
-        <servlet-name>ControllerServlet</servlet-name>
+        <servlet-name>DispatcherServlet</servlet-name>
         <servlet-class>
-            by.samtsov.controller.servlet.ControllerServlet
+            by.samtsov.controller.servlet.DispatcherServlet
         </servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>ControllerServlet</servlet-name>
-        <url-pattern>/parseXML</url-pattern>
+        <servlet-name>DispatcherServlet</servlet-name>
+        <url-pattern>*.html</url-pattern>
     </servlet-mapping>
+
+    <filter>
+        <filter-name>EncodingFilter</filter-name>
+        <filter-class>by.samtsov.controller.filter.EncodingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>EncodingFilter</filter-name>
+        <url-pattern>*.html</url-pattern>
+    </filter-mapping>
     <filter>
         <filter-name>ActionFromUriFilter</filter-name>
         <filter-class>by.samtsov.controller.filter.ActionFilter</filter-class>
@@ -31,6 +40,11 @@
         <res-type>javax.sql.DataSource</res-type>
         <res-auth>Container</res-auth>
     </resource-ref>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/jsp/error.jsp</location>
+    </error-page>
 
     <jsp-config>
         <taglib>

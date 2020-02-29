@@ -3,7 +3,6 @@ package by.samtsov.controller.filter;
 import by.samtsov.controller.command.AvailableCommands;
 import by.samtsov.controller.command.Command;
 import by.samtsov.controller.command.CommandFactory;
-import by.samtsov.controller.servlet.DispatcherServlet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,7 +13,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ActionFilter implements Filter {
-    private static Logger logger = LogManager.getLogger(DispatcherServlet.class);
+    private static Logger logger = LogManager.getRootLogger();
 
     private static Map<String, AvailableCommands> commands = new ConcurrentHashMap<>();
 
@@ -72,23 +71,27 @@ public class ActionFilter implements Filter {
         if (servletRequest instanceof HttpServletRequest) {
             HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
             String contextPath = httpRequest.getContextPath();
+            logger.debug("context path is: " + contextPath);
             String uri = httpRequest.getRequestURI();
-            String commandShortUri;
+            logger.debug("requested uri is: " + uri);
+            logger.debug("QueryString is: " + httpRequest.getRequestURL());
+            httpRequest.getQueryString();
             int beginAction = contextPath.length();
-            /*int endAction = uri.lastIndexOf('.');
-            if(endAction >= 0) { todo del
-                actionName = uri.substring(beginAction, endAction);
-            } else {*/
-            commandShortUri = uri.substring(beginAction);
-            //todo del}
+            int endAction = uri.lastIndexOf('.');
+            String commandName;
+            if(endAction >= 0) {
+                commandName = uri.substring(beginAction, endAction);
+            } else {
+                commandName = uri.substring(beginAction);
+            }
 
             try {
-                logger.debug("short uri" + commandShortUri + "is selected");
-                Command command = CommandFactory.createCommand(commands.get(commandShortUri));
-                logger.debug("commmand" + commandShortUri + "is created");
-                command.setShortUri(commandShortUri);
+                logger.debug("short uri " + commandName + " is selected");
+                Command command = CommandFactory.createCommand(commands.get(commandName));
+                logger.debug("commmand " + commandName + " is created");
+                command.setName(commandName);
                 httpRequest.setAttribute("command", command);
-                logger.debug("commmand" + commandShortUri + "is set as " +
+                logger.debug("commmand" + command + "is set as " +
                         "attribute for httpRequest");
                 filterChain.doFilter(servletRequest, servletResponse);
             } catch (NullPointerException e) {

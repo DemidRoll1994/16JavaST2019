@@ -1,6 +1,6 @@
 package by.samtsov.dao.impl;
 
-import by.samtsov.bean.OptionValue;
+import by.samtsov.bean.entity.OptionValue;
 import by.samtsov.bean.exceptions.PersistentException;
 import by.samtsov.dao.OptionValueDao;
 
