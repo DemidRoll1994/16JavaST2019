@@ -1,11 +1,9 @@
 package by.samtsov.service.parser;
 
-import by.samtsov.bean.User;
+import by.samtsov.bean.entity.User;
 import by.samtsov.bean.enums.Role;
 import by.samtsov.bean.enums.UserStatus;
 import by.samtsov.bean.exceptions.IncorrectDataException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 

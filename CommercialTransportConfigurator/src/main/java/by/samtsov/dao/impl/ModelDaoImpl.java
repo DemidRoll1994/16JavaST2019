@@ -1,6 +1,6 @@
 package by.samtsov.dao.impl;
 
-import by.samtsov.bean.Model;
+import by.samtsov.bean.entity.Model;
 import by.samtsov.bean.exceptions.PersistentException;
 import by.samtsov.dao.ModelDao;
 

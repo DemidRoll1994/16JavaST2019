@@ -1,0 +1,7 @@
+<Resource name="jdbc/mydatabase" auth="Container"
+          type="javax.sql.DataSource" maxActive="100"
+          maxIdle="30" maxWait="10000"
+          username="vehiclesSalesUser1"
+          password="vehiclesSalesUser1Password"
+          driverClassName="com.mysql.jdbc.Driver"
+          url="jdbc:mysql://localhost:3306/vehiclesSales?useUnicode=true&amp;characterEncoding=UTF-8&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"/>

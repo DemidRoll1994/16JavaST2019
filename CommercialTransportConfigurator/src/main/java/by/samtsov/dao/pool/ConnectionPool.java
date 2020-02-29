@@ -1,7 +1,6 @@
 package by.samtsov.dao.pool;
 
-import by.samtsov.bean.exceptions.PersistentException;
-
+import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
@@ -10,25 +9,31 @@ import java.sql.SQLException;
 
 public class ConnectionPool {
 
-    InitialContext initContext;
-    DataSource ds;
+    private ConnectionPool(){
+        //private constructor
+    }
 
-    private static ConnectionPool instance = new ConnectionPool();
+    private static ConnectionPool instance = null;
 
-    public static ConnectionPool getInstance() {
+    public static ConnectionPool getInstance(){
+        if (instance==null)
+            instance = new ConnectionPool();
         return instance;
     }
 
-    public void init() throws NamingException {
-        initContext = new InitialContext();
-        ds = (DataSource) initContext.lookup("java:comp/env/jdbc/dbconnect");
-    }
-
-    public Connection getConnection() throws PersistentException {
+    public Connection getConnection(){
+        Context ctx;
+        Connection c = null;
         try {
-            return ds.getConnection();
+            ctx = new InitialContext();
+            DataSource ds = (DataSource)ctx.lookup("java:comp/env/jdbc/mydatabase");
+            c = ds.getConnection();
+        } catch (NamingException e) {
+            e.printStackTrace();
         } catch (SQLException e) {
-            throw new PersistentException("Can't create connection", e);
+            e.printStackTrace();
         }
+        return c;
     }
 }
+

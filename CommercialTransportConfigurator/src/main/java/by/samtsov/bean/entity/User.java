@@ -1,4 +1,4 @@
-package by.samtsov.bean;
+package by.samtsov.bean.entity;
 
 import by.samtsov.bean.enums.Role;
 import by.samtsov.bean.enums.UserStatus;

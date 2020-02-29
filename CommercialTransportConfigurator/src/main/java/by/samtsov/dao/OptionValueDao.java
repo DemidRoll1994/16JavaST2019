@@ -1,6 +1,6 @@
 package by.samtsov.dao;
 
-import by.samtsov.bean.OptionValue;
+import by.samtsov.bean.entity.OptionValue;
 
 public interface OptionValueDao extends Dao<OptionValue> {
 }

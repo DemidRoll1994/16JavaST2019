@@ -15,7 +15,7 @@ public class UserPasswordService {
     private final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     /**
      * Number of iteration to generate hash.
-     * Value is no sense.
+     * Value is random.
      * ATTENTION! changing this value will invalidate all hashed passwords
      *      * in database
      */

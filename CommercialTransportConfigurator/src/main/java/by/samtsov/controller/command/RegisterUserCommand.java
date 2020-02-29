@@ -1,5 +1,6 @@
 package by.samtsov.controller.command;
 
+import by.samtsov.bean.ForwardPage;
 import by.samtsov.bean.enums.EntityType;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,8 +11,8 @@ public class RegisterUserCommand extends Command {
     private final EntityType USER_ENTITY_TYPE = EntityType.USER;
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
-        setNextPage("/user/edit.html");
+    public ForwardPage execute(HttpServletRequest request, HttpServletResponse response) {
+//        setNextPage("/user/edit.html");
        /* try {
             UserParser userParser = ParserFactory.createParser(USER_ENTITY_TYPE);
             User user = userParser.parse(request);
@@ -39,6 +40,7 @@ public class RegisterUserCommand extends Command {
             logger.warn(String.format("Incorrect data was found when user \"%s\" tried to save user", getAuthorizedUser().getLogin()), e);
         }
         return forward;*/
+        return null;
     }
 
 

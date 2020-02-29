@@ -1,6 +1,6 @@
 package by.samtsov.service.validator;
 
-import by.samtsov.bean.User;
+import by.samtsov.bean.entity.User;
 import by.samtsov.bean.exceptions.IncorrectDataException;
 
 public class UserValidatorImpl implements UserValidator {

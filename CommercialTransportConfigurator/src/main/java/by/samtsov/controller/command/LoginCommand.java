@@ -1,6 +1,7 @@
 package by.samtsov.controller.command;
 
-import by.samtsov.bean.User;
+import by.samtsov.bean.ForwardPage;
+import by.samtsov.bean.entity.User;
 import by.samtsov.bean.enums.EntityType;
 import by.samtsov.bean.enums.Role;
 import by.samtsov.bean.exceptions.IncorrectDataException;
@@ -12,8 +13,7 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Set;
 
 public class LoginCommand extends Command {
     private static Logger logger = LogManager.getLogger(LoginCommand.class);
@@ -34,20 +34,27 @@ public class LoginCommand extends Command {
         )));
     }*/
 
-    @Override
+    //@Override
     public Set<Role> getAllowRoles() {
         return null;
     }
 
     @Override
-    public void execute(HttpServletRequest request,
-                        HttpServletResponse response)
-            throws PersistentException, IncorrectDataException {
+    public ForwardPage execute(HttpServletRequest request,
+                               HttpServletResponse response)
+            throws PersistentException {
+
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         if (login != null && password != null) {
             UserService service = factory.createService(EntityType.USER);
-            User user = service.findByLoginAndPassword(login, password);
+
+            User user = null;
+            try {
+                user = service.findByLoginAndPassword(login, password);
+            } catch (IncorrectDataException e) {
+                e.printStackTrace();
+            }
             if (user != null) {
                 HttpSession session = request.getSession();
                 session.setAttribute("authorizedUser", user);
@@ -59,5 +66,6 @@ public class LoginCommand extends Command {
             }
         }
         //return ;
+        return null;
     }
 }

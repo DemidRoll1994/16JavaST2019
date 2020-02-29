@@ -1,51 +1,25 @@
 package by.samtsov.controller.command;
 
-import by.samtsov.bean.User;
+import by.samtsov.bean.ForwardPage;
+import by.samtsov.bean.entity.User;
 import by.samtsov.bean.enums.Role;
-import by.samtsov.bean.exceptions.IncorrectDataException;
 import by.samtsov.bean.exceptions.PersistentException;
-import by.samtsov.service.ServiceFactory;
+import by.samtsov.service.mysql.MysqlServiceFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 public abstract class Command {
-    private Set<Role> allowRoles = new HashSet<>();
+    private Set<Role> allowedRoles = new HashSet<>();
     private User authorizedUser;
-    private String shortUri;
+    private String name;
 
-    protected ServiceFactory factory;
+    protected MysqlServiceFactory factory;
 
-    private String nextPage; // todo это все пихать в респонс
-    private boolean redirect;
-    private Map<String, Object> sessionAttributes = new HashMap<>();
-
-    public String getNextPage() {
-        return nextPage;
-    }
-
-    public void setNextPage(String nextPage) {
-        this.nextPage = nextPage;
-    }
-
-    public boolean isRedirect() {
-        return redirect;
-    }
-
-    public void setRedirect(boolean redirect) {
-        this.redirect = redirect;
-    }
-
-    public Map<String, Object> getSessionAttributes() {
-        return sessionAttributes;
-    }
-
-    public Set<Role> getAllowRoles() {
-        return allowRoles;
+    public Set<Role> getAllowedRoles() {
+        return allowedRoles;
     }
 
     public User getAuthorizedUser() {
@@ -56,18 +30,18 @@ public abstract class Command {
         this.authorizedUser = authorizedUser;
     }
 
-    public String getShortUri() {
-        return shortUri;
+    public String getName() {
+        return name;
     }
 
-    public void setShortUri(String shortUri) {
-        this.shortUri = shortUri;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setFactory(ServiceFactory factory) {
+    public void setServiceFactory(MysqlServiceFactory factory) {
         this.factory = factory;
     }
 
-    abstract public void execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException, IncorrectDataException;
+    abstract public ForwardPage execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException;
 
 }

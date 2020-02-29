@@ -1,8 +1,12 @@
 package by.samtsov.controller.servlet;
 
-import by.samtsov.bean.exceptions.IncorrectDataException;
+import by.samtsov.bean.ForwardPage;
 import by.samtsov.bean.exceptions.PersistentException;
 import by.samtsov.controller.command.Command;
+import by.samtsov.controller.command.CommandManager;
+import by.samtsov.controller.command.CommandManagerFactory;
+import by.samtsov.dao.transaction.TransactionFactory;
+import by.samtsov.service.mysql.MysqlServiceFactory;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -79,28 +83,31 @@ public class DispatcherServlet extends HttpServlet {
             }
 
             //выполняем команду, с учетом переданных ему значений со страницы и сессии.
+            CommandManager commandManager = CommandManagerFactory
+                    .getManager(getServiceFactory());
+            ForwardPage forwardPage =commandManager.execute(command,request,response);
             command.execute(request, response);
             //-----------------------получили готовые данные, теперь их возвращаем обратно!!!-----------------------------------
             //сохраняем в сессию те атрибуты, которые должны быть переданы дальше.
-            if (session != null && command != null && !command.getSessionAttributes().isEmpty()) {
-                session.setAttribute("redirectedData", command.getSessionAttributes());
+            if (session != null && forwardPage != null && !forwardPage.getSessionAttributes().isEmpty()) {
+                session.setAttribute("redirectedData", forwardPage.getSessionAttributes());
             }
             //узнаем куда отправляем пользователя дальше
             String requestedUri = request.getRequestURI();
             //узнаем каким способом отправляем пользователя
-            if (command != null && command.isRedirect()) {
+            if (forwardPage != null && forwardPage.isRedirect()) {
                 //получаем полный путь для редиректа
-                String redirectedUri = request.getContextPath() + command.getShortUri();
+                String redirectedUri = request.getContextPath() + forwardPage.getForward();
                 logger.debug(String.format("Request for URI \"%s\" id redirected to URI \"%s\"", requestedUri, redirectedUri));
                 //отправляем всех в дальний путь
                 response.sendRedirect(redirectedUri);
             } else {
                 // а если это не редирект
                 String jspPage;
-                if (command != null) {
-                    jspPage = command.getShortUri();
+                if (forwardPage != null) {
+                    jspPage = forwardPage.getForward();
                 } else {
-                    jspPage = command.getNextPage() + ".jsp";
+                    jspPage = command.getName() + ".jsp";
                 }
                 jspPage = "/WEB-INF/jsp" + jspPage;
                 logger.debug(String.format("Request for URI \"%s\" is forwarded to JSP \"%s\"", requestedUri, jspPage));
@@ -110,10 +117,14 @@ public class DispatcherServlet extends HttpServlet {
             logger.error("It is impossible to process request" + e.getMessage());
             request.setAttribute("error", "Ошибка обработки данных");
             getServletContext().getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
-        } catch (IncorrectDataException e) {
+        } /*catch (IncorrectDataException e) {
             logger.error("It is impossible to process request" + e.getMessage());
             request.setAttribute("error", "Ошибка обработки данных");
             getServletContext().getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
-        }
+        }*/
+    }
+
+    private MysqlServiceFactory getServiceFactory() throws PersistentException {
+        return new MysqlServiceFactory(new TransactionFactory());
     }
 }

@@ -4,7 +4,7 @@ public class CommandFactory {
     public static Command createCommand(AvailableCommands availableCommands) {
         Command command;
         switch (availableCommands) {
-            case INDEX:
+            /*case INDEX:
                 command = new IndexCommand();
                 break;
             case LOGIN:
@@ -20,7 +20,7 @@ public class CommandFactory {
                 throw new UnsupportedOperationException();
         }
 
-        //command = new LoginCommand();
+        command = new IndexCommand();
 
         return command;
     }

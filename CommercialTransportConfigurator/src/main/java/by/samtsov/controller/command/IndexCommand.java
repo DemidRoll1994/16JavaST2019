@@ -1,6 +1,6 @@
 package by.samtsov.controller.command;
 
-import by.samtsov.bean.exceptions.IncorrectDataException;
+import by.samtsov.bean.ForwardPage;
 import by.samtsov.bean.exceptions.PersistentException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,11 +9,12 @@ import java.io.IOException;
 
 public class IndexCommand extends Command{
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException, IncorrectDataException {
+    public ForwardPage execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException{
         try {
             response.sendRedirect("/WEB-INF/jsp/index.jsp");
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 }
