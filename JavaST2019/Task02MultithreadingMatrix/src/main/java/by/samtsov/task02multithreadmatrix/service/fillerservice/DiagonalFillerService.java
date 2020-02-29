@@ -4,6 +4,8 @@ import by.samtsov.task02multithreadmatrix.service.MatrixService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 public abstract class DiagonalFillerService {
@@ -42,10 +44,13 @@ public abstract class DiagonalFillerService {
         }
         locker.unlock();
         try {
+            TimeUnit.MILLISECONDS.sleep((int)(100.0 * new Random().nextDouble()));
             matrixService.assignElementToMatrix(modifyingElement,
                     modifyingElement, value);
         } catch (IllegalArgumentException iae) {
             logger.warn(iae.getMessage());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

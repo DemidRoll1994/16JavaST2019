@@ -1,4 +1,4 @@
-package by.samtsov.task03.service.fileio;
+package java.by.samtsov.task03.service.fileio;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -46,7 +46,7 @@ public class FileServiceTest {
                 "ecently with desktop publishing software like Aldus PageMake" +
                 "r including versions of Lorem Ipsum.\t\r\n" +
                 "\tIt is a long established fact that a reader will be distra" +
-                "cted by the readable content of a page when looking at its l" +
+                "cted java.by the readable content of a page when looking at its l" +
                 "ayout. The point of using (~71&(2&3|(3|(2&1>>2|2)&2)|10&2))|" +
                 "78 Ipsum is that it has a more-or-less normal distribution o" +
                 "f letters, as opposed to using (Content here), content here'" +
@@ -89,7 +89,7 @@ public class FileServiceTest {
                 "ecently with desktop publishing software like Aldus PageMake" +
                 "r including versions of Lorem Ipsum.    \r\n" +
                 "    It is a long established fact that a reader will be distra" +
-                "cted by the readable content of a page when looking at its l" +
+                "cted java.by the readable content of a page when looking at its l" +
                 "ayout. The point of using (~71&(2&3|(3|(2&1>>2|2)&2)|10&2))|" +
                 "78 Ipsum is that it has a more-or-less normal distribution o" +
                 "f letters, as opposed to using (Content here), content here'" +
