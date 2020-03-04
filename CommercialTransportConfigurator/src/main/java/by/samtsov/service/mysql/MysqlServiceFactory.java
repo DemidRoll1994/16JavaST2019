@@ -4,8 +4,9 @@ import by.samtsov.bean.enums.EntityType;
 import by.samtsov.bean.exceptions.PersistentException;
 import by.samtsov.dao.transaction.TransactionFactory;
 import by.samtsov.service.Service;
+import by.samtsov.service.ServiceFactory;
 
-public class MysqlServiceFactory {
+public class MysqlServiceFactory implements ServiceFactory {
 
     TransactionFactory transactionFactory;
 
@@ -13,7 +14,9 @@ public class MysqlServiceFactory {
     this.transactionFactory=transactionFactory;
     }
 
-    public static <Type extends Service<?>> Type createService(EntityType entityType) throws PersistentException {
+
+
+    public <Type extends Service> Type createService(EntityType entityType) throws PersistentException {
         //try {
         switch (entityType) {
             case USER:
@@ -48,4 +51,12 @@ public class MysqlServiceFactory {
         }
         throw new PersistentException("can't create Service");
     }
+
+
+
+    @Override
+    public void close() {
+        transactionFactory.close();
+    }
+
 }

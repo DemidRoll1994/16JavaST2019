@@ -11,4 +11,10 @@ public class UserValidatorImpl implements UserValidator {
                 && user.getPasswordHash() != null && user.getStatus() != null
                 && user.getRole() != null;
     }
+
+
+    public boolean isPasswordValid(String password) throws IncorrectDataException {
+        //todo
+        return true;
+    }
 }

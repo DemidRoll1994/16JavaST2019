@@ -1,5 +1,7 @@
 package by.samtsov.service;
 
+import by.samtsov.bean.exceptions.IncorrectDataException;
+
 import java.util.List;
 
 public interface Service<T> {
@@ -7,7 +9,7 @@ public interface Service<T> {
 
     List<T> getAll();
 
-    int save(T t);
+    int save(T t) throws IncorrectDataException;
 
     void update(T t);
 

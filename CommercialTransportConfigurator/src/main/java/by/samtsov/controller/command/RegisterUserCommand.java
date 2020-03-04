@@ -1,46 +1,60 @@
 package by.samtsov.controller.command;
 
 import by.samtsov.bean.ForwardPage;
+import by.samtsov.bean.entity.User;
 import by.samtsov.bean.enums.EntityType;
+import by.samtsov.bean.exceptions.PersistentException;
+import by.samtsov.service.UserService;
+import by.samtsov.service.validator.UserValidator;
+import by.samtsov.service.validator.ValidatorFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class RegisterUserCommand extends Command {
 
+    private static Logger logger = LogManager.getLogger(LoginCommand.class);
     private final EntityType USER_ENTITY_TYPE = EntityType.USER;
 
     @Override
-    public ForwardPage execute(HttpServletRequest request, HttpServletResponse response) {
+    public ForwardPage execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
 //        setNextPage("/user/edit.html");
-       /* try {
-            UserParser userParser = ParserFactory.createParser(USER_ENTITY_TYPE);
-            User user = userParser.parse(request);
-            UserValidator validator = ValidatorFactory.createValidator(USER_ENTITY_TYPE);
-            UserService service = ServiceFactory.createService(USER_ENTITY_TYPE);
-            if (validator.isValid(user))
 
-            {
-                if (user.getId() != service.save(user)){
+        String login = request.getParameter("login");
+        String password = request.getParameter("password");
+        String email = request.getParameter("email");
 
-                }
-                getSessionAttributes()
-                forward.getAttributes().put("identity", user.getIdentity());
-                forward.getAttributes().put("message", "Данные сотрудника успешно сохранены");
-                logger.info(String.format("User \"%s\" saved user with identity %d", getAuthorizedUser().getLogin(), user.getIdentity()));
-            }
-        } catch (IncorrectDataException e) {
-            forward.getAttributes().put("message", "Были обнаружены некорректные данные");
-            logger.warn(String.format("Incorrect data was found when user \"%s\" tried to save user", getAuthorizedUser().getLogin()), e);
-        } catch (PersistentException e) {
-            forward.getAttributes().put("message", "Были обнаружены некорректные данные");
-            logger.warn(String.format("Incorrect data was found when user \"%s\" tried to save user", getAuthorizedUser().getLogin()), e);
-        } catch (InternalServerException e) {
-            forward.getAttributes().put("message", "внутрення ошибка сервера, запрос не может быть обработан");
-            logger.warn(String.format("Incorrect data was found when user \"%s\" tried to save user", getAuthorizedUser().getLogin()), e);
-        }
-        return forward;*/
-        return null;
+        UserService userService = factory.createService(USER_ENTITY_TYPE);
+        User user = userService.save(login, email, password);
+        //проверить, подходят ли данные на стороне сервера
+        //создать пользователя из условных запросов
+        //сохранить пользователя в базе данных при помощи сервиса
+        //вывести сообщение о том, что пользователь создан и перенаправить на нужную страницу.
+
+
+
+
+
+
+
+
+
+
+
+
+        UserService userService = factory.createService(USER_ENTITY_TYPE);
+        User user = userService.save(login, email, password);
+        HttpSession session = request.getSession();
+        session.setAttribute("authorizedUser", user);
+        String successMessage = String.format(
+                "User \"%s\" is successfully registered", user.getLogin());
+        LOGGER.debug(successMessage);
+
+        String redirect = request.getHeader("referer");
+        messageMap.put("redirect", redirect);
+        json = new Gson().toJson(messageMap);
     }
 
 

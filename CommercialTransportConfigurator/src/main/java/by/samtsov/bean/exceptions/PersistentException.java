@@ -1,6 +1,6 @@
 package by.samtsov.bean.exceptions;
 
-public class PersistentException extends Throwable {
+public class PersistentException extends Exception {
     public PersistentException() {}
 
     public PersistentException(String message, Throwable cause) {

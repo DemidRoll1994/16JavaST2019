@@ -12,7 +12,7 @@ public class CommandManagerImpl implements CommandManager {
     private MysqlServiceFactory serviceFactory;
 
     public CommandManagerImpl(MysqlServiceFactory serviceFactory) {
-        this.serviceFactory=serviceFactory;
+        this.serviceFactory = serviceFactory;
     }
 
     @Override
@@ -22,7 +22,7 @@ public class CommandManagerImpl implements CommandManager {
     }
 
     @Override
-    public void close() {
-
+    public void close() throws PersistentException {
+        serviceFactory.close();
     }
 }

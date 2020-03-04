@@ -63,8 +63,7 @@ public class DispatcherServlet extends HttpServlet {
     private void process(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         //получаем готовый объект команды, которую мы должны будем выполнить
         Command command = (Command) request.getAttribute("command");
-
-        try {
+        try (CommandManager commandManager = CommandManagerFactory.getManager(getServiceFactory())) {
             //получаем объект текущей сессии
             HttpSession session = request.getSession(false);
             if (session != null) {
@@ -83,9 +82,7 @@ public class DispatcherServlet extends HttpServlet {
             }
 
             //выполняем команду, с учетом переданных ему значений со страницы и сессии.
-            CommandManager commandManager = CommandManagerFactory
-                    .getManager(getServiceFactory());
-            ForwardPage forwardPage =commandManager.execute(command,request,response);
+            ForwardPage forwardPage = commandManager.execute(command, request, response);
             command.execute(request, response);
             //-----------------------получили готовые данные, теперь их возвращаем обратно!!!-----------------------------------
             //сохраняем в сессию те атрибуты, которые должны быть переданы дальше.

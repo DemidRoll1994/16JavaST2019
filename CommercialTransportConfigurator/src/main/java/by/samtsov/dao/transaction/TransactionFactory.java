@@ -17,7 +17,7 @@ public class TransactionFactory {
         try {
             connection = C3poDataSource.getConnection();
             connection.setAutoCommit(false);
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             logger.error("It is impossible to turn off autocommiting for database connection", e);
             throw new PersistentException(e);
         }
@@ -30,6 +30,8 @@ public class TransactionFactory {
     public void close() {
         try {
             connection.close();
-        } catch(SQLException e) {}
+        } catch (SQLException e) {
+            //todo
+        }
     }
 }

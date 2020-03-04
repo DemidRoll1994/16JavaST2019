@@ -64,6 +64,9 @@
                                     3</a>
                             </div>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Hello, {$user.name}</a>
+                        </li>
                     </ul>
 
 
@@ -480,6 +483,19 @@
             </div>
         </div>
     </div>
+
+
+
+    <H2>Вход в систему</H2>
+    <c:url value="/login.html" var="loginUrl"/>
+    <FORM action="${loginUrl}" method="post">
+        <LABEL for="login">Имя пользователя:</LABEL>
+        <INPUT type="text" id="login" name="login" value="${param.login}">
+        <LABEL for="password">Пароль:</LABEL>
+        <INPUT type="password" id="password" name="password">
+        <BUTTON type="submit">Войти</BUTTON>
+    </FORM>
+
 
     <div class="row">
 
