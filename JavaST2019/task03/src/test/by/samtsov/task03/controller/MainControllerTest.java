@@ -1,4 +1,4 @@
-package by.samtsov.task03.controller;
+package java.by.samtsov.task03.controller;
 
 import org.testng.annotations.Test;
 

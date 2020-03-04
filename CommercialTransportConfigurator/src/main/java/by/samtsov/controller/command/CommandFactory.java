@@ -16,7 +16,6 @@ public class CommandFactory {
             case REGISTER:
                 command = new RegisterUserCommand();
                 break;*/
-
         }
 
         //command = new IndexCommand();

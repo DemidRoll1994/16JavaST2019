@@ -4,7 +4,7 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 
-public class HelloTag extends TagSupport {
+public class HelloTag extends TagSupport { // todo del unused
     private String role;
     public void setRole(String role) {
         this.role = role;
