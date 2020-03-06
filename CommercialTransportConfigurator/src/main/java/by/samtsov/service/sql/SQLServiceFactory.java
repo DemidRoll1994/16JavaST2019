@@ -1,26 +1,26 @@
-package by.samtsov.service.mysql;
+package by.samtsov.service.sql;
 
 import by.samtsov.bean.enums.EntityType;
-import by.samtsov.bean.exceptions.PersistentException;
+import by.samtsov.bean.exceptions.PersistenceException;
 import by.samtsov.dao.transaction.TransactionFactory;
 import by.samtsov.service.Service;
 import by.samtsov.service.ServiceFactory;
 
-public class MysqlServiceFactory implements ServiceFactory {
+public class SQLServiceFactory implements ServiceFactory {
 
     TransactionFactory transactionFactory;
 
-    public MysqlServiceFactory(TransactionFactory transactionFactory) {
+    public SQLServiceFactory(TransactionFactory transactionFactory) {
     this.transactionFactory=transactionFactory;
     }
 
 
 
-    public <Type extends Service> Type createService(EntityType entityType) throws PersistentException {
+    public <Type extends Service> Type createService(EntityType entityType) throws PersistenceException {
         //try {
         switch (entityType) {
             case USER:
-                MysqlUserService userService = new MysqlUserService();
+                SQLUserService userService = new SQLUserService();
                 return (Type) userService;
             /*case MODEL:
                 ModelServiceImpl modelService = new ModelServiceImpl();
@@ -49,7 +49,7 @@ public class MysqlServiceFactory implements ServiceFactory {
         throw new PersistentException(sqle.getMessage());
     }   */
         }
-        throw new PersistentException("can't create Service");
+        throw new PersistenceException("can't create Service");
     }
 
 

@@ -1,8 +1,8 @@
 package by.samtsov.bean.enums;
 
 public enum Role {
-    ADMIN,
     BUYER,
+    ADMIN,
     VENDOR;
 
     public Integer getIdentity() {

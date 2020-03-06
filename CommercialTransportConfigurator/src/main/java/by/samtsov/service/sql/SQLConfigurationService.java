@@ -1,11 +1,11 @@
-package by.samtsov.service.mysql;
+package by.samtsov.service.sql;
 
 import by.samtsov.bean.entity.Configuration;
 import by.samtsov.service.ConfigurationService;
 
 import java.util.List;
 
-public class MysqlConfigurationService implements ConfigurationService {
+public class SQLConfigurationService implements ConfigurationService {
     @Override
     public Configuration get(int id) {
         return null;//todo

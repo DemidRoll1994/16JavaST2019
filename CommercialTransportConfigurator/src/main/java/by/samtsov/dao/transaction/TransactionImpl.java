@@ -1,10 +1,11 @@
 package by.samtsov.dao.transaction;
 
 import by.samtsov.bean.enums.EntityType;
-import by.samtsov.bean.exceptions.PersistentException;
+import by.samtsov.bean.exceptions.InternalServerException;
+import by.samtsov.bean.exceptions.PersistenceException;
 import by.samtsov.dao.Dao;
 import by.samtsov.dao.factory.DaoFactory;
-import by.samtsov.dao.impl.BaseDaoImpl;
+import by.samtsov.dao.mysqlimpl.SQLBaseDao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,7 +18,7 @@ public class TransactionImpl implements Transaction {
 
     private static Logger logger = LogManager.getRootLogger();
 
-    private static Map<Class<? extends Dao<?>>, Class<? extends BaseDaoImpl>> classes = new ConcurrentHashMap<>();
+    private static Map<Class<? extends Dao<?>>, Class<? extends SQLBaseDao>> classes = new ConcurrentHashMap<>();
 
     private Connection connection;
 
@@ -26,37 +27,32 @@ public class TransactionImpl implements Transaction {
     }
 
     @Override
-    public <Type extends Dao<?>> Type createDao(EntityType entityType) throws PersistentException {
+    public <Type extends Dao<?>> Type createDao(EntityType entityType) throws InternalServerException {
         if(entityType != null) {
-            try {
-                BaseDaoImpl dao = DaoFactory.createDao(entityType);
+                SQLBaseDao dao = DaoFactory.createDao(entityType);
                 dao.setConnection(connection);
                 return (Type)dao;
-            } catch(Exception e) {
-                logger.error("It's impossible to create data access object", e);
-                throw new PersistentException(e);
-            }
         }
         return null;
     }
 
     @Override
-    public void commit() throws PersistentException {
+    public void commit() throws PersistenceException {
         try {
             connection.commit();
         } catch(SQLException e) {
             logger.error("It is impossible to commit transaction", e);
-            throw new PersistentException(e);
+            throw new PersistenceException(e);
         }
     }
 
     @Override
-    public void rollback() throws PersistentException {
+    public void rollback() throws PersistenceException {
         try {
             connection.rollback();
         } catch(SQLException e) {
             logger.error("It is impossible to rollback transaction", e);
-            throw new PersistentException(e);
+            throw new PersistenceException(e);
         }
     }
 }

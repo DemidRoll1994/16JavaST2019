@@ -1,34 +1,33 @@
 package by.samtsov.dao.factory;
 
 import by.samtsov.bean.enums.EntityType;
+import by.samtsov.bean.exceptions.InternalServerException;
 import by.samtsov.dao.Dao;
-import by.samtsov.dao.impl.ModelDaoImpl;
-import by.samtsov.dao.impl.OptionDaoImpl;
-import by.samtsov.dao.impl.OptionValueDaoImpl;
-import by.samtsov.dao.impl.UserDaoImpl;
+import by.samtsov.dao.mysqlimpl.SQLModelDao;
+import by.samtsov.dao.mysqlimpl.SQLOptionDao;
+import by.samtsov.dao.mysqlimpl.SQLOptionValueDao;
+import by.samtsov.dao.mysqlimpl.SQLUserDao;
 
 public class DaoFactory {
-    public static <Type extends Dao<?>> Type createDao(EntityType entityType) {
-            /*switch (entityType) { todo create daos
+    public static <Type extends Dao<?>> Type createDao(EntityType entityType) throws InternalServerException {
+
+            switch (entityType) {
                 case USER:
-                    UserDaoImpl userDao = new UserDaoImpl();
-                    return (Type) userDao;
+                    return (Type) new SQLUserDao();
                 case MODEL:
-                    ModelDaoImpl modelDao = new ModelDaoImpl();
-                    return (Type) modelDao;
-                case ORDER:
-                    OrderDaoImpl orderDao = new OrderDaoImpl();
-                    return (Type) orderDao;
+                    return (Type) new SQLModelDao();
+                case ORDER://todo create dao
+                    throw new InternalServerException("creating unsupported dao");
+                    //return (Type) new SQLOrderDao();
                 case OPTION:
-                    OptionDaoImpl optionDao = new OptionDaoImpl();
-                    return (Type) optionDao;
+                    return (Type) new SQLOptionDao();
                 case OPTION_VALUE:
-                    OptionValueDaoImpl optionValueDao = new OptionValueDaoImpl();
-                    return (Type) optionValueDao;
-                case CONFIGURATION:
-                    ConfigurationDaoImpl configurationDao = new ConfigurationDaoImpl();
-                    return (Type) configurationDao;
-            }*/
-            return null;
+                    return (Type) new SQLOptionValueDao();
+                case CONFIGURATION://todo create dao
+                    throw new InternalServerException("creating unsupported dao");
+                    //return (Type) new SQLConfigurationDao();
+                default:
+                    throw new InternalServerException("creating unsupported dao");
+            }
         }
     }

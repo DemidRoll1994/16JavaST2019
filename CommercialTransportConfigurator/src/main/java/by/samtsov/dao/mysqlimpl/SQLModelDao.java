@@ -1,7 +1,7 @@
-package by.samtsov.dao.impl;
+package by.samtsov.dao.mysqlimpl;
 
 import by.samtsov.bean.entity.Model;
-import by.samtsov.bean.exceptions.PersistentException;
+import by.samtsov.bean.exceptions.PersistenceException;
 import by.samtsov.dao.ModelDao;
 
 import java.sql.PreparedStatement;
@@ -11,7 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModelDaoImpl extends BaseDaoImpl implements ModelDao {
+public class SQLModelDao extends SQLBaseDao implements ModelDao {
 
 
     /*
@@ -31,7 +31,7 @@ where `models`.id=1;
 
 
     @Override
-    public Model get(int id) throws PersistentException {
+    public Model get(int id) throws PersistenceException {
         String sql = "SELECT `id`, `model_name`, `basic_price` " +
                 "FROM `models` where `id` =?";
 
@@ -49,7 +49,7 @@ where `models`.id=1;
             }
             return model;
         } catch (SQLException e) {
-            throw new PersistentException(e);
+            throw new PersistenceException(e);
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
@@ -59,7 +59,7 @@ where `models`.id=1;
     }
 
     @Override
-    public List<Model> getAll() throws PersistentException {
+    public List<Model> getAll() throws PersistenceException {
         String sql = "SELECT `id`, `model_name`, `basic_price` FROM `models` " +
                 "ORDER BY `model_name`";
         try (PreparedStatement statement = connection.prepareStatement(sql);
@@ -75,14 +75,14 @@ where `models`.id=1;
             }
             return models;
         } catch (SQLException e) {
-            throw new PersistentException(e);
+            throw new PersistenceException(e);
         }
 
 
     }
 
     @Override
-    public int add(Model model) throws PersistentException {
+    public int add(Model model) throws PersistenceException {
         String sql = "INSERT INTO `models` (`model_name`, `basic_price`)" +
                 " VALUES (?, ?)";
         ResultSet resultSet = null;
@@ -95,10 +95,10 @@ where `models`.id=1;
             if (resultSet.next()) {
                 return resultSet.getInt(1);
             } else {
-                throw new PersistentException("There is no autoincrement index after trying to add record into table `models`");
+                throw new PersistenceException("There is no autoincrement index after trying to add record into table `models`");
             }
         } catch (SQLException e) {
-            throw new PersistentException(e);
+            throw new PersistenceException(e);
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
@@ -108,7 +108,7 @@ where `models`.id=1;
     }
 
     @Override
-    public void update(Model model) throws PersistentException {
+    public int update(Model model) throws PersistenceException {
         String sql = "UPDATE `models` SET `model_name` = ?, `basic_price` = ?" +
                 " WHERE `id` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -117,18 +117,25 @@ where `models`.id=1;
             statement.setInt(3, model.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new PersistentException(e);
+            throw new PersistenceException(e);
         }
+        return 0;
     }
 
     @Override
-    public void delete(int modelId) throws PersistentException {
+    public int delete(int modelId) throws PersistenceException {
         String sql = "DELETE FROM `models` WHERE `id` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, modelId);
             statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            } else {
+                throw new PersistenceException("There is no autoincrement index after trying to add record into table `users`");
+            }
         } catch (SQLException e) {
-            throw new PersistentException(e);
+            throw new PersistenceException(e);
         }
     }
 

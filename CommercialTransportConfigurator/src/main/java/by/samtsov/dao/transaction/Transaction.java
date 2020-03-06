@@ -1,13 +1,14 @@
 package by.samtsov.dao.transaction;
 
 import by.samtsov.bean.enums.EntityType;
-import by.samtsov.bean.exceptions.PersistentException;
+import by.samtsov.bean.exceptions.InternalServerException;
+import by.samtsov.bean.exceptions.PersistenceException;
 import by.samtsov.dao.Dao;
 
 public interface Transaction  {
-    <Type extends Dao<?>> Type createDao(EntityType entityType) throws PersistentException;
+    <Type extends Dao<?>> Type createDao(EntityType entityType) throws InternalServerException;
 
-    void commit() throws PersistentException;
+    void commit() throws PersistenceException;
 
-    void rollback() throws PersistentException;
+    void rollback() throws PersistenceException;
 }

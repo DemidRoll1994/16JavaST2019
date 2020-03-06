@@ -3,10 +3,8 @@ package by.samtsov.controller.command;
 import by.samtsov.bean.ForwardPage;
 import by.samtsov.bean.entity.User;
 import by.samtsov.bean.enums.EntityType;
-import by.samtsov.bean.exceptions.PersistentException;
+import by.samtsov.bean.exceptions.PersistenceException;
 import by.samtsov.service.UserService;
-import by.samtsov.service.validator.UserValidator;
-import by.samtsov.service.validator.ValidatorFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,7 +17,7 @@ public class RegisterUserCommand extends Command {
     private final EntityType USER_ENTITY_TYPE = EntityType.USER;
 
     @Override
-    public ForwardPage execute(HttpServletRequest request, HttpServletResponse response) throws PersistentException {
+    public ForwardPage execute(HttpServletRequest request, HttpServletResponse response) throws PersistenceException {
 //        setNextPage("/user/edit.html");
 
         String login = request.getParameter("login");

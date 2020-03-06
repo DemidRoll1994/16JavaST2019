@@ -1,7 +1,7 @@
-package by.samtsov.dao.impl;
+package by.samtsov.dao.mysqlimpl;
 
 import by.samtsov.bean.entity.OptionValue;
-import by.samtsov.bean.exceptions.PersistentException;
+import by.samtsov.bean.exceptions.PersistenceException;
 import by.samtsov.dao.OptionValueDao;
 
 import java.sql.PreparedStatement;
@@ -11,11 +11,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OptionValueDaoImpl extends BaseDaoImpl implements OptionValueDao {
+public class SQLOptionValueDao extends SQLBaseDao implements OptionValueDao {
 
 
     @Override
-    public OptionValue get(int id) throws PersistentException {
+    public OptionValue get(int id) throws PersistenceException {
         String sql = "SELECT `id`, `value`, `description`, `price`," +
                 " `OPTION_ID` FROM `OPTION_VALUES` where `id` =?";
         ResultSet resultSet = null;
@@ -33,7 +33,7 @@ public class OptionValueDaoImpl extends BaseDaoImpl implements OptionValueDao {
             }
             return optionValue;
         } catch (SQLException e) {
-            throw new PersistentException(e);
+            throw new PersistenceException(e);
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
@@ -43,7 +43,7 @@ public class OptionValueDaoImpl extends BaseDaoImpl implements OptionValueDao {
     }
 
     @Override
-    public List<OptionValue> getAll() throws PersistentException {
+    public List<OptionValue> getAll() throws PersistenceException {
         String sql = "SELECT `id`, `value`, `description`, `price`, " +
                 "`option_id` FROM `OPTION_VALUES` ORDER BY `option_id`";
         try (PreparedStatement statement = connection.prepareStatement(sql);
@@ -61,12 +61,12 @@ public class OptionValueDaoImpl extends BaseDaoImpl implements OptionValueDao {
             }
             return optionValues;
         } catch (SQLException e) {
-            throw new PersistentException(e);
+            throw new PersistenceException(e);
         }
     }
 
     @Override
-    public int add(OptionValue optionValue) throws PersistentException {
+    public int add(OptionValue optionValue) throws PersistenceException {
         String sql = "INSERT INTO `OPTION_VALUES` (`value`, `description`," +
                 " `price`) VALUES (?, ?, ?)";
         ResultSet resultSet = null;
@@ -80,12 +80,12 @@ public class OptionValueDaoImpl extends BaseDaoImpl implements OptionValueDao {
             if (resultSet.next()) {
                 return resultSet.getInt(1);
             } else {
-                throw new PersistentException("There is no autoincrement " +
+                throw new PersistenceException("There is no autoincrement " +
                         "index after trying to add record into table " +
                         "`option_values`");
             }
         } catch (SQLException e) {
-            throw new PersistentException(e);
+            throw new PersistenceException(e);
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
@@ -97,7 +97,7 @@ public class OptionValueDaoImpl extends BaseDaoImpl implements OptionValueDao {
 
 
     @Override
-    public void update(OptionValue user) throws PersistentException {
+    public int update(OptionValue user) throws PersistenceException {
         /*String sql = "UPDATE `users` SET `login` = ?, `password_hash` = ?, " +
                 "`salt` = ?, `status` = ?, `role` = ?, `company` = ?," +
                 " `phoneNumber` = ?, `address` = ? WHERE `id` = ?";
@@ -127,16 +127,23 @@ public class OptionValueDaoImpl extends BaseDaoImpl implements OptionValueDao {
         } catch (SQLException e) {
             throw new PersistentException(e);
         }*/
+        return 0;
     }
 
     @Override
-    public void delete(int userId) throws PersistentException {
+    public int delete(int userId) throws PersistenceException {
         String sql = "DELETE FROM `users` WHERE `id` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
             statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            } else {
+                throw new PersistenceException("There is no autoincrement index after trying to add record into table `users`");
+            }
         } catch (SQLException e) {
-            throw new PersistentException(e);
+            throw new PersistenceException(e);
         }
     }
 }

@@ -1,12 +1,12 @@
 package by.samtsov.controller.servlet;
 
 import by.samtsov.bean.ForwardPage;
-import by.samtsov.bean.exceptions.PersistentException;
+import by.samtsov.bean.exceptions.PersistenceException;
 import by.samtsov.controller.command.Command;
 import by.samtsov.controller.command.CommandManager;
 import by.samtsov.controller.command.CommandManagerFactory;
 import by.samtsov.dao.transaction.TransactionFactory;
-import by.samtsov.service.mysql.MysqlServiceFactory;
+import by.samtsov.service.sql.SQLServiceFactory;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -110,7 +110,7 @@ public class DispatcherServlet extends HttpServlet {
                 logger.debug(String.format("Request for URI \"%s\" is forwarded to JSP \"%s\"", requestedUri, jspPage));
                 getServletContext().getRequestDispatcher(jspPage).forward(request, response);
             }
-        } catch (PersistentException e) {
+        } catch (PersistenceException e) {
             logger.error("It is impossible to process request" + e.getMessage());
             request.setAttribute("error", "Ошибка обработки данных");
             getServletContext().getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
@@ -121,7 +121,7 @@ public class DispatcherServlet extends HttpServlet {
         }*/
     }
 
-    private MysqlServiceFactory getServiceFactory() throws PersistentException {
-        return new MysqlServiceFactory(new TransactionFactory());
+    private SQLServiceFactory getServiceFactory() throws PersistenceException {
+        return new SQLServiceFactory(new TransactionFactory());
     }
 }

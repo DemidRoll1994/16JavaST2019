@@ -1,0 +1,11 @@
+package by.samtsov.bean.enums;
+
+public enum InternalServerErrors {
+    INVALID_LOGIN_FORM,
+    LOGIN_ALREADY_EXISTS,
+    LOGIN_DOESNT_EXISTS,
+    INVALID_EMAIL_FORM,
+    EMAIL_ALREADY_EXISTS,
+    EMAIL_DOESNT_EXISTS,
+    INVALID_PASSWORD_FORM
+}

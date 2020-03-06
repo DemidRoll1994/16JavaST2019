@@ -1,6 +1,6 @@
 package by.samtsov.dao.transaction;
 
-import by.samtsov.bean.exceptions.PersistentException;
+import by.samtsov.bean.exceptions.PersistenceException;
 import by.samtsov.dao.pool.C3poDataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,17 +13,17 @@ public class TransactionFactory {
     private static Logger logger = LogManager.getRootLogger();
     private Connection connection;
 
-    public TransactionFactory() throws PersistentException {
+    public TransactionFactory() throws PersistenceException {
         try {
             connection = C3poDataSource.getConnection();
             connection.setAutoCommit(false);
         } catch (SQLException e) {
             logger.error("It is impossible to turn off autocommiting for database connection", e);
-            throw new PersistentException(e);
+            throw new PersistenceException(e);
         }
     }
 
-    public Transaction createTransaction() throws PersistentException {
+    public Transaction createTransaction() throws PersistenceException {
         return new TransactionImpl(connection);
     }
 

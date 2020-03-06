@@ -1,23 +1,23 @@
-package by.samtsov.dao.impl;
+package by.samtsov.dao.mysqlimpl;
 
 import by.samtsov.bean.entity.User;
 import by.samtsov.bean.enums.Role;
 import by.samtsov.bean.enums.UserStatus;
-import by.samtsov.bean.exceptions.PersistentException;
+import by.samtsov.bean.exceptions.PersistenceException;
 import by.samtsov.dao.UserDao;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDaoImpl extends BaseDaoImpl implements UserDao {
+public class SQLUserDao extends SQLBaseDao implements UserDao {
 
 
     @Override
-    public User get(int id) throws PersistentException {
-        String sql = "SELECT `id`, `login`, `password_hash`, `salt`, " +
-                "`status`, `role`,`company`,`Phone_number`,`address` FROM " +
-                "`users` where `id` =?";
+    public User get(int id) throws PersistenceException {
+        String sql = "SELECT `id`, `login`,`password_hash`, `salt`, " +
+                "`status`, `role`,`company`,`Phone_number`,`address`," +
+                " `email`, `name`, `surname` FROM `users` where `id` =?";
         ResultSet resultSet = null;
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
@@ -31,6 +31,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 user.setSalt(resultSet.getString("salt"));
                 user.setStatus(UserStatus.valueOf(resultSet.getString("status")));
                 user.setRole(Role.valueOf(resultSet.getString("role")));
+                user.setEmail(resultSet.getString("email"));
                 String company = resultSet.getString("company");
                 if (!resultSet.wasNull()) {
                     user.setCompanyName(company);
@@ -43,10 +44,18 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 if (!resultSet.wasNull()) {
                     user.setAddress(address);
                 }
+                String name = resultSet.getString("name");
+                if (!resultSet.wasNull()) {
+                    user.setName(name);
+                }
+                String surname = resultSet.getString("surname");
+                if (!resultSet.wasNull()) {
+                    user.setSurname(surname);
+                }
             }
             return user;
         } catch (SQLException e) {
-            throw new PersistentException(e);
+            throw new PersistenceException(e);
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
@@ -56,10 +65,10 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     }
 
     @Override
-    public List<User> getAll() throws PersistentException {
+    public List<User> getAll() throws PersistenceException {
         String sql = "SELECT `id`, `login`, `password_hash`, `salt`, " +
-                "`status`, `role`,`company`,`Phone_number`,`address` FROM " +
-                "`users` ORDER BY `login`";
+                "`status`, `role`,`company`,`Phone_number`,`address`, " +
+                "`email`, `name`, `surname` FROM `users` ORDER BY `login`";
         try (PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
             List<User> users = new ArrayList<>();
@@ -72,6 +81,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 user.setSalt(resultSet.getString("salt"));
                 user.setStatus(UserStatus.valueOf(resultSet.getString("status")));
                 user.setRole(Role.valueOf(resultSet.getString("role")));
+                user.setEmail(resultSet.getString("email"));
                 String company = resultSet.getString("company");
                 if (!resultSet.wasNull()) {
                     user.setCompanyName(company);
@@ -84,21 +94,30 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 if (!resultSet.wasNull()) {
                     user.setAddress(address);
                 }
+                String name = resultSet.getString("name");
+                if (!resultSet.wasNull()) {
+                    user.setName(name);
+                }
+                String surname = resultSet.getString("surname");
+                if (!resultSet.wasNull()) {
+                    user.setSurname(surname);
+                }
                 users.add(user);
             }
             return users;
         } catch (SQLException e) {
-            throw new PersistentException(e);
+            throw new PersistenceException(e);
         }
 
 
     }
 
     @Override
-    public int add(User user) throws PersistentException {
+    public int add(User user) throws PersistenceException {
         String sql = "INSERT INTO `users` (`login`, `password_hash`," +
                 " `salt`, `status`, `role`,`company`, `Phone_number`," +
-                "`address`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                "`address`, `email`, `name`, `surname`)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         ResultSet resultSet = null;
         try (PreparedStatement statement = connection.prepareStatement(sql
                 , Statement.RETURN_GENERATED_KEYS)) {
@@ -123,16 +142,18 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             } else {
                 statement.setNull(8, Types.INTEGER);
             }
-
+            statement.setString(9, user.getEmail());
+            statement.setString(10, user.getName());
+            statement.setString(11, user.getSurname());
             statement.executeUpdate();
             resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
                 return resultSet.getInt(1);
             } else {
-                throw new PersistentException("There is no autoincrement index after trying to add record into table `users`");
+                throw new PersistenceException("There is no autoincrement index after trying to add record into table `users`");
             }
         } catch (SQLException e) {
-            throw new PersistentException(e);
+            throw new PersistenceException(e);
         } finally {
             try {
                 if (resultSet != null) resultSet.close();
@@ -142,10 +163,11 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     }
 
     @Override
-    public void update(User user) throws PersistentException {
+    public int update(User user) throws PersistenceException {
         String sql = "UPDATE `users` SET `login` = ?, `password_hash` = ?, " +
                 "`salt` = ?, `status` = ?, `role` = ?, `company` = ?," +
-                " `phoneNumber` = ?, `address` = ? WHERE `id` = ?";
+                " `phoneNumber` = ?, `address` = ?, `email` = ?, `name` = ?," +
+                " `surname` = ? WHERE `id` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, user.getLogin());
             statement.setString(2, user.getPasswordHash());
@@ -167,29 +189,44 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             } else {
                 statement.setNull(8, Types.INTEGER);
             }
-            statement.setInt(9, user.getId());
+            statement.setString(9, user.getEmail());
+            statement.setString(10, user.getName());
+            statement.setString(11, user.getSurname());
+            statement.setInt(12, user.getId());
             statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            } else {
+                throw new PersistenceException("There is no autoincrement index after trying to add record into table `users`");
+            }
         } catch (SQLException e) {
-            throw new PersistentException(e);
+            throw new PersistenceException(e);
         }
     }
 
     @Override
-    public void delete(int userId) throws PersistentException {
+    public int delete(int userId) throws PersistenceException {
         String sql = "DELETE FROM `users` WHERE `id` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
             statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            } else {
+                throw new PersistenceException("There is no autoincrement index after trying to add record into table `users`");
+            }
         } catch (SQLException e) {
-            throw new PersistentException(e);
+            throw new PersistenceException(e);
         }
     }
 
     @Override
-    public User getByLogin(String login) throws PersistentException {
+    public User getByLogin(String login) throws PersistenceException {
         String sql = "SELECT `id`, `login`, `password_hash`, `salt`, " +
-                "`status`, `role`,`company`,`Phone_number`,`address` FROM " +
-                "`users` where `login` =?";
+                "`status`, `role`,`company`,`Phone_number`, `address`," +
+                " `email`, `name`, `surname` FROM `users` where `login` =?";
         ResultSet resultSet = null;
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, login);
@@ -203,6 +240,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 user.setSalt(resultSet.getString("salt"));
                 user.setStatus(UserStatus.valueOf(resultSet.getString("status")));
                 user.setRole(Role.valueOf(resultSet.getString("role")));
+                user.setEmail(resultSet.getString("email"));
                 String company = resultSet.getString("company");
                 if (!resultSet.wasNull()) {
                     user.setCompanyName(company);
@@ -215,10 +253,69 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
                 if (!resultSet.wasNull()) {
                     user.setAddress(address);
                 }
+                String name = resultSet.getString("name");
+                if (!resultSet.wasNull()) {
+                    user.setName(name);
+                }
+                String surname = resultSet.getString("surname");
+                if (!resultSet.wasNull()) {
+                    user.setSurname(surname);
+                }
             }
             return user;
         } catch (SQLException e) {
-            throw new PersistentException(e);
+            throw new PersistenceException(e);
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+            } catch (SQLException e) {
+            }
+        }
+    }
+
+    @Override
+    public User getByEmail(String email) throws PersistenceException {
+        String sql = "SELECT `id`, `login`, `password_hash`, `salt`, " +
+                "`status`, `role`,`company`,`Phone_number`, `address`," +
+                " `email`, `name`, `surname` FROM `users` where `email` =?";
+        ResultSet resultSet = null;
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, email);
+            resultSet = statement.executeQuery();
+            User user = null;
+            if (resultSet.next()) {
+                user = new User();
+                user.setId(resultSet.getInt("id"));
+                user.setLogin(resultSet.getString("login"));
+                user.setPasswordHash(resultSet.getString("password_hash"));
+                user.setSalt(resultSet.getString("salt"));
+                user.setStatus(UserStatus.valueOf(resultSet.getString("status")));
+                user.setRole(Role.valueOf(resultSet.getString("role")));
+                user.setEmail(resultSet.getString("email"));
+                String company = resultSet.getString("company");
+                if (!resultSet.wasNull()) {
+                    user.setCompanyName(company);
+                }
+                long phoneNumber = resultSet.getLong("Phone_number");
+                if (!resultSet.wasNull()) {
+                    user.setPhoneNumber(phoneNumber);
+                }
+                String address = resultSet.getString("address");
+                if (!resultSet.wasNull()) {
+                    user.setAddress(address);
+                }
+                String name = resultSet.getString("name");
+                if (!resultSet.wasNull()) {
+                    user.setName(name);
+                }
+                String surname = resultSet.getString("surname");
+                if (!resultSet.wasNull()) {
+                    user.setSurname(surname);
+                }
+            }
+            return user;
+        } catch (SQLException e) {
+            throw new PersistenceException(e);
         } finally {
             try {
                 if (resultSet != null) resultSet.close();

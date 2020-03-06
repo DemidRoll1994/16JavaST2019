@@ -1,10 +1,10 @@
-package java.by.samtsov.task03.service.parser;
+package by.samtsov.task03.service.parser;
 
 import java.by.samtsov.task03.beans.entity.Component;
 import java.by.samtsov.task03.beans.entity.Composite;
 import java.by.samtsov.task03.beans.enums.ComponentType;
 import java.by.samtsov.task03.service.factory.CompositeFactory;
-
+import java.by.samtsov.task03.service.parser.ComponentParser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

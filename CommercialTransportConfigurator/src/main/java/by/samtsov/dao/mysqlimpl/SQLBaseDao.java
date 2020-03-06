@@ -1,8 +1,8 @@
-package by.samtsov.dao.impl;
+package by.samtsov.dao.mysqlimpl;
 
 import java.sql.Connection;
 
-public class BaseDaoImpl  {
+public class SQLBaseDao {
 
     Connection connection = null;
 

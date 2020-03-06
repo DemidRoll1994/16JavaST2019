@@ -1,8 +1,13 @@
 package by.samtsov.bean.exceptions;
 
-public class IncorrectDataException extends Throwable {
 
-    public IncorrectDataException() {
+import by.samtsov.bean.enums.InternalServerErrors;
+
+public class IncorrectDataException extends ServiceException {
+    InternalServerErrors internalServerErrorType;
+
+    public IncorrectDataException(InternalServerErrors errorType) {
+        internalServerErrorType = errorType;
     }
 
     public IncorrectDataException(String message, Throwable cause) {
@@ -15,5 +20,8 @@ public class IncorrectDataException extends Throwable {
 
     public IncorrectDataException(Throwable cause) {
         super(cause);
+    }
+
+    public IncorrectDataException(InternalServerException) {
     }
 }
