@@ -10,12 +10,13 @@ public class CommandFactory {
             case LOGIN:
                 command = new LoginCommand();
                 break;
+            case REGISTER:
+                command = new RegisterUserCommand();
+                break;
             /*case LOGOUT:
                 command = new LogoutCommand();
                 break;
-            case REGISTER:
-                command = new RegisterUserCommand();
-                break;*/
+            */
         }
 
         //command = new IndexCommand();

@@ -22,17 +22,24 @@ import static by.samtsov.bean.enums.InternalServerErrors.*;
 
 public class SQLUserService extends SQLService implements UserService {
 
-    private static final Logger LOGGER = LogManager.getLogger(
-            SQLUserService.class);
     public static final EntityType USER_ENTITY_TYPE = EntityType.USER;
     public static final String CREATE_USER_ERR_MSG = "can't create user with login ";
     public static final String ROLLBACK_CREATE_ERR_MSG = "can't rollback a transaction while creating user with login ";
     public static final String FIND_USER_ERR_MSG = "can't find user ";
+    private static final Logger LOGGER = LogManager.getLogger(
+            SQLUserService.class);
+    UserDao userDao = null;
+    UserValidatorImpl userValidator = null;
+
+    public SQLUserService() throws InternalServerException {
+        LOGGER.debug("transaction is null:" + (transaction == null));
+        userDao = transaction.createDao(USER_ENTITY_TYPE);
+        userValidator = ValidatorFactory.createValidator(USER_ENTITY_TYPE);
+    }
 
     @Override
-    public User get(int id) throws ServiceException, InternalServerException {
+    public User get(int id) throws ServiceException {
         try {
-            UserDao userDao = transaction.createDao(USER_ENTITY_TYPE);
             return userDao.get(id);
         } catch (PersistenceException e) {
             LOGGER.error("Can't read user with id " + id + " from dao layer: \n" + e.getMessage()); //todo
@@ -41,9 +48,8 @@ public class SQLUserService extends SQLService implements UserService {
     }
 
     @Override
-    public List<User> getAll()throws ServiceException, InternalServerException  {
+    public List<User> getAll() throws ServiceException {
         try {
-            UserDao userDao = transaction.createDao(USER_ENTITY_TYPE);
             return userDao.getAll();
         } catch (PersistenceException e) {
             LOGGER.error("Can't read users from dao layer: \n" + e.getMessage());//todo
@@ -52,9 +58,8 @@ public class SQLUserService extends SQLService implements UserService {
     }
 
     @Override
-    public int save(User user) throws ServiceException, InternalServerException {
+    public int save(User user) throws ServiceException {
         try {
-            UserDao userDao = transaction.createDao(USER_ENTITY_TYPE);
             return userDao.add(user);
         } catch (PersistenceException e) {
             LOGGER.error("Can't add user with id " + user.getId()
@@ -64,9 +69,8 @@ public class SQLUserService extends SQLService implements UserService {
     }
 
     @Override
-    public void update(User user) throws ServiceException, InternalServerException {
+    public void update(User user) throws ServiceException {
         try {
-            UserDao userDao = transaction.createDao(USER_ENTITY_TYPE);
             userDao.update(user);
         } catch (PersistenceException e) {
             LOGGER.error("Can't update user with id " + user.getId()
@@ -75,9 +79,8 @@ public class SQLUserService extends SQLService implements UserService {
     }
 
     @Override
-    public void delete(int id) throws ServiceException, InternalServerException {
+    public void delete(int id) throws ServiceException {
         try {
-            UserDao userDao = transaction.createDao(USER_ENTITY_TYPE);
             userDao.delete(id);
         } catch (PersistenceException e) {
             LOGGER.error("Can't delete user with id " + id
@@ -86,14 +89,13 @@ public class SQLUserService extends SQLService implements UserService {
     }
 
     @Override
-    public void updatePassword(User user, String newPassword) throws ServiceException, InternalServerException {
+    public void updatePassword(User user, String newPassword) throws ServiceException {
         try {
             UserPasswordService userPasswordService = new UserPasswordService();
             String salt = userPasswordService.generateSalt();
             user.setSalt(salt);
             user.setPasswordHash(userPasswordService
                     .generateSecurePassword(newPassword, salt));
-            UserDao userDao = transaction.createDao(USER_ENTITY_TYPE);
             userDao.update(user);
         } catch (PersistenceException e) {
             LOGGER.error("Can't update password of user with id " + user.getId()
@@ -102,8 +104,7 @@ public class SQLUserService extends SQLService implements UserService {
     }
 
     @Override
-    public User findByLoginAndPassword(String login, String password) throws ServiceException, InternalServerException {
-        UserDao userDao = transaction.createDao(USER_ENTITY_TYPE);
+    public User findByLoginAndPassword(String login, String password) throws ServiceException {
         UserPasswordService userPasswordService = new UserPasswordService();
         User user = null;
         try {
@@ -120,10 +121,8 @@ public class SQLUserService extends SQLService implements UserService {
     }
 
 
-    public User create(String login, String email, String password) throws ServiceException, InternalServerException {
-        UserValidatorImpl userValidator = ValidatorFactory.createValidator(USER_ENTITY_TYPE);
+    public User create(String login, String email, String password) throws ServiceException {
         try {
-            UserDao userDao = transaction.createDao(USER_ENTITY_TYPE);
             if (!userValidator.isLoginValid(login)) {
                 throw new IncorrectDataException(INVALID_LOGIN_FORM);
             }
@@ -171,6 +170,4 @@ public class SQLUserService extends SQLService implements UserService {
         user.setSalt(null);
         return user;
     }
-
-
 }

@@ -1,7 +1,9 @@
 package by.samtsov.controller.command;
 
 import by.samtsov.bean.ForwardPage;
+import by.samtsov.bean.exceptions.InternalServerException;
 import by.samtsov.bean.exceptions.PersistenceException;
+import by.samtsov.bean.exceptions.ServiceException;
 import by.samtsov.service.sql.SQLServiceFactory;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +18,7 @@ public class CommandManagerImpl implements CommandManager {
     }
 
     @Override
-    public ForwardPage execute(Command command, HttpServletRequest request, HttpServletResponse response) throws PersistenceException {
+    public ForwardPage execute(Command command, HttpServletRequest request, HttpServletResponse response) throws PersistenceException, InternalServerException, ServiceException {
         command.setServiceFactory(serviceFactory);
         return command.execute(request, response);
     }

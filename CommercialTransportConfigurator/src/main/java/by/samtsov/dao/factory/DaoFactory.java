@@ -13,6 +13,7 @@ public class DaoFactory {
 
             switch (entityType) {
                 case USER:
+
                     return (Type) new SQLUserDao();
                 case MODEL:
                     return (Type) new SQLModelDao();

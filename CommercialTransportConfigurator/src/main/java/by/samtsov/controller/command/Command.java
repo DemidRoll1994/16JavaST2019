@@ -3,7 +3,9 @@ package by.samtsov.controller.command;
 import by.samtsov.bean.ForwardPage;
 import by.samtsov.bean.entity.User;
 import by.samtsov.bean.enums.Role;
+import by.samtsov.bean.exceptions.InternalServerException;
 import by.samtsov.bean.exceptions.PersistenceException;
+import by.samtsov.bean.exceptions.ServiceException;
 import by.samtsov.service.sql.SQLServiceFactory;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,6 +44,6 @@ public abstract class Command {
         this.factory = factory;
     }
 
-    abstract public ForwardPage execute(HttpServletRequest request, HttpServletResponse response) throws PersistenceException;
+    abstract public ForwardPage execute(HttpServletRequest request, HttpServletResponse response) throws PersistenceException, InternalServerException, ServiceException;
 
 }

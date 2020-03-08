@@ -23,7 +23,8 @@ public class TransactionFactory {
         }
     }
 
-    public Transaction createTransaction() throws PersistenceException {
+    public Transaction createTransaction() {
+        logger.debug("creating transaction");
         return new TransactionImpl(connection);
     }
 

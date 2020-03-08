@@ -1,46 +1,53 @@
 package by.samtsov.service.sql;
 
 import by.samtsov.bean.enums.EntityType;
-import by.samtsov.bean.exceptions.PersistenceException;
+import by.samtsov.bean.exceptions.InternalServerException;
+import by.samtsov.dao.transaction.Transaction;
 import by.samtsov.dao.transaction.TransactionFactory;
 import by.samtsov.service.Service;
 import by.samtsov.service.ServiceFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class SQLServiceFactory implements ServiceFactory {
 
+    private static Logger logger = LogManager.getRootLogger();
     TransactionFactory transactionFactory;
 
     public SQLServiceFactory(TransactionFactory transactionFactory) {
-    this.transactionFactory=transactionFactory;
+        this.transactionFactory = transactionFactory;
     }
 
 
-
-    public <Type extends Service> Type createService(EntityType entityType) throws PersistenceException {
+    public <Type extends Service> Type createService(EntityType entityType) throws InternalServerException {
         //try {
+
+        Transaction transaction = transactionFactory.createTransaction();
+        logger.debug("transaction created");
         switch (entityType) {
             case USER:
                 SQLUserService userService = new SQLUserService();
+                userService.setTransaction(transaction);
                 return (Type) userService;
             /*case MODEL:
                 ModelServiceImpl modelService = new ModelServiceImpl();
-                modelService.setConnection(conn);
+                modelService.setTransaction(transaction);
                 return (Type) modelService;
             case ORDER:
                 OrderServiceImpl orderService = new OrderServiceImpl();
-                orderService.setConnection(conn);
+                orderService.setTransaction(transaction);
                 return (Type) orderService;
             case OPTION:
                 OptionServiceImpl optionService = new OptionServiceImpl();
-                optionService.setConnection(conn);
+                optionService.setTransaction(transaction);
                 return (Type) optionService;
             case OPTION_VALUE:
                 OptionValueServiceImpl optionValueService = new OptionValueServiceImpl();
-                optionValueService.setConnection(conn);
+                optionValueService.setTransaction(transaction);
                 return (Type) optionValueService;
             case CONFIGURATION:
                 ConfigurationServiceImpl configurationService = new ConfigurationServiceImpl();
-                configurationService.setConnection(conn);
+                configurationService.setTransaction(transaction);
                 return (Type) configurationService;
         }
 
@@ -49,9 +56,8 @@ public class SQLServiceFactory implements ServiceFactory {
         throw new PersistentException(sqle.getMessage());
     }   */
         }
-        throw new PersistenceException("can't create Service");
+        throw new InternalServerException("can't create Service");
     }
-
 
 
     @Override

@@ -22,6 +22,4 @@ public class IncorrectDataException extends ServiceException {
         super(cause);
     }
 
-    public IncorrectDataException(InternalServerException) {
-    }
 }

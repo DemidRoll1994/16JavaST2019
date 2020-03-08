@@ -497,19 +497,6 @@
     </FORM>
 
 
-    <H2>Регистрация:</H2>
-    <c:url value="/register.html" var="registerUrl"/>
-    <FORM action="${registerUrl}" method="post">
-        <LABEL for="reglogin">Имя пользователя:</LABEL>
-        <INPUT type="text" id="reglogin" name="login" value="${param.login}">
-        <LABEL for="regemail">e-mail:</LABEL>
-        <INPUT type="text" id="regemail" name="email">
-        <LABEL for="regpassword">Пароль:</LABEL>
-        <INPUT type="password" id="regpassword" name="password">
-        <BUTTON type="submit">Войти</BUTTON>
-    </FORM>
-
-
     <div class="row">
 
         <div class="col-2"></div>

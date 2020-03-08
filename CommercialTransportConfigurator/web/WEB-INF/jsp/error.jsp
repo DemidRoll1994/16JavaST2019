@@ -85,31 +85,6 @@
 </header>
 <!-- ОСНОВНОЕ СОДЕРЖИМОЕ -->
 <main>
-    <br><br><br>
-    <p><a href="#myModal1" class="btn btn-primary" data-toggle="modal">Открыть
-        модальное окно 1</a></p>
-    <div id="myModal1" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Введите логин и пароль</h4>
-                    <button type="button" class="close" data-dismiss="modal"
-                            aria-hidden="true">×
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Введите логин и пароль
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Вход
-                    </button>
-                    <button type="button" class="btn btn-default"
-                            data-dismiss="modal">Регистрация
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
     <H1>ЯРОР</H1>

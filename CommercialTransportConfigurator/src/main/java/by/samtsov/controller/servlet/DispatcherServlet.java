@@ -1,7 +1,9 @@
 package by.samtsov.controller.servlet;
 
 import by.samtsov.bean.ForwardPage;
+import by.samtsov.bean.exceptions.InternalServerException;
 import by.samtsov.bean.exceptions.PersistenceException;
+import by.samtsov.bean.exceptions.ServiceException;
 import by.samtsov.controller.command.Command;
 import by.samtsov.controller.command.CommandManager;
 import by.samtsov.controller.command.CommandManagerFactory;
@@ -72,7 +74,8 @@ public class DispatcherServlet extends HttpServlet {
                         Map<String, Object> attributes = (Map<String, Object>) session
                         .getAttribute("redirectedData");
                 if (attributes != null) {
-                    //все эти атрибуты добавляем к сессии, чтобы потом их можно было использовать в команде
+                    //все эти атрибуты добавляем к запросу, чтобы потом их
+                    // можно было использовать в команде
                     for (String key : attributes.keySet()) {
                         request.setAttribute(key, attributes.get(key));
                     }
@@ -83,11 +86,10 @@ public class DispatcherServlet extends HttpServlet {
 
             //выполняем команду, с учетом переданных ему значений со страницы и сессии.
             ForwardPage forwardPage = commandManager.execute(command, request, response);
-            command.execute(request, response);
             //-----------------------получили готовые данные, теперь их возвращаем обратно!!!-----------------------------------
             //сохраняем в сессию те атрибуты, которые должны быть переданы дальше.
-            if (session != null && forwardPage != null && !forwardPage.getSessionAttributes().isEmpty()) {
-                session.setAttribute("redirectedData", forwardPage.getSessionAttributes());
+            if (session != null && forwardPage != null && !forwardPage.getRedirectedAttributes().isEmpty()) {
+                session.setAttribute("redirectedData", forwardPage.getRedirectedAttributes());
             }
             //узнаем куда отправляем пользователя дальше
             String requestedUri = request.getRequestURI();
@@ -110,9 +112,10 @@ public class DispatcherServlet extends HttpServlet {
                 logger.debug(String.format("Request for URI \"%s\" is forwarded to JSP \"%s\"", requestedUri, jspPage));
                 getServletContext().getRequestDispatcher(jspPage).forward(request, response);
             }
-        } catch (PersistenceException e) {
-            logger.error("It is impossible to process request" + e.getMessage());
-            request.setAttribute("error", "Ошибка обработки данных");
+        } catch (PersistenceException | InternalServerException | ServiceException e) {
+            logger.error("It is impossible to process command: " + command.getName()+ ". Error: \n" + e.getMessage());
+            request.setAttribute("error", "Ошибка обработки данных. " +
+                    "Обратитесь к администратору или попробуйте позднее");
             getServletContext().getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
         } /*catch (IncorrectDataException e) {
             logger.error("It is impossible to process request" + e.getMessage());

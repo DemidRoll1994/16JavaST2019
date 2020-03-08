@@ -7,7 +7,7 @@ public class ForwardPage {
 
     private String forwardURL;
     private boolean redirect;
-    private Map<String, Object> sessionAttributes = new HashMap<>();
+    private Map<String, Object> redirectedAttributes = new HashMap<>();
 
     public ForwardPage(String forward, boolean redirect) {
         this.forwardURL = forward;
@@ -34,8 +34,8 @@ public class ForwardPage {
         this.redirect = redirect;
     }
 
-    public Map<String, Object> getSessionAttributes() {
-        return sessionAttributes;
+    public Map<String, Object> getRedirectedAttributes() {
+        return redirectedAttributes;
     }
 
 }

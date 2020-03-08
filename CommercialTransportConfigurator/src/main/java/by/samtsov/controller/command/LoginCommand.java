@@ -5,7 +5,8 @@ import by.samtsov.bean.entity.User;
 import by.samtsov.bean.enums.EntityType;
 import by.samtsov.bean.enums.Role;
 import by.samtsov.bean.exceptions.IncorrectDataException;
-import by.samtsov.bean.exceptions.PersistenceException;
+import by.samtsov.bean.exceptions.InternalServerException;
+import by.samtsov.bean.exceptions.ServiceException;
 import by.samtsov.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -42,7 +43,7 @@ public class LoginCommand extends Command {
     @Override
     public ForwardPage execute(HttpServletRequest request,
                                HttpServletResponse response)
-            throws PersistenceException {
+            throws InternalServerException, ServiceException {
 
         String login = request.getParameter("login");
         String password = request.getParameter("password");

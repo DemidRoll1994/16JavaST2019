@@ -85,19 +85,19 @@ public class ActionFilter implements Filter {
                 commandName = uri.substring(beginAction);
             }
 
-            try {
                 logger.debug("short uri " + commandName + " is selected");
                 Command command = CommandFactory.createCommand(commands.get(commandName));
-                logger.debug("commmand " + commandName + " is created");
+                logger.debug("commmand " + command.getName() + " is created");
                 command.setName(commandName);
+                logger.debug("command.setname(commandName) is ok ");
                 httpRequest.setAttribute("command", command);
                 logger.debug("commmand" + command + "is set as " +
                         "attribute for httpRequest");
                 filterChain.doFilter(servletRequest, servletResponse);
-            } catch (NullPointerException e) {
+
                 httpRequest.setAttribute("error", String.format("Запрошенный адрес %s не может быть обработан сервером", uri));
                 httpRequest.getServletContext().getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(servletRequest, servletResponse);
-            }
+
         } else {
             servletRequest.getServletContext().getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(servletRequest, servletResponse);
         }
