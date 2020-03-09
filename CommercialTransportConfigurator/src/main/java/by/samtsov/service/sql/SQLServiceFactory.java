@@ -26,28 +26,22 @@ public class SQLServiceFactory implements ServiceFactory {
         logger.debug("transaction created");
         switch (entityType) {
             case USER:
-                SQLUserService userService = new SQLUserService();
-                userService.setTransaction(transaction);
+                SQLUserService userService = new SQLUserService(transaction);
                 return (Type) userService;
             /*case MODEL:
-                ModelServiceImpl modelService = new ModelServiceImpl();
-                modelService.setTransaction(transaction);
+                ModelServiceImpl modelService = new ModelServiceImpl(transaction);
                 return (Type) modelService;
             case ORDER:
-                OrderServiceImpl orderService = new OrderServiceImpl();
-                orderService.setTransaction(transaction);
+                OrderServiceImpl orderService = new OrderServiceImpl(transaction);
                 return (Type) orderService;
             case OPTION:
-                OptionServiceImpl optionService = new OptionServiceImpl();
-                optionService.setTransaction(transaction);
+                OptionServiceImpl optionService = new OptionServiceImpl(transaction);
                 return (Type) optionService;
             case OPTION_VALUE:
-                OptionValueServiceImpl optionValueService = new OptionValueServiceImpl();
-                optionValueService.setTransaction(transaction);
+                OptionValueServiceImpl optionValueService = new OptionValueServiceImpl(transaction);
                 return (Type) optionValueService;
             case CONFIGURATION:
-                ConfigurationServiceImpl configurationService = new ConfigurationServiceImpl();
-                configurationService.setTransaction(transaction);
+                ConfigurationServiceImpl configurationService = new ConfigurationServiceImpl(transaction);
                 return (Type) configurationService;
         }
 

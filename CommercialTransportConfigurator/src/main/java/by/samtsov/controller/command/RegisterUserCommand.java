@@ -56,7 +56,7 @@ public class RegisterUserCommand extends Command {
         json = new Gson().toJson(messageMap);*/
 
         request.setAttribute("user", user);
-
+        forwardPage.setRedirect(false);
         return forwardPage;
     }
 

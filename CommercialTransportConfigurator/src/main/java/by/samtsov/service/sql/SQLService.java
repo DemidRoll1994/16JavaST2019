@@ -6,7 +6,5 @@ public abstract class SQLService {
 
     protected Transaction transaction = null;
 
-    public void setTransaction(Transaction transaction) {
-        this.transaction = transaction;
-    }
+
 }

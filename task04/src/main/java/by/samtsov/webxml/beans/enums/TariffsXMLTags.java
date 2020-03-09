@@ -41,7 +41,7 @@ public enum TariffsXMLTags {
      * Gets the value.
      *
      * @return the value of the element.
-     */
+
     public String getValue() {
         return value;
     }

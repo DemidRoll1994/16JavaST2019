@@ -7,4 +7,5 @@ public enum EntityType {
     OPTION_VALUE,
     ORDER,
     USER;
+
 }

@@ -113,7 +113,7 @@ public class DispatcherServlet extends HttpServlet {
                 getServletContext().getRequestDispatcher(jspPage).forward(request, response);
             }
         } catch (PersistenceException | InternalServerException | ServiceException e) {
-            logger.error("It is impossible to process command: " + command.getName()+ ". Error: \n" + e.getMessage());
+            logger.error("It is impossible to process command: " + command.getName()+ ". Error: \n" , e);
             request.setAttribute("error", "Ошибка обработки данных. " +
                     "Обратитесь к администратору или попробуйте позднее");
             getServletContext().getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);

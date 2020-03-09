@@ -8,12 +8,12 @@ import java.util.regex.Pattern;
 
 public class UserValidatorImpl implements UserValidator {
     private static final Pattern REGEX_PASSWORD_PATTERN = Pattern.compile(
-            "(?=.*[\\d])(?=.*[!-/:-@\\[-`{-~])(?=.*[a-z])(?=.*[A-Z])" +
-                    "[0-9a-zA-Z!-/:-@\\[-`{-~]]{6,}");
+            "(?=.*[0-9])(?=.*[!-\\/:-@\\[-`{-~])(?=.*[a-z])(?=.*[A-Z])" +
+                    "[0-9a-zA-Z!-\\/:-@\\[-`{-~]{6,}");
     private static final Pattern LOGIN_REGEX_PATTERN = Pattern.compile(
             "[a-z0-9_-]{3,16}");
     private static final Pattern EMAIL_REGEX_PATTERN = Pattern.compile(
-            "([\\w\\._]+)@\\1\\.([a-z]{2,6}\\.?)");
+            "([\\w\\._]+)@([\\w\\._]+)\\.([a-z]{2,6}\\.?)");
     private static final Pattern NAME_REGEX_PATTERN = Pattern.compile(
             "[A-Za-zА-Яа-я]{2,20}");
 
@@ -33,22 +33,21 @@ public class UserValidatorImpl implements UserValidator {
     }
 
 
-    public boolean isLoginValid(String password) throws IncorrectDataException {
-        if (password != null) {
-            Matcher matcher = LOGIN_REGEX_PATTERN.matcher(password);
+    public boolean isLoginValid(String login) throws IncorrectDataException {
+        if (login != null) {
+            Matcher matcher = LOGIN_REGEX_PATTERN.matcher(login);
             return matcher.find();
         }
         return false;
     }
 
-    public boolean isEmailValid(String password) throws IncorrectDataException {
-        if (password != null) {
-            Matcher matcher = EMAIL_REGEX_PATTERN.matcher(password);
+    public boolean isEmailValid(String email) throws IncorrectDataException {
+        if (email != null) {
+            Matcher matcher = EMAIL_REGEX_PATTERN.matcher(email);
             return matcher.find();
         }
         return false;
     }
-
 
 
 }

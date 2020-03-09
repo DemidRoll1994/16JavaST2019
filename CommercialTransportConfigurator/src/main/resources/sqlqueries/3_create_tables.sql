@@ -21,6 +21,9 @@ CREATE TABLE `users`
     `company`       VARCHAR(255),
     `PHONE_NUMBER`  BIGINT,
     `ADDRESS`       VARCHAR(255),
+    `email`         VARCHAR(255),
+    `name`          VARCHAR(255),
+    `surname`       VARCHAR(255),
     PRIMARY KEY (`id`)
 ) ENGINE = INNODB
   DEFAULT CHARACTER SET utf8;

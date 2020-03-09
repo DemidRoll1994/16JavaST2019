@@ -65,7 +65,7 @@
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Hello, {$user.name}</a>
+                            <a class="nav-link" href="#">Hello, {$authorizedUser.name}</a>
                         </li>
                     </ul>
 

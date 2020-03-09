@@ -29,8 +29,8 @@ public class SQLUserDao extends SQLBaseDao implements UserDao {
                 user.setLogin(resultSet.getString("login"));
                 user.setPasswordHash(resultSet.getString("password_hash"));
                 user.setSalt(resultSet.getString("salt"));
-                user.setStatus(UserStatus.valueOf(resultSet.getString("status")));
-                user.setRole(Role.valueOf(resultSet.getString("role")));
+                user.setStatus(UserStatus.getByIdentity(resultSet.getInt("status")));
+                user.setRole(Role.getByIdentity(resultSet.getInt("role")));
                 user.setEmail(resultSet.getString("email"));
                 String company = resultSet.getString("company");
                 if (!resultSet.wasNull()) {
@@ -79,8 +79,8 @@ public class SQLUserDao extends SQLBaseDao implements UserDao {
                 user.setLogin(resultSet.getString("login"));
                 user.setPasswordHash(resultSet.getString("password_hash"));
                 user.setSalt(resultSet.getString("salt"));
-                user.setStatus(UserStatus.valueOf(resultSet.getString("status")));
-                user.setRole(Role.valueOf(resultSet.getString("role")));
+                user.setStatus(UserStatus.getByIdentity(resultSet.getInt("status")));
+                user.setRole(Role.getByIdentity(resultSet.getInt("role")));
                 user.setEmail(resultSet.getString("email"));
                 String company = resultSet.getString("company");
                 if (!resultSet.wasNull()) {
@@ -238,8 +238,8 @@ public class SQLUserDao extends SQLBaseDao implements UserDao {
                 user.setLogin(resultSet.getString("login"));
                 user.setPasswordHash(resultSet.getString("password_hash"));
                 user.setSalt(resultSet.getString("salt"));
-                user.setStatus(UserStatus.valueOf(resultSet.getString("status")));
-                user.setRole(Role.valueOf(resultSet.getString("role")));
+                user.setStatus(UserStatus.getByIdentity(resultSet.getInt("status")));
+                user.setRole(Role.getByIdentity(resultSet.getInt("role")));
                 user.setEmail(resultSet.getString("email"));
                 String company = resultSet.getString("company");
                 if (!resultSet.wasNull()) {
@@ -289,8 +289,8 @@ public class SQLUserDao extends SQLBaseDao implements UserDao {
                 user.setLogin(resultSet.getString("login"));
                 user.setPasswordHash(resultSet.getString("password_hash"));
                 user.setSalt(resultSet.getString("salt"));
-                user.setStatus(UserStatus.valueOf(resultSet.getString("status")));
-                user.setRole(Role.valueOf(resultSet.getString("role")));
+                user.setStatus(UserStatus.getByIdentity(resultSet.getInt("status")));
+                user.setRole(Role.getByIdentity(resultSet.getInt("role")));
                 user.setEmail(resultSet.getString("email"));
                 String company = resultSet.getString("company");
                 if (!resultSet.wasNull()) {

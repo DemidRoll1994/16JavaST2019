@@ -9,6 +9,7 @@ import by.samtsov.bean.exceptions.InternalServerException;
 import by.samtsov.bean.exceptions.PersistenceException;
 import by.samtsov.bean.exceptions.ServiceException;
 import by.samtsov.dao.UserDao;
+import by.samtsov.dao.transaction.Transaction;
 import by.samtsov.service.UserPasswordService;
 import by.samtsov.service.UserService;
 import by.samtsov.service.validator.UserValidatorImpl;
@@ -31,8 +32,9 @@ public class SQLUserService extends SQLService implements UserService {
     UserDao userDao = null;
     UserValidatorImpl userValidator = null;
 
-    public SQLUserService() throws InternalServerException {
+    public SQLUserService(Transaction transaction) throws InternalServerException {
         LOGGER.debug("transaction is null:" + (transaction == null));
+        this.transaction=transaction;
         userDao = transaction.createDao(USER_ENTITY_TYPE);
         userValidator = ValidatorFactory.createValidator(USER_ENTITY_TYPE);
     }
@@ -126,11 +128,11 @@ public class SQLUserService extends SQLService implements UserService {
             if (!userValidator.isLoginValid(login)) {
                 throw new IncorrectDataException(INVALID_LOGIN_FORM);
             }
-            if (!userValidator.isPasswordValid(email)) {
-                throw new IncorrectDataException(INVALID_PASSWORD_FORM);
-            }
-            if (!userValidator.isEmailValid(password)) {
+            if (!userValidator.isEmailValid(email)) {
                 throw new IncorrectDataException(INVALID_EMAIL_FORM);
+            }
+            if (!userValidator.isPasswordValid(password)) {
+                throw new IncorrectDataException(INVALID_PASSWORD_FORM);
             }
 
             if (userDao.getByLogin(login) != null) {

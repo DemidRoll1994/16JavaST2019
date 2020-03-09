@@ -4,7 +4,6 @@ import by.samtsov.bean.ForwardPage;
 import by.samtsov.bean.entity.User;
 import by.samtsov.bean.enums.EntityType;
 import by.samtsov.bean.enums.Role;
-import by.samtsov.bean.exceptions.IncorrectDataException;
 import by.samtsov.bean.exceptions.InternalServerException;
 import by.samtsov.bean.exceptions.ServiceException;
 import by.samtsov.service.UserService;
@@ -45,17 +44,12 @@ public class LoginCommand extends Command {
                                HttpServletResponse response)
             throws InternalServerException, ServiceException {
 
+        ForwardPage forwardPage = new ForwardPage("/index.jsp");
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         if (login != null && password != null) {
             UserService service = factory.createService(EntityType.USER);
-
-            User user = null;
-            try {
-                user = service.findByLoginAndPassword(login, password);
-            } catch (IncorrectDataException e) {
-                e.printStackTrace();
-            }
+            User user  = service.findByLoginAndPassword(login, password);
             if (user != null) {
                 HttpSession session = request.getSession();
                 session.setAttribute("authorizedUser", user);
@@ -66,7 +60,7 @@ public class LoginCommand extends Command {
                 logger.info(String.format("user \"%s\" unsuccessfully tried to log in from %s (%s:%s)", login, request.getRemoteAddr(), request.getRemoteHost(), request.getRemotePort()));
             }
         }
-        //return ;
-        return null;
+        forwardPage.setRedirect(false);
+        return forwardPage;
     }
 }
