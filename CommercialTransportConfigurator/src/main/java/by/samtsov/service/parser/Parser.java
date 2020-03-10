@@ -1,6 +1,6 @@
 package by.samtsov.service.parser;
 
-import by.samtsov.bean.exceptions.IncorrectDataException;
+import by.samtsov.service.IncorrectDataException;
 
 import javax.servlet.http.HttpServletRequest;
 

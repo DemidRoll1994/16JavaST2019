@@ -1,6 +1,6 @@
 package by.samtsov.service;
 
-import by.samtsov.bean.enums.EntityType;
+import by.samtsov.bean.type.EntityType;
 import by.samtsov.bean.exceptions.InternalServerException;
 
 public interface ServiceFactory {

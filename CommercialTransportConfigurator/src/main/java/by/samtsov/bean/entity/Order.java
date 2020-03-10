@@ -1,6 +1,6 @@
 package by.samtsov.bean.entity;
 
-import by.samtsov.bean.enums.OrderStatus;
+import by.samtsov.bean.type.OrderStatus;
 
 import java.util.List;
 

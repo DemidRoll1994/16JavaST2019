@@ -1,9 +1,9 @@
 package by.samtsov.dao.mysqlimpl;
 
 import by.samtsov.bean.entity.User;
-import by.samtsov.bean.enums.Role;
-import by.samtsov.bean.enums.UserStatus;
-import by.samtsov.bean.exceptions.PersistenceException;
+import by.samtsov.bean.type.Role;
+import by.samtsov.bean.type.UserStatus;
+import by.samtsov.dao.PersistenceException;
 import by.samtsov.dao.UserDao;
 
 import java.sql.*;

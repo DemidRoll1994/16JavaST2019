@@ -1,6 +1,6 @@
 package by.samtsov.service.validator;
 
-import by.samtsov.bean.exceptions.IncorrectDataException;
+import by.samtsov.service.IncorrectDataException;
 
 public interface Validator<T> {
 

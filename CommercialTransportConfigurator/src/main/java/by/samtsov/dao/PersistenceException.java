@@ -1,4 +1,4 @@
-package by.samtsov.bean.exceptions;
+package by.samtsov.dao;
 
 public class PersistenceException extends Exception {
     public PersistenceException() {}

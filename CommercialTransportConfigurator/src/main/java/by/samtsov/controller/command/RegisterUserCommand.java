@@ -1,10 +1,10 @@
 package by.samtsov.controller.command;
 
-import by.samtsov.bean.ForwardPage;
+import by.samtsov.view.ForwardPage;
 import by.samtsov.bean.entity.User;
-import by.samtsov.bean.enums.EntityType;
+import by.samtsov.bean.type.EntityType;
 import by.samtsov.bean.exceptions.InternalServerException;
-import by.samtsov.bean.exceptions.ServiceException;
+import by.samtsov.service.ServiceException;
 import by.samtsov.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

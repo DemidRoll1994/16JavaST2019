@@ -1,7 +1,6 @@
 package by.samtsov.service;
 
 import by.samtsov.bean.exceptions.InternalServerException;
-import by.samtsov.bean.exceptions.ServiceException;
 
 import java.util.List;
 

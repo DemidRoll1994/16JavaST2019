@@ -1,8 +1,8 @@
 package by.samtsov.dao.mysqlimpl;
 
 import by.samtsov.bean.entity.Option;
-import by.samtsov.bean.enums.OptionType;
-import by.samtsov.bean.exceptions.PersistenceException;
+import by.samtsov.bean.type.OptionType;
+import by.samtsov.dao.PersistenceException;
 import by.samtsov.dao.OptionDao;
 
 import java.sql.PreparedStatement;

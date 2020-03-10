@@ -1,7 +1,7 @@
 package by.samtsov.service.validator;
 
 import by.samtsov.bean.entity.User;
-import by.samtsov.bean.exceptions.IncorrectDataException;
+import by.samtsov.service.IncorrectDataException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

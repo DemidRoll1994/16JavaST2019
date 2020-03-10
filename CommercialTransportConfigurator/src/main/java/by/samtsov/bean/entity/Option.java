@@ -1,6 +1,6 @@
 package by.samtsov.bean.entity;
 
-import by.samtsov.bean.enums.OptionType;
+import by.samtsov.bean.type.OptionType;
 
 import java.util.List;
 

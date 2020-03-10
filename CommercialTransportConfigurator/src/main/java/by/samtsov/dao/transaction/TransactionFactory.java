@@ -1,6 +1,6 @@
 package by.samtsov.dao.transaction;
 
-import by.samtsov.bean.exceptions.PersistenceException;
+import by.samtsov.dao.PersistenceException;
 import by.samtsov.dao.pool.C3poDataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

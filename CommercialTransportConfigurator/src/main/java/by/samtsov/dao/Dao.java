@@ -1,8 +1,6 @@
 package by.samtsov.dao;
 
 
-import by.samtsov.bean.exceptions.PersistenceException;
-
 import java.util.List;
 
 public interface Dao<T> {

@@ -1,6 +1,6 @@
 package by.samtsov.dao.factory;
 
-import by.samtsov.bean.enums.EntityType;
+import by.samtsov.bean.type.EntityType;
 import by.samtsov.bean.exceptions.InternalServerException;
 import by.samtsov.dao.Dao;
 import by.samtsov.dao.mysqlimpl.SQLModelDao;

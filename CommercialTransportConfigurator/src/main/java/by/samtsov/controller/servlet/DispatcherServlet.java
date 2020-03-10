@@ -1,9 +1,10 @@
 package by.samtsov.controller.servlet;
 
-import by.samtsov.bean.ForwardPage;
+import by.samtsov.service.IncorrectDataException;
+import by.samtsov.view.ForwardPage;
 import by.samtsov.bean.exceptions.InternalServerException;
-import by.samtsov.bean.exceptions.PersistenceException;
-import by.samtsov.bean.exceptions.ServiceException;
+import by.samtsov.dao.PersistenceException;
+import by.samtsov.service.ServiceException;
 import by.samtsov.controller.command.Command;
 import by.samtsov.controller.command.CommandManager;
 import by.samtsov.controller.command.CommandManagerFactory;
@@ -112,7 +113,12 @@ public class DispatcherServlet extends HttpServlet {
                 logger.debug(String.format("Request for URI \"%s\" is forwarded to JSP \"%s\"", requestedUri, jspPage));
                 getServletContext().getRequestDispatcher(jspPage).forward(request, response);
             }
-        } catch (PersistenceException | InternalServerException | ServiceException e) {
+        } catch (IncorrectDataException e) {
+            logger.error("incorrect data : " + command.getName()+ ". Error: " , e);
+            request.setAttribute("error", "Неверно введены данные." + e.getErrorMessage());
+            getServletContext().getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
+        }
+        catch (PersistenceException | InternalServerException | ServiceException e) {
             logger.error("It is impossible to process command: " + command.getName()+ ". Error: \n" , e);
             request.setAttribute("error", "Ошибка обработки данных. " +
                     "Обратитесь к администратору или попробуйте позднее");

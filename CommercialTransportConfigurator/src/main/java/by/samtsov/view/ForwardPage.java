@@ -1,4 +1,4 @@
-package by.samtsov.bean;
+package by.samtsov.view;
 
 import java.util.HashMap;
 import java.util.Map;

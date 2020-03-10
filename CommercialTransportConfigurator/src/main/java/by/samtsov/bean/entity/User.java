@@ -1,7 +1,7 @@
 package by.samtsov.bean.entity;
 
-import by.samtsov.bean.enums.Role;
-import by.samtsov.bean.enums.UserStatus;
+import by.samtsov.bean.type.Role;
+import by.samtsov.bean.type.UserStatus;
 
 public class User {
     private int id; //not null

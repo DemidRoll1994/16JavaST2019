@@ -1,13 +1,13 @@
 package by.samtsov.service.sql;
 
 import by.samtsov.bean.entity.User;
-import by.samtsov.bean.enums.EntityType;
-import by.samtsov.bean.enums.Role;
-import by.samtsov.bean.enums.UserStatus;
-import by.samtsov.bean.exceptions.IncorrectDataException;
+import by.samtsov.bean.type.EntityType;
+import by.samtsov.bean.type.Role;
+import by.samtsov.bean.type.UserStatus;
+import by.samtsov.service.IncorrectDataException;
 import by.samtsov.bean.exceptions.InternalServerException;
-import by.samtsov.bean.exceptions.PersistenceException;
-import by.samtsov.bean.exceptions.ServiceException;
+import by.samtsov.dao.PersistenceException;
+import by.samtsov.service.ServiceException;
 import by.samtsov.dao.UserDao;
 import by.samtsov.dao.transaction.Transaction;
 import by.samtsov.service.UserPasswordService;
@@ -19,7 +19,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
-import static by.samtsov.bean.enums.InternalServerErrors.*;
+import static by.samtsov.bean.type.InternalServerErrors.*;
 
 public class SQLUserService extends SQLService implements UserService {
 

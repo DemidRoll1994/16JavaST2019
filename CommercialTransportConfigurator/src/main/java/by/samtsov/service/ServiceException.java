@@ -1,4 +1,4 @@
-package by.samtsov.bean.exceptions;
+package by.samtsov.service;
 
 public class ServiceException extends Exception {
     public ServiceException() {

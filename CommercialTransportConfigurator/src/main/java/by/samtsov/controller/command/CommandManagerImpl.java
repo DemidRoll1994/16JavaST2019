@@ -1,9 +1,9 @@
 package by.samtsov.controller.command;
 
-import by.samtsov.bean.ForwardPage;
+import by.samtsov.view.ForwardPage;
 import by.samtsov.bean.exceptions.InternalServerException;
-import by.samtsov.bean.exceptions.PersistenceException;
-import by.samtsov.bean.exceptions.ServiceException;
+import by.samtsov.dao.PersistenceException;
+import by.samtsov.service.ServiceException;
 import by.samtsov.service.sql.SQLServiceFactory;
 
 import javax.servlet.http.HttpServletRequest;

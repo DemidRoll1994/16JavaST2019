@@ -1,9 +1,10 @@
-package by.samtsov.bean.exceptions;
+package by.samtsov.service;
 
 
-import by.samtsov.bean.enums.InternalServerErrors;
+import by.samtsov.bean.type.InternalServerErrors;
 
 public class IncorrectDataException extends ServiceException {
+
     InternalServerErrors internalServerErrorType;
 
     public IncorrectDataException(InternalServerErrors errorType) {
@@ -20,6 +21,17 @@ public class IncorrectDataException extends ServiceException {
 
     public IncorrectDataException(Throwable cause) {
         super(cause);
+    }
+
+    public InternalServerErrors getInternalServerErrorType() {
+        return internalServerErrorType;
+    }
+
+    public String getErrorMessage() {
+        if (internalServerErrorType == null) {
+            return "Incorrect data";
+        }
+        return internalServerErrorType.getMessage();
     }
 
 }

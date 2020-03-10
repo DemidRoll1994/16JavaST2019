@@ -1,7 +1,7 @@
 package by.samtsov.controller.command;
 
-import by.samtsov.bean.ForwardPage;
-import by.samtsov.bean.exceptions.PersistenceException;
+import by.samtsov.view.ForwardPage;
+import by.samtsov.dao.PersistenceException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

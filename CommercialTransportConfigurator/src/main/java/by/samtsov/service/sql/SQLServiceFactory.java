@@ -1,6 +1,6 @@
 package by.samtsov.service.sql;
 
-import by.samtsov.bean.enums.EntityType;
+import by.samtsov.bean.type.EntityType;
 import by.samtsov.bean.exceptions.InternalServerException;
 import by.samtsov.dao.transaction.Transaction;
 import by.samtsov.dao.transaction.TransactionFactory;

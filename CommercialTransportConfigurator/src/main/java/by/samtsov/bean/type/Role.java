@@ -1,4 +1,4 @@
-package by.samtsov.bean.enums;
+package by.samtsov.bean.type;
 
 public enum Role {
     BUYER,
