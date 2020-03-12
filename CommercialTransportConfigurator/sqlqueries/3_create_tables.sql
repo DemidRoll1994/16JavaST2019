@@ -2,9 +2,11 @@ USE `vehiclessales`;
 CREATE TABLE `users`
 (
     `id`            INTEGER      NOT NULL AUTO_INCREMENT,
-    `login`         VARCHAR(255) NOT NULL UNIQUE,
+    `email`         VARCHAR(255) unique not null,
     `password_Hash` text(512)    NOT NULL,
     `salt`          varchar(255) NOT NULL,
+    `name`          VARCHAR(255),
+    `surname`       VARCHAR(255),
 
     /*
      * 0 - не активирован
@@ -21,9 +23,6 @@ CREATE TABLE `users`
     `company`       VARCHAR(255),
     `PHONE_NUMBER`  BIGINT,
     `ADDRESS`       VARCHAR(255),
-    `email`         VARCHAR(255),
-    `name`          VARCHAR(255),
-    `surname`       VARCHAR(255),
     PRIMARY KEY (`id`)
 ) ENGINE = INNODB
   DEFAULT CHARACTER SET utf8;

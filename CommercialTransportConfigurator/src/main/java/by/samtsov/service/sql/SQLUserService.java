@@ -126,19 +126,24 @@ public class SQLUserService extends SQLService implements UserService {
     public User create(String name, String surname, String email, String password) throws ServiceException {
         try {
             if (!userValidator.isNameValid(name)) {
+                LOGGER.debug(" name " + name + " is invalid");
                 throw new IncorrectDataException(INVALID_NAME_FORM);
             }
             if (!userValidator.isSurnameValid(surname)) {
+                LOGGER.debug(" surname " + surname + " is invalid");
                 throw new IncorrectDataException(INVALID_SURNAME_FORM);
             }
             if (!userValidator.isEmailValid(email)) {
+                LOGGER.debug(" email " + email + " is invalid");
                 throw new IncorrectDataException(INVALID_EMAIL_FORM);
             }
             if (!userValidator.isPasswordValid(password)) {
+                LOGGER.debug(" password " + password + " is invalid");
                 throw new IncorrectDataException(INVALID_PASSWORD_FORM);
             }
 
             if (userDao.getByEmail(email) != null) {
+                LOGGER.debug(" email " + email + " is exist");
                 throw new IncorrectDataException(EMAIL_ALREADY_EXISTS);
             }
 

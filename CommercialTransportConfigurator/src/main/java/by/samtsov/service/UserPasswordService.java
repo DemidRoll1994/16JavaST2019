@@ -21,7 +21,7 @@ public class UserPasswordService {
      */
     private final int ITERATIONS = 2397;
     private final int KEY_LENGTH = 512;
-    private final int SALT_LENGTH = 512;
+    private final int SALT_LENGTH = 255;
     /**
      * Application-side salt.
      * ATTENTION! changing this value will invalidate all hashed passwords

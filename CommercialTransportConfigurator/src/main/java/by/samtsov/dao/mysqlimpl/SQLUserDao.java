@@ -115,7 +115,7 @@ public class SQLUserDao extends SQLBaseDao implements UserDao {
         String sql = "INSERT INTO `users` (`password_hash`," +
                 " `salt`, `status`, `role`,`company`, `Phone_number`," +
                 "`address`, `email`, `name`, `surname`)" +
-                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         ResultSet resultSet = null;
         try (PreparedStatement statement = connection.prepareStatement(sql
                 , Statement.RETURN_GENERATED_KEYS)) {
@@ -127,7 +127,7 @@ public class SQLUserDao extends SQLBaseDao implements UserDao {
             if (user.getCompanyName() != null) {
                 statement.setString(5, user.getCompanyName());
             } else {
-                statement.setNull(55, Types.INTEGER);
+                statement.setNull(5, Types.INTEGER);
             }
             if (user.getPhoneNumber() != -1) {
                 statement.setLong(6, user.getPhoneNumber());

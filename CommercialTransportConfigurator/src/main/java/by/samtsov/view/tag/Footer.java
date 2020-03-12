@@ -14,7 +14,7 @@ public class Footer extends TagSupport {
             out.write( "<footer> ");
             out.write( "<div class=\"row navbar-fixed-bottom\"> ");
             out.write( "<div class=\"col-9\"> </div>  ");
-            out.write( "<div class=\"col-3\"> Artem Samtsov, <br> " +
+            out.write( "<div class=\"col-3\"> Artyom Samtsov, <br> " +
                     "training.by, 2019-2020 </div> ");
             out.write( "</div> ");
             out.write( "</footer> ");

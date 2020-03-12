@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ActionFilter implements Filter {
-    private static Logger logger = LogManager.getRootLogger();
+    private static Logger logger = LogManager.getLogger(ActionFilter.class);
 
     private static Map<String, AvailableCommands> commands = new ConcurrentHashMap<>();
 

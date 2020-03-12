@@ -124,21 +124,45 @@
                                     3</a>
                             </div>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Hello, {$authorizedUser.login}</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="btn btn-link" role="button">Регистрация</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#login-signup-modal" class="btn btn-primary" data-toggle="modal">Login</a>
-                        </li>
+
+
+                        <c:choose>
+                            <c:when test="${authorizedUser==null}">
+                                <li class="nav-item">
+                                    <a href="#login-signup-modal"
+                                       class="btn btn-primary" data-toggle="modal">
+                                        Login</a>
+                                </li>
+                            </c:when>
+                            <c:when test="${authorizedUser!=null}">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Hello,
+                                            ${authorizedUser.name}!</a>
+                                </li>
+                            </c:when>
+                        </c:choose>
                     </ul>
                 </div>
             </div>
         </nav>
     </div>
 
+    <!-- пример использования jstl if-else -->
+    <c:if test="${fasle}">
+        You are over the hill.
+    </c:if>
+
+    <c:choose>
+        <c:when test="${true}">
+
+        </c:when>
+        <c:when test="${false}">
+            do something else
+        </c:when>
+        <c:otherwise>
+            do this when nothing else is true
+        </c:otherwise>
+    </c:choose>
     <c:url value="/register.html" var="registerUrl"/>
     <c:url value="/login.html" var="loginUrl"/>
     <c:url value="/forgetPass.html" var="forgetPassUrl"/>
@@ -158,12 +182,18 @@
                     <form action="${loginUrl}" method="post" id="Login-Form" role="form">
                         <div class="form-group">
                             <div class="input-group">
-                                <input name="email" id="email" type="email" class="form-control input-lg" placeholder="Enter Login" >
+                                <input name="email" id="login-email" type="email" class="form-control input-lg" placeholder="Enter Login" >
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group">
-                                <input name="password" id="login-password" type="password" class="form-control input-lg" placeholder="Enter Password" required data-parsley-min="6" data-parsley-trigger="keyup">
+                                <input name="password"
+                                       id="login-password"
+                                       type="password"
+                                       class="form-control input-lg"
+                                       placeholder="Enter Password"
+                                       required data-parsley-min="6"
+                                       data-parsley-trigger="keyup">
                             </div>
                         </div>
                         <button type="submit" class="btn btn-success btn-block btn-lg">LOGIN</button>
@@ -203,7 +233,7 @@
                         </div>
                         <div class="form-group">
                             <div class="input-group">
-                                <input name="email" id="email" type="email" class="form-control input-lg" placeholder="Enter Email" required data-parsley-type="email">
+                                <input name="email" id="signup-email" type="email" class="form-control input-lg" placeholder="Enter Email" required data-parsley-type="email">
                             </div>
                         </div>
                         <div class="form-group">
@@ -237,7 +267,7 @@
                     <form action="${forgotPassUrl}" method="post" id="Forgot-Password-Form" role="form">
                         <div class="form-group">
                             <div class="input-group">
-                                <input name="email" id="email" type="email" class="form-control input-lg" placeholder="Enter Email" required data-parsley-type="email">
+                                <input name="email" id="forgot-email" type="email" class="form-control input-lg" placeholder="Enter Email" required data-parsley-type="email">
                             </div>
                         </div>
                         <button type="submit" class="btn btn-success btn-block btn-lg">
@@ -249,10 +279,8 @@
                 <div class="modal-footer">
                     <p>Remember Password ? <a id="loginModal1" href="javascript:void(0)">Login Here!</a></p>
                 </div>
-
             </div>
             <!-- содержимое модального окна forgot password -->
-
         </div>
     </div>
 
@@ -265,8 +293,8 @@
 <main>
     <br><br><br>
 <%--
-    <c:out value="${sessionScope.authorizedUser.login}" />
-    Hello, ${sessionScope.authorizedUser.login}
+    <c:out value="${sessionScope.authorizedUser.name}" />
+    Hello, ${sessionScope.authorizedUser.name}
     <H2>Вход в систему</H2>
     <c:url value="/login.html" var="loginUrl"/>
     <FORM action="${loginUrl}" method="post">
@@ -344,32 +372,10 @@
                     <span class="sr-only">Next</span>
                 </a>
             </div>
-
-            <!--
-            <nav class="navbar navbar-default">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <a href="#" class="navbar-brand">название меню</a>
-                    </div>
-                    <div>
-                        <ul class ="nav navbar-nav">
-                            <li><a href="#"> войти</a> </li>
-                            <li><a href="#"> выйти</a> </li>
-                            <li><a href="#"> войти и выйти</a> </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-            -->
-
-
         </div>
         <div class="col-2"></div>
     </div>
-
-
 </main>
 <ctg:footer/>
-
 </body>
 </html>
