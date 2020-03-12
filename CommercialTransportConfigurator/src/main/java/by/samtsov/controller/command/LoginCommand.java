@@ -45,19 +45,19 @@ public class LoginCommand extends Command {
             throws InternalServerException, ServiceException {
 
         ForwardPage forwardPage = new ForwardPage("/index.jsp");
-        String login = request.getParameter("login");
+        String email = request.getParameter("email");
         String password = request.getParameter("password");
-        if (login != null && password != null) {
+        if (email != null && password != null) {
             UserService service = factory.createService(EntityType.USER);
-            User user  = service.findByLoginAndPassword(login, password);
+            User user  = service.findByEmailAndPassword(email, password);
             if (user != null) {
                 HttpSession session = request.getSession();
                 session.setAttribute("authorizedUser", user);
                 //session.setAttribute("menu", menu.get(user.getRole()));
-                logger.info(String.format("user \"%s\" is logged in from %s (%s:%s)", login, request.getRemoteAddr(), request.getRemoteHost(), request.getRemotePort()));
+                logger.info(String.format("user \"%s\" is logged in from %s (%s:%s)", email, request.getRemoteAddr(), request.getRemoteHost(), request.getRemotePort()));
             } else {
                 request.setAttribute("message", "Имя пользователя или пароль не опознанны");
-                logger.info(String.format("user \"%s\" unsuccessfully tried to log in from %s (%s:%s)", login, request.getRemoteAddr(), request.getRemoteHost(), request.getRemotePort()));
+                logger.info(String.format("user \"%s\" unsuccessfully tried to log in from %s (%s:%s)", email, request.getRemoteAddr(), request.getRemoteHost(), request.getRemotePort()));
             }
         }
         forwardPage.setRedirect(false);

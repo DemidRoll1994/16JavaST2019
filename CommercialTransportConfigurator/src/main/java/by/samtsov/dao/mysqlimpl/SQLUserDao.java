@@ -15,7 +15,7 @@ public class SQLUserDao extends SQLBaseDao implements UserDao {
 
     @Override
     public User get(int id) throws PersistenceException {
-        String sql = "SELECT `id`, `login`,`password_hash`, `salt`, " +
+        String sql = "SELECT `id`, `password_hash`, `salt`, " +
                 "`status`, `role`,`company`,`Phone_number`,`address`," +
                 " `email`, `name`, `surname` FROM `users` where `id` =?";
         ResultSet resultSet = null;
@@ -26,7 +26,6 @@ public class SQLUserDao extends SQLBaseDao implements UserDao {
             if (resultSet.next()) {
                 user = new User();
                 user.setId(resultSet.getInt("id"));
-                user.setLogin(resultSet.getString("login"));
                 user.setPasswordHash(resultSet.getString("password_hash"));
                 user.setSalt(resultSet.getString("salt"));
                 user.setStatus(UserStatus.getByIdentity(resultSet.getInt("status")));
@@ -66,9 +65,9 @@ public class SQLUserDao extends SQLBaseDao implements UserDao {
 
     @Override
     public List<User> getAll() throws PersistenceException {
-        String sql = "SELECT `id`, `login`, `password_hash`, `salt`, " +
+        String sql = "SELECT `id`,  `password_hash`, `salt`, " +
                 "`status`, `role`,`company`,`Phone_number`,`address`, " +
-                "`email`, `name`, `surname` FROM `users` ORDER BY `login`";
+                "`email`, `name`, `surname` FROM `users` ORDER BY `email`";
         try (PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
             List<User> users = new ArrayList<>();
@@ -76,7 +75,6 @@ public class SQLUserDao extends SQLBaseDao implements UserDao {
             while (resultSet.next()) {
                 user = new User();
                 user.setId(resultSet.getInt("id"));
-                user.setLogin(resultSet.getString("login"));
                 user.setPasswordHash(resultSet.getString("password_hash"));
                 user.setSalt(resultSet.getString("salt"));
                 user.setStatus(UserStatus.getByIdentity(resultSet.getInt("status")));
@@ -114,37 +112,36 @@ public class SQLUserDao extends SQLBaseDao implements UserDao {
 
     @Override
     public int add(User user) throws PersistenceException {
-        String sql = "INSERT INTO `users` (`login`, `password_hash`," +
+        String sql = "INSERT INTO `users` (`password_hash`," +
                 " `salt`, `status`, `role`,`company`, `Phone_number`," +
                 "`address`, `email`, `name`, `surname`)" +
                 " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         ResultSet resultSet = null;
         try (PreparedStatement statement = connection.prepareStatement(sql
                 , Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, user.getLogin());
-            statement.setString(2, user.getPasswordHash());
-            statement.setString(3, user.getSalt());
-            statement.setInt(4, user.getStatus().getIdentity());
-            statement.setInt(5, user.getRole().getIdentity());
+            statement.setString(1, user.getPasswordHash());
+            statement.setString(2, user.getSalt());
+            statement.setInt(3, user.getStatus().getIdentity());
+            statement.setInt(4, user.getRole().getIdentity());
 
             if (user.getCompanyName() != null) {
-                statement.setString(6, user.getCompanyName());
+                statement.setString(5, user.getCompanyName());
+            } else {
+                statement.setNull(55, Types.INTEGER);
+            }
+            if (user.getPhoneNumber() != -1) {
+                statement.setLong(6, user.getPhoneNumber());
             } else {
                 statement.setNull(6, Types.INTEGER);
             }
-            if (user.getPhoneNumber() != -1) {
-                statement.setLong(7, user.getPhoneNumber());
+            if (user.getCompanyName() != null) {
+                statement.setString(7, user.getCompanyName());
             } else {
                 statement.setNull(7, Types.INTEGER);
             }
-            if (user.getCompanyName() != null) {
-                statement.setString(8, user.getCompanyName());
-            } else {
-                statement.setNull(8, Types.INTEGER);
-            }
-            statement.setString(9, user.getEmail());
-            statement.setString(10, user.getName());
-            statement.setString(11, user.getSurname());
+            statement.setString(8, user.getEmail());
+            statement.setString(9, user.getName());
+            statement.setString(10, user.getSurname());
             statement.executeUpdate();
             resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -164,35 +161,34 @@ public class SQLUserDao extends SQLBaseDao implements UserDao {
 
     @Override
     public int update(User user) throws PersistenceException {
-        String sql = "UPDATE `users` SET `login` = ?, `password_hash` = ?, " +
+        String sql = "UPDATE `users` SET , `password_hash` = ?, " +
                 "`salt` = ?, `status` = ?, `role` = ?, `company` = ?," +
                 " `phoneNumber` = ?, `address` = ?, `email` = ?, `name` = ?," +
                 " `surname` = ? WHERE `id` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, user.getLogin());
-            statement.setString(2, user.getPasswordHash());
-            statement.setString(3, user.getSalt());
-            statement.setInt(4, user.getStatus().getIdentity());
-            statement.setInt(5, user.getRole().getIdentity());
+            statement.setString(1, user.getPasswordHash());
+            statement.setString(2, user.getSalt());
+            statement.setInt(3, user.getStatus().getIdentity());
+            statement.setInt(4, user.getRole().getIdentity());
             if (user.getCompanyName() != null) {
-                statement.setString(6, user.getCompanyName());
+                statement.setString(5, user.getCompanyName());
+            } else {
+                statement.setNull(5, Types.INTEGER);
+            }
+            if (user.getPhoneNumber() != -1) {
+                statement.setLong(6, user.getPhoneNumber());
             } else {
                 statement.setNull(6, Types.INTEGER);
             }
-            if (user.getPhoneNumber() != -1) {
-                statement.setLong(7, user.getPhoneNumber());
+            if (user.getCompanyName() != null) {
+                statement.setString(7, user.getCompanyName());
             } else {
                 statement.setNull(7, Types.INTEGER);
             }
-            if (user.getCompanyName() != null) {
-                statement.setString(8, user.getCompanyName());
-            } else {
-                statement.setNull(8, Types.INTEGER);
-            }
-            statement.setString(9, user.getEmail());
-            statement.setString(10, user.getName());
-            statement.setString(11, user.getSurname());
-            statement.setInt(12, user.getId());
+            statement.setString(8, user.getEmail());
+            statement.setString(9, user.getName());
+            statement.setString(10, user.getSurname());
+            statement.setInt(11, user.getId());
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -222,60 +218,10 @@ public class SQLUserDao extends SQLBaseDao implements UserDao {
         }
     }
 
-    @Override
-    public User getByLogin(String login) throws PersistenceException {
-        String sql = "SELECT `id`, `login`, `password_hash`, `salt`, " +
-                "`status`, `role`,`company`,`Phone_number`, `address`," +
-                " `email`, `name`, `surname` FROM `users` where `login` =?";
-        ResultSet resultSet = null;
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, login);
-            resultSet = statement.executeQuery();
-            User user = null;
-            if (resultSet.next()) {
-                user = new User();
-                user.setId(resultSet.getInt("id"));
-                user.setLogin(resultSet.getString("login"));
-                user.setPasswordHash(resultSet.getString("password_hash"));
-                user.setSalt(resultSet.getString("salt"));
-                user.setStatus(UserStatus.getByIdentity(resultSet.getInt("status")));
-                user.setRole(Role.getByIdentity(resultSet.getInt("role")));
-                user.setEmail(resultSet.getString("email"));
-                String company = resultSet.getString("company");
-                if (!resultSet.wasNull()) {
-                    user.setCompanyName(company);
-                }
-                long phoneNumber = resultSet.getLong("Phone_number");
-                if (!resultSet.wasNull()) {
-                    user.setPhoneNumber(phoneNumber);
-                }
-                String address = resultSet.getString("address");
-                if (!resultSet.wasNull()) {
-                    user.setAddress(address);
-                }
-                String name = resultSet.getString("name");
-                if (!resultSet.wasNull()) {
-                    user.setName(name);
-                }
-                String surname = resultSet.getString("surname");
-                if (!resultSet.wasNull()) {
-                    user.setSurname(surname);
-                }
-            }
-            return user;
-        } catch (SQLException e) {
-            throw new PersistenceException(e);
-        } finally {
-            try {
-                if (resultSet != null) resultSet.close();
-            } catch (SQLException e) {
-            }
-        }
-    }
 
     @Override
     public User getByEmail(String email) throws PersistenceException {
-        String sql = "SELECT `id`, `login`, `password_hash`, `salt`, " +
+        String sql = "SELECT `id`,  `password_hash`, `salt`, " +
                 "`status`, `role`,`company`,`Phone_number`, `address`," +
                 " `email`, `name`, `surname` FROM `users` where `email` =?";
         ResultSet resultSet = null;
@@ -286,7 +232,6 @@ public class SQLUserDao extends SQLBaseDao implements UserDao {
             if (resultSet.next()) {
                 user = new User();
                 user.setId(resultSet.getInt("id"));
-                user.setLogin(resultSet.getString("login"));
                 user.setPasswordHash(resultSet.getString("password_hash"));
                 user.setSalt(resultSet.getString("salt"));
                 user.setStatus(UserStatus.getByIdentity(resultSet.getInt("status")));

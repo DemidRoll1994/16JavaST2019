@@ -5,9 +5,9 @@ import by.samtsov.bean.exceptions.InternalServerException;
 
 public interface UserService extends Service<User> {
 
-    User findByLoginAndPassword(String login, String password) throws ServiceException, InternalServerException;
+    User findByEmailAndPassword(String login, String password) throws ServiceException, InternalServerException;
 
-    User create(String login, String email, String password) throws ServiceException, InternalServerException;
+    User create( String name, String surname, String email, String password) throws ServiceException, InternalServerException;
 
     void updatePassword(User user, String newPassword) throws ServiceException, InternalServerException;
 }

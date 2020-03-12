@@ -15,7 +15,9 @@ public class UserValidatorImpl implements UserValidator {
     private static final Pattern EMAIL_REGEX_PATTERN = Pattern.compile(
             "([\\w\\._]+)@([\\w\\._]+)\\.([a-z]{2,6}\\.?)");
     private static final Pattern NAME_REGEX_PATTERN = Pattern.compile(
-            "[A-Za-zА-Яа-я]{2,20}");
+            "^[a-zа-я]{2,255}$");
+    private static final Pattern SURNAME_REGEX_PATTERN = Pattern.compile(
+            "^([a-zа-я]+[',.-]?[a-zа-я]+){2,255}$",Pattern.CASE_INSENSITIVE);
 
     @Override
     public boolean isValid(User user) throws IncorrectDataException {
@@ -25,25 +27,29 @@ public class UserValidatorImpl implements UserValidator {
     }
 
     public boolean isPasswordValid(String password) throws IncorrectDataException {
-        if (password != null) {
-            Matcher matcher = REGEX_PASSWORD_PATTERN.matcher(password);
-            return matcher.find();
-        }
-        return false;
+        return isValueMatchPatter(password, REGEX_PASSWORD_PATTERN);
     }
 
 
     public boolean isLoginValid(String login) throws IncorrectDataException {
-        if (login != null) {
-            Matcher matcher = LOGIN_REGEX_PATTERN.matcher(login);
-            return matcher.find();
-        }
-        return false;
+        return isValueMatchPatter(login, LOGIN_REGEX_PATTERN);
     }
 
     public boolean isEmailValid(String email) throws IncorrectDataException {
-        if (email != null) {
-            Matcher matcher = EMAIL_REGEX_PATTERN.matcher(email);
+        return isValueMatchPatter(email, EMAIL_REGEX_PATTERN);
+    }
+
+    public boolean isNameValid(String email) throws IncorrectDataException {
+        return isValueMatchPatter(email, NAME_REGEX_PATTERN);
+    }
+
+    public boolean isSurnameValid(String email) throws IncorrectDataException {
+        return isValueMatchPatter(email, SURNAME_REGEX_PATTERN);
+    }
+
+    public boolean isValueMatchPatter(String value, Pattern pattern) throws IncorrectDataException {
+        if (value != null) {
+            Matcher matcher = pattern.matcher(value);
             return matcher.find();
         }
         return false;

@@ -23,15 +23,16 @@ public class RegisterUserCommand extends Command {
                                HttpServletResponse response) throws InternalServerException, ServiceException {
 //        setNextPage("/user/edit.html");
         ForwardPage forwardPage = new ForwardPage("/index.jsp");
-        String login = request.getParameter("login");
-        String password = request.getParameter("password");
+        String name = request.getParameter("name");
+        String surname = request.getParameter("surname");
         String email = request.getParameter("email");
+        String password = request.getParameter("password");
 
         UserService userService = null;
         User user = null;
 
         userService = factory.createService(USER_ENTITY_TYPE);
-        user = userService.create(login, email, password);
+        user = userService.create(name, surname,email, password);
         HttpSession session = request.getSession();
         session.setAttribute("authorizedUser", user);
         String successMessage = String.format(

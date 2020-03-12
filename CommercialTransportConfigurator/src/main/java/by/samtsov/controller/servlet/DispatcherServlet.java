@@ -114,7 +114,7 @@ public class DispatcherServlet extends HttpServlet {
                 getServletContext().getRequestDispatcher(jspPage).forward(request, response);
             }
         } catch (IncorrectDataException e) {
-            logger.error("incorrect data : " + command.getName()+ ". Error: " , e);
+            logger.debug("incorrect data : " + command.getName()+ ". Error: " , e);
             request.setAttribute("error", "Неверно введены данные." + e.getErrorMessage());
             getServletContext().getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
         }

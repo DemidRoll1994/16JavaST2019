@@ -106,11 +106,11 @@ public class SQLUserService extends SQLService implements UserService {
     }
 
     @Override
-    public User findByLoginAndPassword(String login, String password) throws ServiceException {
+    public User findByEmailAndPassword(String email, String password) throws ServiceException {
         UserPasswordService userPasswordService = new UserPasswordService();
         User user = null;
         try {
-            user = userDao.getByLogin(login);
+            user = userDao.getByEmail(email);
         } catch (PersistenceException e) {
             throw new ServiceException(FIND_USER_ERR_MSG, e);
         }
@@ -123,10 +123,13 @@ public class SQLUserService extends SQLService implements UserService {
     }
 
 
-    public User create(String login, String email, String password) throws ServiceException {
+    public User create(String name, String surname, String email, String password) throws ServiceException {
         try {
-            if (!userValidator.isLoginValid(login)) {
-                throw new IncorrectDataException(INVALID_LOGIN_FORM);
+            if (!userValidator.isNameValid(name)) {
+                throw new IncorrectDataException(INVALID_NAME_FORM);
+            }
+            if (!userValidator.isSurnameValid(surname)) {
+                throw new IncorrectDataException(INVALID_SURNAME_FORM);
             }
             if (!userValidator.isEmailValid(email)) {
                 throw new IncorrectDataException(INVALID_EMAIL_FORM);
@@ -135,15 +138,13 @@ public class SQLUserService extends SQLService implements UserService {
                 throw new IncorrectDataException(INVALID_PASSWORD_FORM);
             }
 
-            if (userDao.getByLogin(login) != null) {
-                throw new IncorrectDataException(LOGIN_ALREADY_EXISTS);
-            }
             if (userDao.getByEmail(email) != null) {
                 throw new IncorrectDataException(EMAIL_ALREADY_EXISTS);
             }
 
             User user = new User();
-            user.setLogin(login);
+            user.setName(name);
+            user.setSurname(surname);
             user.setEmail(email);
 
             UserPasswordService userPasswordService = new UserPasswordService();
@@ -161,9 +162,9 @@ public class SQLUserService extends SQLService implements UserService {
             try {
                 transaction.rollback();
             } catch (PersistenceException ex) {
-                throw new ServiceException(ROLLBACK_CREATE_ERR_MSG + login, e);
+                throw new ServiceException(ROLLBACK_CREATE_ERR_MSG + email , e);
             }
-            throw new ServiceException(CREATE_USER_ERR_MSG + login, e);
+            throw new ServiceException(CREATE_USER_ERR_MSG + email, e);
         }
     }
 

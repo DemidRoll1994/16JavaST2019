@@ -190,6 +190,17 @@
 
                 <div class="modal-body">
                     <form action="${registerUrl}" method="post" id="Signup-Form" role="form">
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input name="name" id="name"  class="form-control input-lg" placeholder="Enter name" required data-parsley-pattern="^[a-zа-я]{2,255}$" data-parsley-trigger="keyup">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input name="surname" id="surname"  class="form-control input-lg" placeholder="Enter surname" required data-parsley-pattern="^([a-zа-я]+[',.-]?[a-zа-я]+){2,255}$" data-parsley-trigger="keyup">
+                            </div>
+                        </div>
                         <div class="form-group">
                             <div class="input-group">
                                 <input name="email" id="email" type="email" class="form-control input-lg" placeholder="Enter Email" required data-parsley-type="email">
