@@ -84,7 +84,7 @@
     <div class="row">
         <nav class="fixed-top navbar navbar-expand navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="#"><span
+                <a class="navbar-brand" href="/index.html"><span
                         class="glyphicon glyphicon-cog"
                         aria-hidden="true"></span> Конфигуратор </a>
                 <button class="navbar-toggler" type="button"

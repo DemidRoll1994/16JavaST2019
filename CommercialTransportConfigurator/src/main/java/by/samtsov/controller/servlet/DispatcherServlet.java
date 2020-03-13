@@ -95,6 +95,7 @@ public class DispatcherServlet extends HttpServlet {
             //узнаем куда отправляем пользователя дальше
             String requestedUri = request.getRequestURI();
             //узнаем каким способом отправляем пользователя
+            logger.debug(String.format("ForwardPage is null: %b, redirect : %b", forwardPage == null, forwardPage != null ? forwardPage.isRedirect() : null));
             if (forwardPage != null && forwardPage.isRedirect()) {
                 //получаем полный путь для редиректа
                 String redirectedUri = request.getContextPath() + forwardPage.getForward();
@@ -114,12 +115,11 @@ public class DispatcherServlet extends HttpServlet {
                 getServletContext().getRequestDispatcher(jspPage).forward(request, response);
             }
         } catch (IncorrectDataException e) {
-            logger.debug("incorrect data : " + command.getName()+ ". Error: " , e);
+            logger.debug("incorrect data : " + command.getName() + ". Error: ", e);
             request.setAttribute("error", "Неверно введены данные." + e.getErrorMessage());
             getServletContext().getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
-        }
-        catch (PersistenceException | InternalServerException | ServiceException e) {
-            logger.error("It is impossible to process command: " + command.getName()+ ". Error: \n" , e);
+        } catch (PersistenceException | InternalServerException | ServiceException e) {
+            logger.error("It is impossible to process command: " + command.getName() + ". Error: \n", e);
             request.setAttribute("error", "Ошибка обработки данных. " +
                     "Обратитесь к администратору или попробуйте позднее");
             getServletContext().getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="debug">
+<Configuration status="trace">
     <Properties>
         <Property name="basePath">logs</Property>
     </Properties>
@@ -19,19 +19,15 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="by.samtsov.webxml.controller.servlet" level="debug"
+        <Logger name="by.samtsov.webxml.controller.servlet" level="trace"
                 additivity="true">
             <appender-ref ref="fileLogger" level="ERROR" />
         </Logger>
-        <Logger name="by.samtsov.webxml.controller.servlet" level="debug"
+        <Logger name="by.samtsov.webxml.service.parser.ParserFactory" level="trace"
                 additivity="true">
             <appender-ref ref="fileLogger" level="ERROR" />
         </Logger>
-        <Logger name="by.samtsov.webxml.service.parser.ParserFactory" level="debug"
-                additivity="true">
-            <appender-ref ref="fileLogger" level="ERROR" />
-        </Logger>
-        <Root level="debug">
+        <Root level="trace">
             <appender-ref ref="console"/>
         </Root>
     </Loggers>
