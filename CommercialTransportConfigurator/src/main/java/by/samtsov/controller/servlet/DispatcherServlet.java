@@ -1,8 +1,8 @@
 package by.samtsov.controller.servlet;
 
 import by.samtsov.service.IncorrectDataException;
-import by.samtsov.view.ForwardPage;
-import by.samtsov.bean.exceptions.InternalServerException;
+import by.samtsov.view.ResponsePage;
+import by.samtsov.service.InternalServerException;
 import by.samtsov.dao.PersistenceException;
 import by.samtsov.service.ServiceException;
 import by.samtsov.controller.command.Command;
@@ -64,54 +64,31 @@ public class DispatcherServlet extends HttpServlet {
     }
 
     private void process(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        //получаем готовый объект команды, которую мы должны будем выполнить
         Command command = (Command) request.getAttribute("command");
         try (CommandManager commandManager = CommandManagerFactory.getManager(getServiceFactory())) {
-            //получаем объект текущей сессии
             HttpSession session = request.getSession(false);
-            if (session != null) {
-                @SuppressWarnings("unchecked")
-                //смотрим, какие атрибуты переданы с предыдущей страницы сюда
-                        Map<String, Object> attributes = (Map<String, Object>) session
-                        .getAttribute("redirectedData");
-                if (attributes != null) {
-                    //все эти атрибуты добавляем к запросу, чтобы потом их
-                    // можно было использовать в команде
-                    for (String key : attributes.keySet()) {
-                        request.setAttribute(key, attributes.get(key));
-                    }
-                    //ну и удаляем атрибут сессии, который уже использвоали
-                    session.removeAttribute("redirectedData");
-                }
-            }
+            moveRedirectedDataFromSessionToRequest(session, request);
+            ResponsePage responsePage = commandManager.execute(command, request, response);
+            moveRedirectedDataFromRequestToSession(responsePage, session);
 
-            //выполняем команду, с учетом переданных ему значений со страницы и сессии.
-            ForwardPage forwardPage = commandManager.execute(command, request, response);
-            //-----------------------получили готовые данные, теперь их возвращаем обратно!!!-----------------------------------
-            //сохраняем в сессию те атрибуты, которые должны быть переданы дальше.
-            if (session != null && forwardPage != null && !forwardPage.getRedirectedAttributes().isEmpty()) {
-                session.setAttribute("redirectedData", forwardPage.getRedirectedAttributes());
-            }
-            //узнаем куда отправляем пользователя дальше
             String requestedUri = request.getRequestURI();
-            //узнаем каким способом отправляем пользователя
-            logger.debug(String.format("ForwardPage is null: %b, redirect : %b", forwardPage == null, forwardPage != null ? forwardPage.isRedirect() : null));
-            if (forwardPage != null && forwardPage.isRedirect()) {
-                //получаем полный путь для редиректа
-                String redirectedUri = request.getContextPath() + forwardPage.getForward();
+
+
+
+            ///////////////////////move to another method in this class
+            logger.debug(String.format("ForwardPage is null: %b, redirect : %b", responsePage == null, responsePage != null ? responsePage.isRedirect() : null));
+            if (responsePage != null && responsePage.isRedirect()) {
+                String redirectedUri = request.getContextPath() + responsePage.getJspName();
                 logger.debug(String.format("Request for URI \"%s\" id redirected to URI \"%s\"", requestedUri, redirectedUri));
-                //отправляем всех в дальний путь
                 response.sendRedirect(redirectedUri);
             } else {
-                // а если это не редирект
-                String jspPage;
-                if (forwardPage != null) {
-                    jspPage = forwardPage.getForward();
-                } else {
-                    jspPage = command.getName() + ".jsp";
+                String jspPage = "/WEB-INF/jsp" ;
+                if (responsePage != null) {
+                    jspPage += responsePage.getJspName();
+                } else {//todo del else
+                    jspPage += command.getName() + ".jsp";
                 }
-                jspPage = "/WEB-INF/jsp" + jspPage;
-                logger.debug(String.format("Request for URI \"%s\" is forwarded to JSP \"%s\"", requestedUri, jspPage));
+                logger.trace(String.format("Request for URI \"%s\" is forwarded to JSP \"%s\"", requestedUri, jspPage));
                 getServletContext().getRequestDispatcher(jspPage).forward(request, response);
             }
         } catch (IncorrectDataException e) {
@@ -123,11 +100,27 @@ public class DispatcherServlet extends HttpServlet {
             request.setAttribute("error", "Ошибка обработки данных. " +
                     "Обратитесь к администратору или попробуйте позднее");
             getServletContext().getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
-        } /*catch (IncorrectDataException e) {
-            logger.error("It is impossible to process request" + e.getMessage());
-            request.setAttribute("error", "Ошибка обработки данных");
-            getServletContext().getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
-        }*/
+        }
+    }
+
+    private void moveRedirectedDataFromRequestToSession(ResponsePage responsePage, HttpSession session) {
+        if (session != null && responsePage != null && !responsePage.getRedirectedAttributes().isEmpty()) {
+            session.setAttribute("redirectedData", responsePage.getRedirectedAttributes());
+        }
+    }
+
+    private void moveRedirectedDataFromSessionToRequest(HttpSession session, HttpServletRequest request) {
+        if (session != null) {
+            @SuppressWarnings("unchecked")
+            Map<String, Object> attributes = (Map<String, Object>) session
+                    .getAttribute("redirectedData");
+            if (attributes != null) {
+                for (String key : attributes.keySet()) {
+                    request.setAttribute(key, attributes.get(key));
+                }
+                session.removeAttribute("redirectedData");
+            }
+        }
     }
 
     private SQLServiceFactory getServiceFactory() throws PersistenceException {

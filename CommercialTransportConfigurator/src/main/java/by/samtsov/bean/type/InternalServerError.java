@@ -1,6 +1,6 @@
 package by.samtsov.bean.type;
 
-public enum InternalServerErrors {
+public enum InternalServerError {
     INVALID_LOGIN_FORM("Login must contain 3 to 16 characters"),
     LOGIN_ALREADY_EXISTS("Login already exists"),
     LOGIN_DOESNT_EXISTS("Login doesn't exists"),
@@ -15,7 +15,7 @@ public enum InternalServerErrors {
 
     private String message;
 
-    InternalServerErrors(String message) {
+    InternalServerError(String message) {
         this.message = message;
     }
 

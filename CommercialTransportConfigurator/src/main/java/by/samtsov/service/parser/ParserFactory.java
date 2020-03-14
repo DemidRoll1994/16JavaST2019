@@ -1,7 +1,7 @@
 package by.samtsov.service.parser;
 
 import by.samtsov.bean.type.EntityType;
-import by.samtsov.bean.exceptions.InternalServerException;
+import by.samtsov.service.InternalServerException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

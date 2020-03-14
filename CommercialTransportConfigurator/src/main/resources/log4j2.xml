@@ -23,10 +23,6 @@
                 additivity="true">
             <appender-ref ref="fileLogger" level="ERROR" />
         </Logger>
-        <Logger name="by.samtsov.webxml.service.parser.ParserFactory" level="trace"
-                additivity="true">
-            <appender-ref ref="fileLogger" level="ERROR" />
-        </Logger>
         <Root level="trace">
             <appender-ref ref="console"/>
         </Root>

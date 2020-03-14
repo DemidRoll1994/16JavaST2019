@@ -1,13 +1,13 @@
 package by.samtsov.service;
 
 
-import by.samtsov.bean.type.InternalServerErrors;
+import by.samtsov.bean.type.InternalServerError;
 
 public class IncorrectDataException extends ServiceException {
 
-    InternalServerErrors internalServerErrorType;
+    InternalServerError internalServerErrorType;
 
-    public IncorrectDataException(InternalServerErrors errorType) {
+    public IncorrectDataException(InternalServerError errorType) {
         internalServerErrorType = errorType;
     }
 
@@ -23,7 +23,7 @@ public class IncorrectDataException extends ServiceException {
         super(cause);
     }
 
-    public InternalServerErrors getInternalServerErrorType() {
+    public InternalServerError getInternalServerErrorType() {
         return internalServerErrorType;
     }
 

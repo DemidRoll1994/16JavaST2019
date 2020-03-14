@@ -1,6 +1,6 @@
 package by.samtsov.controller.command;
 
-public enum AvailableCommands {
+public enum AvailableCommand {
     INDEX,
     REGISTER,
     LOGIN,

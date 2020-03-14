@@ -1,11 +1,11 @@
 package by.samtsov.controller.command;
 
 import by.samtsov.bean.entity.User;
-import by.samtsov.bean.exceptions.InternalServerException;
+import by.samtsov.service.InternalServerException;
 import by.samtsov.bean.type.EntityType;
 import by.samtsov.service.ServiceException;
 import by.samtsov.service.UserService;
-import by.samtsov.view.ForwardPage;
+import by.samtsov.view.ResponsePage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,11 +20,11 @@ public class RegisterUserCommand extends Command {
     private final EntityType USER_ENTITY_TYPE = EntityType.USER;
 
     @Override
-    public ForwardPage execute(HttpServletRequest request,
-                               HttpServletResponse response) throws InternalServerException, ServiceException {
+    public ResponsePage execute(HttpServletRequest request,
+                                HttpServletResponse response) throws InternalServerException, ServiceException {
 //        setNextPage("/user/edit.html");v
 
-        ForwardPage forwardPage = new ForwardPage("/index.jsp");
+        ResponsePage responsePage = new ResponsePage("/index.jsp");
         String name = request.getParameter("name");
         String surname = request.getParameter("surname");
         String email = request.getParameter("email");
@@ -58,8 +58,8 @@ public class RegisterUserCommand extends Command {
         json = new Gson().toJson(messageMap);*/
 
         request.setAttribute("user", user);
-        forwardPage.setRedirect(false);
-        return forwardPage;
+        responsePage.setRedirect(false);
+        return responsePage;
     }
 
 

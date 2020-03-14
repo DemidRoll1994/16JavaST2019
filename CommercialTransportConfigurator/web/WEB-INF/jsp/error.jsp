@@ -28,7 +28,7 @@
     <div class="row">
         <nav class="fixed-top navbar navbar-expand navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="/index.html"><span
+                <a class="navbar-brand" href="/index.action"><span
                         class="glyphicon glyphicon-cog"
                         aria-hidden="true"></span> Конфигуратор </a>
                 <button class="navbar-toggler" type="button"

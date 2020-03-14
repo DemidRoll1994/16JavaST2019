@@ -1,6 +1,6 @@
 package by.samtsov.controller.filter;
 
-import by.samtsov.controller.command.AvailableCommands;
+import by.samtsov.controller.command.AvailableCommand;
 import by.samtsov.controller.command.Command;
 import by.samtsov.controller.command.CommandFactory;
 import org.apache.logging.log4j.LogManager;
@@ -15,14 +15,14 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ActionFilter implements Filter {
     private static Logger logger = LogManager.getLogger(ActionFilter.class);
 
-    private static Map<String, AvailableCommands> commands = new ConcurrentHashMap<>();
+    private static Map<String, AvailableCommand> commands = new ConcurrentHashMap<>();
 
     static {
-        commands.put("/", AvailableCommands.INDEX);
-        commands.put("/index", AvailableCommands.INDEX);
-        commands.put("/register", AvailableCommands.REGISTER);
-        commands.put("/login", AvailableCommands.LOGIN);
-        commands.put("/logout", AvailableCommands.LOGOUT);
+        commands.put("/", AvailableCommand.INDEX);
+        commands.put("/index", AvailableCommand.INDEX);
+        commands.put("/register", AvailableCommand.REGISTER);
+        commands.put("/login", AvailableCommand.LOGIN);
+        commands.put("/logout", AvailableCommand.LOGOUT);
 
 
 /*
@@ -71,34 +71,38 @@ public class ActionFilter implements Filter {
         if (servletRequest instanceof HttpServletRequest) {
             HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
             String contextPath = httpRequest.getContextPath();
-            logger.debug("context path is: " + contextPath);
+            logger.debug("context path is: {}", contextPath);
             String uri = httpRequest.getRequestURI();
-            logger.debug("requested uri is: " + uri);
-            logger.debug("QueryString is: " + httpRequest.getRequestURL());
+            logger.debug("requested uri is: {}", uri);
+            logger.debug("QueryString is: {}", httpRequest.getRequestURL());
             httpRequest.getQueryString();
             int beginAction = contextPath.length();
             int endAction = uri.lastIndexOf('.');
             String commandName;
-            if(endAction >= 0) {
+            if (endAction >= 0) {
                 commandName = uri.substring(beginAction, endAction);
             } else {
                 commandName = uri.substring(beginAction);
             }
-
-                logger.debug("short uri " + commandName + " is selected");
-                Command command = CommandFactory.createCommand(commands.get(commandName));
-                logger.debug("commmand " + command.getName() + " is created");
+            logger.debug("short uri {} is selected", commandName);
+            AvailableCommand commandType = commands.get(commandName);
+            if (commandType != null) {
+                Command command = CommandFactory.createCommand(commandType);
+                logger.debug("command {} is created", command.getName());
                 command.setName(commandName);
-                logger.debug("command.setname(commandName) is ok ");
+                logger.debug("command.setName(commandName) is ok ");
                 httpRequest.setAttribute("command", command);
-                logger.debug("commmand" + command + "is set as " +
-                        "attribute for httpRequest");
-                filterChain.doFilter(servletRequest, servletResponse);
-
-                httpRequest.setAttribute("error", String.format("Запрошенный адрес %s не может быть обработан сервером", uri));
-                httpRequest.getServletContext().getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(servletRequest, servletResponse);
-
+                logger.debug("command {} is set as attribute for httpRequest"
+                        , command.getName());
+            }
+            else{
+                logger.debug("fail to create command {}", commandName);
+                servletRequest.setAttribute("error", "action doesn't exist");
+                servletRequest.getServletContext().getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(servletRequest, servletResponse);
+            }
         } else {
+            logger.debug("servletRequest isn't HttpServletRequest instance. forward to error page to error ");
+            servletRequest.setAttribute("error", "Internal server error");
             servletRequest.getServletContext().getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(servletRequest, servletResponse);
         }
     }

@@ -5,7 +5,7 @@ import by.samtsov.bean.type.EntityType;
 import by.samtsov.bean.type.Role;
 import by.samtsov.bean.type.UserStatus;
 import by.samtsov.service.IncorrectDataException;
-import by.samtsov.bean.exceptions.InternalServerException;
+import by.samtsov.service.InternalServerException;
 import by.samtsov.dao.PersistenceException;
 import by.samtsov.service.ServiceException;
 import by.samtsov.dao.UserDao;
@@ -19,7 +19,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
-import static by.samtsov.bean.type.InternalServerErrors.*;
+import static by.samtsov.bean.type.InternalServerError.*;
 
 public class SQLUserService extends SQLService implements UserService {
 

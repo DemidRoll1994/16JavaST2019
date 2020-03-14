@@ -1,7 +1,5 @@
 package by.samtsov.service;
 
-import by.samtsov.bean.exceptions.InternalServerException;
-
 import java.util.List;
 
 public interface Service<T> {

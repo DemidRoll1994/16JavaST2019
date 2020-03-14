@@ -1,6 +1,6 @@
 package by.samtsov.controller.command;
 
-import by.samtsov.view.ForwardPage;
+import by.samtsov.view.ResponsePage;
 import by.samtsov.dao.PersistenceException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class IndexCommand extends Command{
     @Override
-    public ForwardPage execute(HttpServletRequest request, HttpServletResponse response) throws PersistenceException {
+    public ResponsePage execute(HttpServletRequest request, HttpServletResponse response) throws PersistenceException {
         try {
             response.sendRedirect("/WEB-INF/jsp/index.jsp");
         } catch (IOException e) {

@@ -1,7 +1,6 @@
 package by.samtsov.service.validator;
 
 import by.samtsov.bean.entity.User;
-import by.samtsov.service.IncorrectDataException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,7 +18,7 @@ public class UserValidatorImpl implements UserValidator {
             "^" + ANY_LET_REGEX + "{2,255}$");
     private static final Pattern SURNAME_REGEX_PATTERN = Pattern.compile(
             "^(" + ANY_LET_REGEX + "+[',.-]?" + ANY_LET_REGEX
-                    + "+){2,255}$");
+                    + "+){1,127}$");
 
     @Override
     public boolean isValid(User user) {

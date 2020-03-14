@@ -1,10 +1,10 @@
 package by.samtsov.controller.command;
 
-import by.samtsov.view.ForwardPage;
+import by.samtsov.view.ResponsePage;
 import by.samtsov.bean.entity.User;
 import by.samtsov.bean.type.EntityType;
 import by.samtsov.bean.type.Role;
-import by.samtsov.bean.exceptions.InternalServerException;
+import by.samtsov.service.InternalServerException;
 import by.samtsov.service.ServiceException;
 import by.samtsov.service.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -40,11 +40,11 @@ public class LoginCommand extends Command {
     }
 
     @Override
-    public ForwardPage execute(HttpServletRequest request,
-                               HttpServletResponse response)
+    public ResponsePage execute(HttpServletRequest request,
+                                HttpServletResponse response)
             throws InternalServerException, ServiceException {
 
-        ForwardPage forwardPage = new ForwardPage("/index.jsp");
+        ResponsePage responsePage = new ResponsePage("/index.jsp");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         if (email != null && password != null) {
@@ -60,7 +60,7 @@ public class LoginCommand extends Command {
                 logger.info(String.format("user \"%s\" unsuccessfully tried to log in from %s (%s:%s)", email, request.getRemoteAddr(), request.getRemoteHost(), request.getRemotePort()));
             }
         }
-        forwardPage.setRedirect(false);
-        return forwardPage;
+        responsePage.setRedirect(true);
+        return responsePage;
     }
 }

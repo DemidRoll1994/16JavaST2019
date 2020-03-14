@@ -10,36 +10,9 @@
           rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/superhero/bootstrap.min.css"
           rel="stylesheet">
-    <style>
-        body {
-            padding-top: 70px;
-        }
-        .modal-header, .modal-body, .modal-footer{
-            padding: 25px;
-        }
-        .modal-footer{
-            text-align: center;
-        }
-        #signup-modal-content, #forgot-password-modal-content{
-            display: none;
-        }
 
-        /** Валидация */
-
-        input.parsley-error{
-            border-color:#843534;
-            box-shadow: none;
-        }
-        input.parsley-error:focus{
-            border-color:#843534;
-            box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 6px #ce8483
-        }
-        .parsley-errors-list.filled {
-            opacity: 1;
-            color: #a94442;
-            display: none;
-        }
-    </style>
+    <c:url value="/resources/css/validation.css" var="validationCssURL"/>
+    <link rel="stylesheet" type="text/css" href="${validationCssURL}" />
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -84,7 +57,8 @@
     <div class="row">
         <nav class="fixed-top navbar navbar-expand navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="/index.html"><span
+                <c:url value="/index.action" var="itemUrl"/>
+                <a class="navbar-brand" href="itemUrl"><span
                         class="glyphicon glyphicon-cog"
                         aria-hidden="true"></span> Конфигуратор </a>
                 <button class="navbar-toggler" type="button"
@@ -163,9 +137,9 @@
             do this when nothing else is true
         </c:otherwise>
     </c:choose>
-    <c:url value="/register.html" var="registerUrl"/>
-    <c:url value="/login.html" var="loginUrl"/>
-    <c:url value="/forgetPass.html" var="forgetPassUrl"/>
+    <c:url value="/register.action" var="registerUrl"/>
+    <c:url value="/login.action" var="loginUrl"/>
+    <c:url value="/forgetPass.action" var="forgetPassUrl"/>
 
     <div id="login-signup-modal" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -296,7 +270,7 @@
     <c:out value="${sessionScope.authorizedUser.name}" />
     Hello, ${sessionScope.authorizedUser.name}
     <H2>Вход в систему</H2>
-    <c:url value="/login.html" var="loginUrl"/>
+    <c:url value="/login.action" var="loginUrl"/>
     <FORM action="${loginUrl}" method="post">
         <LABEL for="login">Имя пользователя:</LABEL>
         <INPUT type="text" id="login" name="login" value="${param.login}">
@@ -309,7 +283,7 @@
 
 
     <H2>Регистрация:</H2>
-    <c:url value="/register.html" var="registerUrl"/>
+    <c:url value="/register.action" var="registerUrl"/>
     <FORM action="${registerUrl}" method="post">
         <LABEL for="reglogin">Имя пользователя:</LABEL>
         <INPUT type="text" id="reglogin" name="login" value="${param.login}">

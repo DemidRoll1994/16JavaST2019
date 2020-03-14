@@ -3,27 +3,27 @@ package by.samtsov.view;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ForwardPage {
+public class ResponsePage {
 
-    private String forwardURL;
+    private String jspName;
     private boolean redirect;
     private Map<String, Object> redirectedAttributes = new HashMap<>();
 
-    public ForwardPage(String forward, boolean redirect) {
-        this.forwardURL = forward;
+    public ResponsePage(String forward, boolean redirect) {
+        this.jspName = forward;
         this.redirect = redirect;
     }
 
-    public ForwardPage(String forward) {
+    public ResponsePage(String forward) {
         this(forward, true);
     }
 
-    public String getForward() {
-        return forwardURL;
+    public String getJspName() {
+        return jspName;
     }
 
-    public void setForward(String newForwardURL) {
-        forwardURL = newForwardURL;
+    public void setJspName(String newJspName) {
+        jspName = newJspName;
     }
 
     public boolean isRedirect() {
