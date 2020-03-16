@@ -58,7 +58,7 @@
         <nav class="fixed-top navbar navbar-expand navbar-dark bg-dark">
             <div class="container">
                 <c:url value="/index.action" var="itemUrl"/>
-                <a class="navbar-brand" href="itemUrl"><span
+                <a class="navbar-brand" href="${itemUrl}"><span
                         class="glyphicon glyphicon-cog"
                         aria-hidden="true"></span> Конфигуратор </a>
                 <button class="navbar-toggler" type="button"
@@ -266,34 +266,34 @@
 <!-- ОСНОВНОЕ СОДЕРЖИМОЕ -->
 <main>
     <br><br><br>
-<%--
-    <c:out value="${sessionScope.authorizedUser.name}" />
-    Hello, ${sessionScope.authorizedUser.name}
-    <H2>Вход в систему</H2>
-    <c:url value="/login.action" var="loginUrl"/>
-    <FORM action="${loginUrl}" method="post">
-        <LABEL for="login">Имя пользователя:</LABEL>
-        <INPUT type="text" id="login" name="login" value="${param.login}">
-        <LABEL for="password">Пароль:</LABEL>
-        <INPUT type="password" id="password" name="password">
-        <BUTTON type="submit">Войти</BUTTON>
-    </FORM>
+    <%--
+        <c:out value="${sessionScope.authorizedUser.name}" />
+        Hello, ${sessionScope.authorizedUser.name}
+        <H2>Вход в систему</H2>
+        <c:url value="/login.html" var="loginUrl"/>
+        <FORM action="${loginUrl}" method="post">
+            <LABEL for="login">Имя пользователя:</LABEL>
+            <INPUT type="text" id="login" name="login" value="${param.login}">
+            <LABEL for="password">Пароль:</LABEL>
+            <INPUT type="password" id="password" name="password">
+            <BUTTON type="submit">Войти</BUTTON>
+        </FORM>
 
 
 
 
-    <H2>Регистрация:</H2>
-    <c:url value="/register.action" var="registerUrl"/>
-    <FORM action="${registerUrl}" method="post">
-        <LABEL for="reglogin">Имя пользователя:</LABEL>
-        <INPUT type="text" id="reglogin" name="login" value="${param.login}">
-        <LABEL for="regemail">e-mail:</LABEL>
-        <INPUT type="text" id="regemail" name="email">
-        <LABEL for="regpassword">Пароль:</LABEL>
-        <INPUT type="password" id="regpassword" name="password">
-        <BUTTON type="submit">Войти</BUTTON>
-    </FORM>
---%>
+        <H2>Регистрация:</H2>
+        <c:url value="/register.html" var="registerUrl"/>
+        <FORM action="${registerUrl}" method="post">
+            <LABEL for="reglogin">Имя пользователя:</LABEL>
+            <INPUT type="text" id="reglogin" name="login" value="${param.login}">
+            <LABEL for="regemail">e-mail:</LABEL>
+            <INPUT type="text" id="regemail" name="email">
+            <LABEL for="regpassword">Пароль:</LABEL>
+            <INPUT type="password" id="regpassword" name="password">
+            <BUTTON type="submit">Войти</BUTTON>
+        </FORM>
+    --%>
 
 
     <div class="row">

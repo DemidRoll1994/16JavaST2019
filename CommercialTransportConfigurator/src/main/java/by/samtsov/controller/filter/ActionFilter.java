@@ -71,11 +71,8 @@ public class ActionFilter implements Filter {
         if (servletRequest instanceof HttpServletRequest) {
             HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
             String contextPath = httpRequest.getContextPath();
-            logger.debug("context path is: {}", contextPath);
             String uri = httpRequest.getRequestURI();
-            logger.debug("requested uri is: {}", uri);
-            logger.debug("QueryString is: {}", httpRequest.getRequestURL());
-            httpRequest.getQueryString();
+            logger.trace("requested uri is: {}", uri);
             int beginAction = contextPath.length();
             int endAction = uri.lastIndexOf('.');
             String commandName;
