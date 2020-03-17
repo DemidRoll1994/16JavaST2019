@@ -1,4 +1,4 @@
-package by.samtsov.controller.command;
+package by.samtsov.service.command;
 
 import by.samtsov.view.ResponsePage;
 import by.samtsov.bean.entity.User;
@@ -43,13 +43,12 @@ public class LoginCommand extends Command {
     public ResponsePage execute(HttpServletRequest request,
                                 HttpServletResponse response)
             throws InternalServerException, ServiceException {
-
-        ResponsePage responsePage = new ResponsePage("/index.jsp");
+        ResponsePage responsePage = new ResponsePage("/", true);
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         if (email != null && password != null) {
             UserService service = factory.createService(EntityType.USER);
-            User user  = service.findByEmailAndPassword(email, password);
+            User user = service.findByEmailAndPassword(email, password);
             if (user != null) {
                 HttpSession session = request.getSession();
                 session.setAttribute("authorizedUser", user);
@@ -60,7 +59,6 @@ public class LoginCommand extends Command {
                 logger.info(String.format("user \"%s\" unsuccessfully tried to log in from %s (%s:%s)", email, request.getRemoteAddr(), request.getRemoteHost(), request.getRemotePort()));
             }
         }
-        responsePage.setRedirect(true);
         return responsePage;
     }
 }

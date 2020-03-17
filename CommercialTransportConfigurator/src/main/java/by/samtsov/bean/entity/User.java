@@ -5,7 +5,6 @@ import by.samtsov.bean.type.UserStatus;
 
 public class User {
     private int id; //not null
-    private String login; //not null
     private String email; //not null
     private String passwordHash; //not null
     private String salt; //not null
@@ -20,9 +19,8 @@ public class User {
     public User() {
     }
 
-    public User(int id, String login, String passwordHash, String salt, UserStatus status, Role role, String companyName, long phoneNumber, String address, String email, String name, String surname) {
+    public User(int id, String passwordHash, String salt, UserStatus status, Role role, String companyName, long phoneNumber, String address, String email, String name, String surname) {
         this.id = id;
-        this.login = login;
         this.passwordHash = passwordHash;
         this.salt = salt;
         this.status = status;
@@ -41,14 +39,6 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     public String getPasswordHash() {

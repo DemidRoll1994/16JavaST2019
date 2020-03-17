@@ -1,8 +1,8 @@
 package by.samtsov.controller.filter;
 
-import by.samtsov.controller.command.AvailableCommand;
-import by.samtsov.controller.command.Command;
-import by.samtsov.controller.command.CommandFactory;
+import by.samtsov.service.command.AvailableCommand;
+import by.samtsov.service.command.Command;
+import by.samtsov.service.command.CommandFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -91,6 +91,7 @@ public class ActionFilter implements Filter {
                 httpRequest.setAttribute("command", command);
                 logger.debug("command {} is set as attribute for httpRequest"
                         , command.getName());
+                filterChain.doFilter(servletRequest, servletResponse);
             }
             else{
                 logger.debug("fail to create command {}", commandName);

@@ -1,4 +1,4 @@
-package by.samtsov.controller.command;
+package by.samtsov.service.command;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,10 +19,9 @@ public class CommandFactory {
                 case REGISTER:
                     command = new RegisterUserCommand();
                     break;
-            /*case LOGOUT:
-                command = new LogoutCommand();
-                break;
-            */
+                case LOGOUT:
+                    command = new LogoutCommand();
+                    break;
                 default:
                     logger.error("Can't create command {}. The corresponding " +
                             "case is not written", availableCommands);

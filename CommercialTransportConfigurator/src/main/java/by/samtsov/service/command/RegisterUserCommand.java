@@ -1,4 +1,4 @@
-package by.samtsov.controller.command;
+package by.samtsov.service.command;
 
 import by.samtsov.bean.entity.User;
 import by.samtsov.service.InternalServerException;
@@ -24,21 +24,20 @@ public class RegisterUserCommand extends Command {
                                 HttpServletResponse response) throws InternalServerException, ServiceException {
 //        setNextPage("/user/edit.html");v
 
-        ResponsePage responsePage = new ResponsePage("/index.jsp");
+        ResponsePage responsePage = new ResponsePage("/", true);
+        request.getRequestURI();
         String name = request.getParameter("name");
         String surname = request.getParameter("surname");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        logger.debug(String.format("trying to create user: name: %s," +
-                " surname: %s, email: %s, password: %s", name, surname, email
-                , password));
+        logger.debug("trying to create user: name: {}, surname: {}, " +
+                "email: {}, password: {}", name, surname, email, password);
 
         UserService userService = factory.createService(USER_ENTITY_TYPE);
         User user = userService.create(name, surname, email, password);
         HttpSession session = request.getSession();
         session.setAttribute("authorizedUser", user);
-        logger.debug(String.format(
-                "User \"%s\" is successfully registered", user.getLogin()));
+        logger.debug("User {} is successfully registered", user.getEmail());
 
 
         //проверить, подходят ли данные на стороне сервера
@@ -58,7 +57,6 @@ public class RegisterUserCommand extends Command {
         json = new Gson().toJson(messageMap);*/
 
         request.setAttribute("user", user);
-        responsePage.setRedirect(false);
         return responsePage;
     }
 

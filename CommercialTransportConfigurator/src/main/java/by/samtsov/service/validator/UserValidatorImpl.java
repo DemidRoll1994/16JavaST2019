@@ -22,7 +22,7 @@ public class UserValidatorImpl implements UserValidator {
 
     @Override
     public boolean isValid(User user) {
-        return user != null && user.getId() > 0 && user.getLogin() != null
+        return user != null && user.getId() > 0 && user.getEmail() != null
                 && user.getPasswordHash() != null && user.getStatus() != null
                 && user.getRole() != null;
     }

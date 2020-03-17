@@ -1,4 +1,4 @@
-package by.samtsov.controller.command;
+package by.samtsov.service.command;
 
 public class SearchBookResultAction /*extends LibrarianAction */{
 /*

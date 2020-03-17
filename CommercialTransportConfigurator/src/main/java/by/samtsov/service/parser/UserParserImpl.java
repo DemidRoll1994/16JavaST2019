@@ -10,13 +10,15 @@ import javax.servlet.http.HttpServletRequest;
 public class UserParserImpl implements UserParser {
 
 
-    private final String ID_NAME="id";
-    private final String LOGIN_NAME="login";
-    private final String ROLE_NAME="role";
-    private final String STATUS_NAME="status";
-    private final String COMPANY_NAME="companyName";
-    private final String PHONE_NAME="phoneNumber";
-    private final String ADDRESS_NAME="address";
+    private static final String NAME_NAME = "name";
+    private static final String SURNAME_NAME = "surname";
+    private static final String ID_NAME="id";
+    private static final String EMAIL_NAME="email";
+    private static final String ROLE_NAME="role";
+    private static final String STATUS_NAME="status";
+    private static final String COMPANY_NAME="companyName";
+    private static final String PHONE_NAME="phoneNumber";
+    private static final String ADDRESS_NAME="address";
 
     @Override
     public User parse(HttpServletRequest request) throws IncorrectDataException{ //todo
@@ -32,11 +34,25 @@ public class UserParserImpl implements UserParser {
             throw new IncorrectDataException(ID_NAME);
         }
 
-        parameter = request.getParameter(LOGIN_NAME);
+        parameter = request.getParameter(EMAIL_NAME);
         if (parameter != null && !parameter.isEmpty()) {
-            user.setLogin(parameter);
+            user.setEmail(parameter);
         } else {
-            throw new IncorrectDataException(LOGIN_NAME);
+            throw new IncorrectDataException(EMAIL_NAME);
+        }
+
+        parameter = request.getParameter(NAME_NAME);
+        if (parameter != null && !parameter.isEmpty()) {
+            user.setName(parameter);
+        } else {
+            throw new IncorrectDataException(NAME_NAME);
+        }
+
+        parameter = request.getParameter(SURNAME_NAME);
+        if (parameter != null && !parameter.isEmpty()) {
+            user.setSurname(parameter);
+        } else {
+            throw new IncorrectDataException(SURNAME_NAME);
         }
 
         parameter = request.getParameter(ROLE_NAME);

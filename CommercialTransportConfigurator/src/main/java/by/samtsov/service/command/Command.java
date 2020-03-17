@@ -1,4 +1,4 @@
-package by.samtsov.controller.command;
+package by.samtsov.service.command;
 
 import by.samtsov.view.ResponsePage;
 import by.samtsov.bean.entity.User;
