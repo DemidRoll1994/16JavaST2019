@@ -56,10 +56,12 @@ public class DispatcherServlet extends HttpServlet {
     }*/
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        logger.error("get works");
         process(request, response); // todo запретиить какое-то действие, если вручную передают параметры в строке
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        logger.error("post works");
         process(request, response);
     }
 
