@@ -1,12 +1,12 @@
 package by.samtsov.service.command;
 
-import by.samtsov.view.ResponsePage;
 import by.samtsov.bean.entity.User;
 import by.samtsov.bean.type.Role;
-import by.samtsov.service.InternalServerException;
 import by.samtsov.dao.PersistenceException;
+import by.samtsov.service.InternalServerException;
 import by.samtsov.service.ServiceException;
 import by.samtsov.service.sql.SQLServiceFactory;
+import by.samtsov.view.ResponsePage;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
