@@ -5,6 +5,8 @@ import by.samtsov.bean.type.UserStatus;
 
 public class User {
     private int id; //not null
+    private String name;
+    private String surname;
     private String email; //not null
     private String passwordHash; //not null
     private String salt; //not null
@@ -13,8 +15,6 @@ public class User {
     private String companyName;
     private long phoneNumber = -1;
     private String address;
-    private String name;
-    private String surname;
 
     public User() {
     }

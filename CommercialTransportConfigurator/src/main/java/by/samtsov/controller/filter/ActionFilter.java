@@ -25,7 +25,7 @@ public class ActionFilter implements Filter {
         commands.put("/logout", AvailableCommand.LOGOUT);
 
 
-/*
+/* // todo
         actions.put("/profile/edit", ProfileEditAction.class);
         actions.put("/profile/save", ProfileSaveAction.class);
 

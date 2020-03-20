@@ -4,14 +4,10 @@ import by.samtsov.bean.entity.User;
 import by.samtsov.bean.type.EntityType;
 import by.samtsov.bean.type.Role;
 import by.samtsov.bean.type.UserStatus;
-import by.samtsov.service.IncorrectDataException;
-import by.samtsov.service.InternalServerException;
 import by.samtsov.dao.PersistenceException;
-import by.samtsov.service.ServiceException;
 import by.samtsov.dao.UserDao;
 import by.samtsov.dao.transaction.Transaction;
-import by.samtsov.service.UserPasswordService;
-import by.samtsov.service.UserService;
+import by.samtsov.service.*;
 import by.samtsov.service.validator.UserValidatorImpl;
 import by.samtsov.service.validator.ValidatorFactory;
 import org.apache.logging.log4j.LogManager;
@@ -27,14 +23,16 @@ public class SQLUserService extends SQLService implements UserService {
     public static final String CREATE_USER_ERR_MSG = "can't create user with login ";
     public static final String ROLLBACK_CREATE_ERR_MSG = "can't rollback a transaction while creating user with login ";
     public static final String FIND_USER_ERR_MSG = "can't find user ";
-    private static final Logger LOGGER = LogManager.getLogger(
+    private static final Logger logger = LogManager.getLogger(
             SQLUserService.class);
+    public static final String CAN_T_FIND_MSG = "can't find user";
+    public static final String CAN_T_DELETE_ERROR_MSG = "Can't delete user with id ";
     UserDao userDao = null;
     UserValidatorImpl userValidator = null;
 
     public SQLUserService(Transaction transaction) throws InternalServerException {
-        LOGGER.debug("transaction is null:" + (transaction == null));
-        this.transaction=transaction;
+        logger.debug("transaction is null:" + (transaction == null));
+        this.transaction = transaction;
         userDao = transaction.createDao(USER_ENTITY_TYPE);
         userValidator = ValidatorFactory.createValidator(USER_ENTITY_TYPE);
     }
@@ -42,41 +40,143 @@ public class SQLUserService extends SQLService implements UserService {
     @Override
     public User get(int id) throws ServiceException {
         try {
-            return userDao.get(id);
+            return clearPassword(userDao.get(id));
         } catch (PersistenceException e) {
-            LOGGER.error("Can't read user with id " + id + " from dao layer: \n" + e.getMessage()); //todo
+            throw new ServiceException(e); /// todo does commit is обязателен?
         }
-        return null;
     }
 
     @Override
     public List<User> getAll() throws ServiceException {
         try {
-            return userDao.getAll();
+            List<User> users = userDao.getAll();
+            transaction.commit();
+            for (User user : users) {
+                clearPassword(user);
+            }
+            return users;
         } catch (PersistenceException e) {
-            LOGGER.error("Can't read users from dao layer: \n" + e.getMessage());//todo
+            try {
+                transaction.rollback();
+            } catch (PersistenceException ex) {
+                throw new ServiceException(ROLLBACK_CREATE_ERR_MSG, e); // TODO THIS IS NOT CREATE
+            }
+            throw new ServiceException(CAN_T_DELETE_ERROR_MSG, e); // TODO THIS IS NOT delete
         }
-        return null;
     }
 
     @Override
     public int save(User user) throws ServiceException {
         try {
-            return userDao.add(user);
+            int id = userDao.add(user);
+            transaction.commit();
+            return id;
         } catch (PersistenceException e) {
-            LOGGER.error("Can't add user with id " + user.getId()
-                    + " from dao layer: \n" + e.getMessage());//todo
+            try {
+                transaction.rollback();
+            } catch (PersistenceException ex) {
+                throw new ServiceException(ROLLBACK_CREATE_ERR_MSG + user.getId(), e); // TODO THIS IS NOT CREATE
+            }
+            throw new ServiceException(CAN_T_DELETE_ERROR_MSG + user.getId(), e);// TODO THIS IS NOT delete
         }
-        return 0;
     }
 
     @Override
-    public void update(User user) throws ServiceException {
+    public User update(User user) throws ServiceException, InternalServerException {
+        throw new UnsupportedOperationException();//todo чё за лажа
+    }
+
+    @Override
+    public User updatePersonalData(User newUser) throws ServiceException {
         try {
-            userDao.update(user);
+            logger.trace("trying to edit personal user data: name: {}, " +
+                            "surname: {}, email: {}, companyName: {}, " +
+                            "phoneNumber: {}, address: {}", newUser.getName()
+                    , newUser.getSurname(), newUser.getEmail(), newUser.getCompanyName()
+                    , newUser.getPhoneNumber(), newUser.getAddress());
+            if (!userValidator.isNameValid(newUser.getName())) {
+                logger.debug("Name {} is invalid", newUser.getName());
+                throw new IncorrectDataException(INVALID_NAME_FORM);
+            }
+            if (!userValidator.isSurnameValid(newUser.getSurname())) {
+                logger.debug("Surname {} is invalid", newUser.getSurname());
+                throw new IncorrectDataException(INVALID_SURNAME_FORM);
+            }
+            if (!userValidator.isEmailValid(newUser.getEmail())) {
+                logger.debug("Email {} is invalid", newUser.getEmail());
+                throw new IncorrectDataException(INVALID_EMAIL_FORM);
+            }
+            if (!userValidator.isPhoneNumberValid(newUser.getPhoneNumber())) {
+                logger.debug("Phone {} is invalid", newUser.getPhoneNumber());
+                throw new IncorrectDataException(INVALID_PHONE_FORM);
+            }
+            User user = userDao.get(newUser.getId());
+            user.setName(newUser.getName());
+            user.setSurname(newUser.getSurname());
+            user.setEmail(newUser.getEmail());
+            user.setPhoneNumber(newUser.getPhoneNumber());
+            userDao.update(newUser);
+            transaction.commit();
+            return clearPassword(newUser);
         } catch (PersistenceException e) {
-            LOGGER.error("Can't update user with id " + user.getId()
-                    + " from dao layer: \n" + e.getMessage());//todo
+            try {
+                transaction.rollback();
+            } catch (PersistenceException ex) {
+                throw new ServiceException(ROLLBACK_CREATE_ERR_MSG + newUser.getId(), e); // TODO THIS IS NOT CREATE
+            }
+            throw new ServiceException(CAN_T_DELETE_ERROR_MSG + newUser.getId(), e);// TODO THIS IS NOT delete
+        }
+    }
+
+    @Override
+    public User updateUserData(User newUser) throws ServiceException {
+        try {
+            logger.trace("trying to edit personal user data: name: {}, " +
+                            "surname: {}, email: {}, companyName: {}, " +
+                            "phoneNumber: {}, address: {}", newUser.getName()
+                    , newUser.getSurname(), newUser.getEmail(), newUser.getCompanyName()
+                    , newUser.getPhoneNumber(), newUser.getAddress());
+            if (!userValidator.isNameValid(newUser.getName())) {
+                logger.debug("Name {} is invalid", newUser.getName());
+                throw new IncorrectDataException(INVALID_NAME_FORM);
+            }
+            if (!userValidator.isSurnameValid(newUser.getSurname())) {
+                logger.debug("Surname {} is invalid", newUser.getSurname());
+                throw new IncorrectDataException(INVALID_SURNAME_FORM);
+            }
+            if (!userValidator.isEmailValid(newUser.getEmail())) {
+                logger.debug("Email {} is invalid", newUser.getEmail());
+                throw new IncorrectDataException(INVALID_EMAIL_FORM);
+            }
+            if (!userValidator.isPhoneNumberValid(newUser.getPhoneNumber())) {
+                logger.debug("Phone {} is invalid", newUser.getPhoneNumber());
+                throw new IncorrectDataException(INVALID_PHONE_FORM);
+            }
+            if (!userValidator.isRoleValid(newUser.getRole())) {
+                logger.debug("Role {} is invalid", newUser.getRole());
+                throw new IncorrectDataException(INVALID_ROLE);
+            }
+            if (!userValidator.isStatusValid(newUser.getStatus())) {
+                logger.debug("Status {} is invalid", newUser.getStatus());
+                throw new IncorrectDataException(INVALID_STATUS);
+            }
+            User user = userDao.get(newUser.getId());
+            user.setName(newUser.getName());
+            user.setSurname(newUser.getSurname());
+            user.setEmail(newUser.getEmail());
+            user.setPhoneNumber(newUser.getPhoneNumber());
+            user.setRole(newUser.getRole());
+            user.setStatus(newUser.getStatus());
+            userDao.update(newUser);
+            transaction.commit();
+            return clearPassword(newUser);
+        } catch (PersistenceException e) {
+            try {
+                transaction.rollback();
+            } catch (PersistenceException ex) {
+                throw new ServiceException(ROLLBACK_CREATE_ERR_MSG + newUser.getId(), e); // TODO THIS IS NOT CREATE
+            }
+            throw new ServiceException(CAN_T_DELETE_ERROR_MSG + newUser.getId(), e);// TODO THIS IS NOT delete
         }
     }
 
@@ -84,35 +184,62 @@ public class SQLUserService extends SQLService implements UserService {
     public void delete(int id) throws ServiceException {
         try {
             userDao.delete(id);
+            transaction.commit();
         } catch (PersistenceException e) {
-            LOGGER.error("Can't delete user with id " + id
-                    + " from dao layer: \n" + e.getMessage());//todo
+            try {
+                transaction.rollback();
+            } catch (PersistenceException ex) {
+                throw new ServiceException(ROLLBACK_CREATE_ERR_MSG + id, e); // TODO THIS IS NOT CREATE
+            }
+            throw new ServiceException(CAN_T_DELETE_ERROR_MSG + id, e);
         }
     }
 
     @Override
-    public void updatePassword(User user, String newPassword) throws ServiceException {
+    public void updatePassword(User newUser, String oldPassword, String newPassword) throws ServiceException {
         try {
+            if (!userValidator.isPasswordValid(newPassword)) {
+                logger.debug("Old password is invalid");
+                throw new IncorrectDataException(INVALID_PASSWORD_FORM);
+            }
             UserPasswordService userPasswordService = new UserPasswordService();
-            String salt = userPasswordService.generateSalt();
-            user.setSalt(salt);
-            user.setPasswordHash(userPasswordService
-                    .generateSecurePassword(newPassword, salt));
-            userDao.update(user);
+            User oldUser = userDao.get(newUser.getId());
+            if (userPasswordService.verifyUserPassword(oldPassword
+                    , oldUser.getPasswordHash(), oldUser.getSalt())) {
+                String newSalt = userPasswordService.generateSalt();
+                newUser.setSalt(newSalt);
+                newUser.setPasswordHash(userPasswordService
+                        .generateSecurePassword(newPassword, newSalt));
+                userDao.update(newUser);
+                transaction.commit();
+            } else {
+                throw new IncorrectDataException(OLD_PASSWORD_INVALID);
+            }
         } catch (PersistenceException e) {
-            LOGGER.error("Can't update password of user with id " + user.getId()
-                    + " from dao layer: \n" + e.getMessage());//todo
+            try {
+                transaction.rollback();
+            } catch (PersistenceException ex) {
+                throw new ServiceException(ROLLBACK_CREATE_ERR_MSG + newUser.getId(), e);// TODO THIS IS NOT CREATE
+            }
+            throw new ServiceException(CAN_T_FIND_MSG + newUser.getId(), e);
         }
     }
+
 
     @Override
     public User findByEmailAndPassword(String email, String password) throws ServiceException {
         UserPasswordService userPasswordService = new UserPasswordService();
-        User user = null;
+        User user;
         try {
             user = userDao.getByEmail(email);
+            transaction.commit();
         } catch (PersistenceException e) {
-            throw new ServiceException(FIND_USER_ERR_MSG, e);
+            try {
+                transaction.rollback();
+            } catch (PersistenceException ex) {
+                throw new ServiceException(ROLLBACK_CREATE_ERR_MSG + email, e);
+            }
+            throw new ServiceException(CAN_T_FIND_MSG + email, e);
         }
         if (user != null && userPasswordService.verifyUserPassword(password,
                 user.getPasswordHash(), user.getSalt())) {
@@ -126,24 +253,24 @@ public class SQLUserService extends SQLService implements UserService {
     public User create(String name, String surname, String email, String password) throws ServiceException {
         try {
             if (!userValidator.isNameValid(name)) {
-                LOGGER.debug(" name " + name + " is invalid");
+                logger.debug(" name " + name + " is invalid");
                 throw new IncorrectDataException(INVALID_NAME_FORM);
             }
             if (!userValidator.isSurnameValid(surname)) {
-                LOGGER.debug(" surname " + surname + " is invalid");
+                logger.debug(" surname " + surname + " is invalid");
                 throw new IncorrectDataException(INVALID_SURNAME_FORM);
             }
             if (!userValidator.isEmailValid(email)) {
-                LOGGER.debug(" email " + email + " is invalid");
+                logger.debug(" email " + email + " is invalid");
                 throw new IncorrectDataException(INVALID_EMAIL_FORM);
             }
             if (!userValidator.isPasswordValid(password)) {
-                LOGGER.debug(" password " + password + " is invalid");
+                logger.debug(" password " + password + " is invalid");
                 throw new IncorrectDataException(INVALID_PASSWORD_FORM);
             }
 
             if (userDao.getByEmail(email) != null) {
-                LOGGER.debug(" email " + email + " is exist");
+                logger.debug(" email " + email + " is exist");
                 throw new IncorrectDataException(EMAIL_ALREADY_EXISTS);
             }
 
@@ -162,12 +289,13 @@ public class SQLUserService extends SQLService implements UserService {
             user.setStatus(UserStatus.NOT_ACTIVATE);
             int userId = userDao.add(user);
             transaction.commit();
-            return clearPassword(get(userId));
+            user = get(userId);
+            return clearPassword(user);
         } catch (PersistenceException e) {
             try {
                 transaction.rollback();
             } catch (PersistenceException ex) {
-                throw new ServiceException(ROLLBACK_CREATE_ERR_MSG + email , e);
+                throw new ServiceException(ROLLBACK_CREATE_ERR_MSG + email, e);
             }
             throw new ServiceException(CREATE_USER_ERR_MSG + email, e);
         }
@@ -178,4 +306,19 @@ public class SQLUserService extends SQLService implements UserService {
         user.setSalt(null);
         return user;
     }
+
+
+    @Override
+    public User prepareToWriteInSession(User user) {
+        user.setAddress(null);
+        user.setPhoneNumber(0);
+        user.setCompanyName(null);
+        user.setSalt(null);
+        user.setPasswordHash(null);
+        user.setStatus(null);
+        user.setCompanyName(null);
+        user.setCompanyName(null);
+        return user;
+    }
+
 }

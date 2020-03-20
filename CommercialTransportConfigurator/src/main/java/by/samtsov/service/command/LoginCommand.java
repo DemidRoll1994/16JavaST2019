@@ -49,6 +49,7 @@ public class LoginCommand extends Command {
         if (email != null && password != null) {
             UserService service = factory.createService(EntityType.USER);
             User user = service.findByEmailAndPassword(email, password);
+            service.prepareToWriteInSession(user);
             if (user != null) {
                 HttpSession session = request.getSession();
                 session.setAttribute("authorizedUser", user);

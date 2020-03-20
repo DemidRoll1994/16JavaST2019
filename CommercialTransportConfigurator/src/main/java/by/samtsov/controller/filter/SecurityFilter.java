@@ -1,10 +1,17 @@
 package by.samtsov.controller.filter;
 
+import by.samtsov.bean.entity.User;
+import by.samtsov.bean.type.Role;
+import by.samtsov.service.command.Command;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Set;
 
 public class SecurityFilter implements Filter {
     private static Logger logger = LogManager.getLogger(SecurityFilter.class);
@@ -16,7 +23,7 @@ public class SecurityFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        /*if (request instanceof HttpServletRequest && response instanceof HttpServletResponse) {
+        if (request instanceof HttpServletRequest && response instanceof HttpServletResponse) {
             HttpServletRequest httpRequest = (HttpServletRequest) request;
             HttpServletResponse httpResponse = (HttpServletResponse) response;
             Command command = (Command) httpRequest.getAttribute("action");
@@ -41,8 +48,8 @@ public class SecurityFilter implements Filter {
                     || allowedRoles.contains(user.getRole())) {
                 filterChain.doFilter(request, response);
             } else {
-                logger.info("Trying of {} access to forbidden resource \"{}\"", userName, command.getName()));
-                if (session != null /*&& command.getClass() != MainAction.class todo del this*//*) {
+                logger.info("{} is trying to access to forbidden resource \"{}\"", userName, command.getName());
+                if (session != null /*&& command.getClass() != MainAction.class todo del this*/) {
                     session.setAttribute("SecurityFilterMessage", "Доступ запрещён");
                 }
                 httpResponse.sendRedirect(httpRequest.getContextPath() + "/forbidden.jsp");
@@ -50,7 +57,7 @@ public class SecurityFilter implements Filter {
         } else {
             logger.error("It is impossible to use HTTP filter");
             request.getServletContext().getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
-        }*/
+        }
     }
 
     @Override

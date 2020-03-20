@@ -9,7 +9,7 @@ public interface Service<T> {
 
     int save(T t) throws ServiceException, InternalServerException;
 
-    void update(T t) throws ServiceException, InternalServerException;
+    T update(T t) throws ServiceException, InternalServerException;
 
     void delete(int id) throws ServiceException, InternalServerException;
 }

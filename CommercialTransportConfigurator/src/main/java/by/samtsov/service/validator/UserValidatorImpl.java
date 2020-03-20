@@ -1,11 +1,12 @@
 package by.samtsov.service.validator;
 
 import by.samtsov.bean.entity.User;
+import by.samtsov.bean.type.Role;
+import by.samtsov.bean.type.UserStatus;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class UserValidatorImpl implements UserValidator {
+public class UserValidatorImpl extends Validator<User> implements UserValidator {
     private static final String ANY_LET_REGEX = "[a-zа-яA-ZА-ЯёўіЁЎІ]";
     private static final Pattern REGEX_PASSWORD_PATTERN = Pattern.compile(
             "(?=.*[0-9])(?=.*[!-\\/:-@\\[-`{-~])(?=.*[a-z])(?=.*[A-Z])" +
@@ -20,36 +21,45 @@ public class UserValidatorImpl implements UserValidator {
             "^(" + ANY_LET_REGEX + "+[',.-]?" + ANY_LET_REGEX
                     + "+){1,127}$");
 
+
     @Override
     public boolean isValid(User user) {
-        return user != null && user.getId() > 0 && user.getEmail() != null
-                && user.getPasswordHash() != null && user.getStatus() != null
-                && user.getRole() != null;
-    }
-
-    public boolean isPasswordValid(String password){
-        return isValueMatchPatter(password, REGEX_PASSWORD_PATTERN);
-    }
-
-    public boolean isEmailValid(String email){
-        return isValueMatchPatter(email, EMAIL_REGEX_PATTERN);
-    }
-
-    public boolean isNameValid(String email){
-        return isValueMatchPatter(email, NAME_REGEX_PATTERN);
-    }
-
-    public boolean isSurnameValid(String email) {
-        return isValueMatchPatter(email, SURNAME_REGEX_PATTERN);
-    }
-
-    public boolean isValueMatchPatter(String value, Pattern pattern) {
-        if (value != null) {
-            Matcher matcher = pattern.matcher(value);
-            return matcher.find();
-        }
-        return false;
+        return user != null && user.getId() > 0 && isEmailValid(user.getEmail())
+                && isRoleValid(user.getRole())
+                && isStatusValid(user.getStatus())
+                && isNameValid(user.getName())
+                && isSurnameValid(user.getSurname());
     }
 
 
+    public boolean isPasswordValid(String password) {
+        return isValidRequiredString(password, REGEX_PASSWORD_PATTERN);
+    }
+
+    public boolean isEmailValid(String email) {
+        return isValidRequiredString(email, EMAIL_REGEX_PATTERN);
+    }
+
+    public boolean isNameValid(String name) {
+        return isValidRequiredString(name, NAME_REGEX_PATTERN);
+    }
+
+    public boolean isSurnameValid(String surname) {
+        return isValidRequiredString(surname, SURNAME_REGEX_PATTERN);
+    }
+
+    @Override
+    public boolean isPhoneNumberValid(long phoneNumber) {
+        return phoneNumber > 0;
+    }
+
+    @Override
+    public boolean isRoleValid(Role role) {
+        return role != null;
+    }
+
+    @Override
+    public boolean isStatusValid(UserStatus status) {
+        return status != null;
+    }
 }

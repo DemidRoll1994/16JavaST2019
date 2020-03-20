@@ -22,8 +22,8 @@ public class SQLConfigurationService implements ConfigurationService {
     }
 
     @Override
-    public void update(Configuration configuration) {
-
+    public Configuration update(Configuration configuration) {
+        return null;
     }
 
     @Override

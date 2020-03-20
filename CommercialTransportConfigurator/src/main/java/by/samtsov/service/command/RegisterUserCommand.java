@@ -45,7 +45,7 @@ public class RegisterUserCommand extends Command {
         //сохранить пользователя в базе данных при помощи сервиса
         //вывести сообщение о том, что пользователь создан и перенаправить на нужную страницу.
 
-//todo del comments
+        //todo del comments
         /*HttpSession session = request.getSession();
         session.setAttribute("authorizedUser", user);
         String successMessage = String.format(
