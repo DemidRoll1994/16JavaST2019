@@ -5,6 +5,8 @@ import by.samtsov.bean.type.Role;
 import by.samtsov.bean.type.UserStatus;
 import by.samtsov.dao.PersistenceException;
 import by.samtsov.dao.UserDao;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,6 +14,8 @@ import java.util.List;
 
 public class SQLUserDao extends SQLBaseDao implements UserDao {
 
+    private static final Logger logger = LogManager.getLogger(
+            SQLUserDao.class);
 
     @Override
     public User get(int id) throws PersistenceException {
@@ -160,10 +164,10 @@ public class SQLUserDao extends SQLBaseDao implements UserDao {
     }
 
     @Override
-    public int update(User user) throws PersistenceException {
-        String sql = "UPDATE `users` SET , `password_hash` = ?, " +
+    public void update(User user) throws PersistenceException {
+        String sql = "UPDATE `users` SET `password_hash` = ?, " +
                 "`salt` = ?, `status` = ?, `role` = ?, `company` = ?," +
-                " `phoneNumber` = ?, `address` = ?, `email` = ?, `name` = ?," +
+                " `phone_Number` = ?, `address` = ?, `email` = ?, `name` = ?," +
                 " `surname` = ? WHERE `id` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, user.getPasswordHash());
@@ -190,29 +194,17 @@ public class SQLUserDao extends SQLBaseDao implements UserDao {
             statement.setString(10, user.getSurname());
             statement.setInt(11, user.getId());
             statement.executeUpdate();
-            ResultSet resultSet = statement.getGeneratedKeys();
-            if (resultSet.next()) {
-                return resultSet.getInt(1);
-            } else {
-                throw new PersistenceException("There is no autoincrement index after trying to add record into table `users`");
-            }
         } catch (SQLException e) {
             throw new PersistenceException(e);
         }
     }
 
     @Override
-    public int delete(int userId) throws PersistenceException {
+    public void delete(int userId) throws PersistenceException {
         String sql = "DELETE FROM `users` WHERE `id` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
             statement.executeUpdate();
-            ResultSet resultSet = statement.getGeneratedKeys();
-            if (resultSet.next()) {
-                return resultSet.getInt(1);
-            } else {
-                throw new PersistenceException("There is no autoincrement index after trying to add record into table `users`");
-            }
         } catch (SQLException e) {
             throw new PersistenceException(e);
         }

@@ -12,17 +12,21 @@
 <main>
     <br>
     <br><br><br><br>
-    <div style="text-align: center;">
-        <form action="${registerUrl}" method="post" id="Signup-Form"
-              role="form">
 
+
+    <div class="col-2"></div>
+    <div class="col-6">
+        <c:url value="/profile/save.action" var="saveProfile"/>
+        <form action="${saveProfile}" method="post" id="Signup-Form"
+              role="form">
             <div class="form-group">
                 <div class="input-group">
                     <input name="name" id="name"
                            class="form-control input-lg"
                            placeholder="Enter name" required
                            data-parsley-pattern="^[a-zа-яA-ZА-ЯёўіЁЎІ]{2,255}$"
-                           data-parsley-trigger="keyup">
+                           data-parsley-trigger="keyup"
+                           value="${user.name}">
                 </div>
             </div>
             <div class="form-group">
@@ -31,16 +35,18 @@
                            class="form-control input-lg"
                            placeholder="Enter surname" required
                            data-parsley-pattern="^([a-zа-яA-ZА-ЯёўіЁЎІ]+[',.-]?[a-zа-яA-ZА-ЯёўіЁЎІ]+){1,127}$"
-                           data-parsley-trigger="keyup">
+                           data-parsley-trigger="keyup"
+                           value="${user.surname}">
                 </div>
             </div>
-            <div class="form-group">
+            <div class=" form-group">
                 <div class="input-group">
                     <input name="email" id="signup-email"
                            type="email"
                            class="form-control input-lg"
                            placeholder="Enter Email" required
-                           data-parsley-type="email">
+                           data-parsley-type="email"
+                           value="${user.email}">
                 </div>
             </div>
 
@@ -49,7 +55,8 @@
                 <div class="input-group">
                     <input name="companyName" id="companyName"
                            class="form-control input-lg"
-                           placeholder="Enter your company name">
+                           placeholder="Enter your company name"
+                           value="${user.companyName}">
                 </div>
             </div>
             <div class="form-group">
@@ -57,7 +64,8 @@
                     <input name="phoneNumber" id="phoneNumber"
                            data-parsley-type="digits"
                            class="form-control input-lg"
-                           placeholder="Enter your phone">
+                           placeholder="Enter your phone"
+                           value="${user.phoneNumber}">
                 </div>
             </div>
 
@@ -65,7 +73,8 @@
                 <div class="input-group">
                     <input name="address" id="address"
                            class="form-control input-lg"
-                           placeholder="Enter your company address">
+                           placeholder="Enter your company address"
+                           value="${user.address}">
                 </div>
             </div>
             <button type="submit"
@@ -73,6 +82,8 @@
             </button>
         </form>
     </div>
+    <div class="col-4"/>
+
 </main>
 <jsp:include page="../footer.jsp"/>
 </body>

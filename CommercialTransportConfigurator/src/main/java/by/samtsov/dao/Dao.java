@@ -11,7 +11,7 @@ public interface Dao<T> {
 
     int add(T t) throws PersistenceException;
 
-    int update(T t) throws PersistenceException;
+    void update(T t) throws PersistenceException;
 
-    int delete(int id) throws PersistenceException;
+    void delete(int id) throws PersistenceException;
 }

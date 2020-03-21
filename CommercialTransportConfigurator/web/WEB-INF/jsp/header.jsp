@@ -109,6 +109,8 @@
                     </c:when>
                     <c:when test="${authorizedUser!=null}">
                         <a class="nav-link">Hello, ${authorizedUser.name}!</a>
+                        <c:url value="/profile/edit.action" var="editProfile"/>
+                        <a href="${editProfile}">Edit profile</a>
                         <c:url value="/logout.action" var="logout"/>
                         <a href="${logout}" class="btn btn-info">Logout</a>
                     </c:when>

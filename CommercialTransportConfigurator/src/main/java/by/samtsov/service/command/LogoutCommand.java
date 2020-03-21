@@ -1,6 +1,7 @@
 package by.samtsov.service.command;
 
 import by.samtsov.bean.entity.User;
+import by.samtsov.bean.type.Role;
 import by.samtsov.dao.PersistenceException;
 import by.samtsov.service.InternalServerException;
 import by.samtsov.service.ServiceException;
@@ -11,11 +12,15 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Set;
 
 public class LogoutCommand extends Command {
 
     private static Logger logger = LogManager.getLogger(LogoutCommand.class);
 
+    public Set<Role> getAllowRoles() {
+        return null;
+    }
     public ResponsePage execute(HttpServletRequest request, HttpServletResponse response) throws PersistenceException, InternalServerException, ServiceException {
         ResponsePage responsePage = new ResponsePage("/", true);
         HttpSession session = request.getSession();

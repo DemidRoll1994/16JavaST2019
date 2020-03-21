@@ -1,6 +1,7 @@
 package by.samtsov.service.command;
 
 import by.samtsov.bean.entity.User;
+import by.samtsov.bean.type.Role;
 import by.samtsov.service.InternalServerException;
 import by.samtsov.bean.type.EntityType;
 import by.samtsov.service.ServiceException;
@@ -12,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Set;
 
 public class RegisterUserCommand extends Command {
 
@@ -58,6 +60,11 @@ public class RegisterUserCommand extends Command {
 
         request.setAttribute("user", user);
         return responsePage;
+    }
+
+
+    public Set<Role> getAllowRoles() {
+        return null;
     }
 
 

@@ -92,8 +92,9 @@ public class SQLUserService extends SQLService implements UserService {
             logger.trace("trying to edit personal user data: name: {}, " +
                             "surname: {}, email: {}, companyName: {}, " +
                             "phoneNumber: {}, address: {}", newUser.getName()
-                    , newUser.getSurname(), newUser.getEmail(), newUser.getCompanyName()
-                    , newUser.getPhoneNumber(), newUser.getAddress());
+                    , newUser.getSurname(), newUser.getEmail()
+                    , newUser.getCompanyName(), newUser.getPhoneNumber()
+                    , newUser.getAddress());
             if (!userValidator.isNameValid(newUser.getName())) {
                 logger.debug("Name {} is invalid", newUser.getName());
                 throw new IncorrectDataException(INVALID_NAME_FORM);
@@ -110,14 +111,26 @@ public class SQLUserService extends SQLService implements UserService {
                 logger.debug("Phone {} is invalid", newUser.getPhoneNumber());
                 throw new IncorrectDataException(INVALID_PHONE_FORM);
             }
-            User user = userDao.get(newUser.getId());
-            user.setName(newUser.getName());
-            user.setSurname(newUser.getSurname());
-            user.setEmail(newUser.getEmail());
-            user.setPhoneNumber(newUser.getPhoneNumber());
-            userDao.update(newUser);
-            transaction.commit();
-            return clearPassword(newUser);
+            User updatingUser = userDao.get(newUser.getId());
+            if (updatingUser == null) {
+                logger.debug("User with {} not found", newUser.getId());
+                throw new IncorrectDataException(INVALID_USER_ID);
+            } else {
+                logger.trace("trying to edit user personal data[ name: {}, " +
+                                "surname: {}, email: {}, companyName: {}, " +
+                                "phoneNumber: {}, address: {} , role: {}, " +
+                                "Status {}]", updatingUser.getName(), updatingUser.getSurname()
+                        , updatingUser.getEmail(), updatingUser.getCompanyName()
+                        , updatingUser.getPhoneNumber(), updatingUser.getAddress()
+                        , updatingUser.getRole(), updatingUser.getStatus());
+                updatingUser.setName(newUser.getName());
+                updatingUser.setSurname(newUser.getSurname());
+                updatingUser.setEmail(newUser.getEmail());
+                updatingUser.setPhoneNumber(newUser.getPhoneNumber());
+                userDao.update(updatingUser);
+                transaction.commit();
+                return clearPassword(newUser);
+            }
         } catch (PersistenceException e) {
             try {
                 transaction.rollback();
@@ -161,15 +174,20 @@ public class SQLUserService extends SQLService implements UserService {
                 throw new IncorrectDataException(INVALID_STATUS);
             }
             User user = userDao.get(newUser.getId());
-            user.setName(newUser.getName());
-            user.setSurname(newUser.getSurname());
-            user.setEmail(newUser.getEmail());
-            user.setPhoneNumber(newUser.getPhoneNumber());
-            user.setRole(newUser.getRole());
-            user.setStatus(newUser.getStatus());
-            userDao.update(newUser);
-            transaction.commit();
-            return clearPassword(newUser);
+            if (user == null) {
+                logger.debug("User with {} not found", newUser.getId());
+                throw new IncorrectDataException(INVALID_USER_ID);
+            } else {
+                user.setName(newUser.getName());
+                user.setSurname(newUser.getSurname());
+                user.setEmail(newUser.getEmail());
+                user.setPhoneNumber(newUser.getPhoneNumber());
+                user.setRole(newUser.getRole());
+                user.setStatus(newUser.getStatus());
+                userDao.update(newUser);
+                transaction.commit();
+                return clearPassword(newUser);
+            }
         } catch (PersistenceException e) {
             try {
                 transaction.rollback();

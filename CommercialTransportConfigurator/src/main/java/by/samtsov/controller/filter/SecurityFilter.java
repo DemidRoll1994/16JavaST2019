@@ -26,7 +26,7 @@ public class SecurityFilter implements Filter {
         if (request instanceof HttpServletRequest && response instanceof HttpServletResponse) {
             HttpServletRequest httpRequest = (HttpServletRequest) request;
             HttpServletResponse httpResponse = (HttpServletResponse) response;
-            Command command = (Command) httpRequest.getAttribute("action");
+            Command command = (Command) httpRequest.getAttribute("command");
             Set<Role> allowedRoles = command.getAllowedRoles();
             String userName = "unauthorized user";
             User user = null;
@@ -51,8 +51,7 @@ public class SecurityFilter implements Filter {
                 logger.info("{} is trying to access to forbidden resource \"{}\"", userName, command.getName());
                 if (session != null /*&& command.getClass() != MainAction.class todo del this*/) {
                     session.setAttribute("SecurityFilterMessage", "Доступ запрещён");
-                }
-                httpResponse.sendRedirect(httpRequest.getContextPath() + "/forbidden.jsp");
+                }request.getServletContext().getRequestDispatcher("/WEB-INF/jsp/forbidden.jsp").forward(request, response);
             }
         } else {
             logger.error("It is impossible to use HTTP filter");

@@ -4,5 +4,9 @@ public enum AvailableCommand {
     INDEX,
     REGISTER,
     LOGIN,
-    LOGOUT
+    LOGOUT,
+    PROFILE_EDIT,
+    PROFILE_SAVE
+
+    ;
 }

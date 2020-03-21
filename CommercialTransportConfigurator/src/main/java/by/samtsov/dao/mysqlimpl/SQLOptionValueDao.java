@@ -97,7 +97,7 @@ public class SQLOptionValueDao extends SQLBaseDao implements OptionValueDao {
 
 
     @Override
-    public int update(OptionValue user) throws PersistenceException {
+    public void update(OptionValue user) throws PersistenceException {
         /*String sql = "UPDATE `users` SET `login` = ?, `password_hash` = ?, " +
                 "`salt` = ?, `status` = ?, `role` = ?, `company` = ?," +
                 " `phoneNumber` = ?, `address` = ? WHERE `id` = ?";
@@ -127,21 +127,14 @@ public class SQLOptionValueDao extends SQLBaseDao implements OptionValueDao {
         } catch (SQLException e) {
             throw new PersistentException(e);
         }*/
-        return 0;
     }
 
     @Override
-    public int delete(int userId) throws PersistenceException {
+    public void delete(int userId) throws PersistenceException {
         String sql = "DELETE FROM `users` WHERE `id` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
             statement.executeUpdate();
-            ResultSet resultSet = statement.getGeneratedKeys();
-            if (resultSet.next()) {
-                return resultSet.getInt(1);
-            } else {
-                throw new PersistenceException("There is no autoincrement index after trying to add record into table `users`");
-            }
         } catch (SQLException e) {
             throw new PersistenceException(e);
         }

@@ -108,7 +108,7 @@ where `models`.id=1;
     }
 
     @Override
-    public int update(Model model) throws PersistenceException {
+    public void update(Model model) throws PersistenceException {
         String sql = "UPDATE `models` SET `model_name` = ?, `basic_price` = ?" +
                 " WHERE `id` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -119,21 +119,14 @@ where `models`.id=1;
         } catch (SQLException e) {
             throw new PersistenceException(e);
         }
-        return 0;
     }
 
     @Override
-    public int delete(int modelId) throws PersistenceException {
+    public void delete(int modelId) throws PersistenceException {
         String sql = "DELETE FROM `models` WHERE `id` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, modelId);
             statement.executeUpdate();
-            ResultSet resultSet = statement.getGeneratedKeys();
-            if (resultSet.next()) {
-                return resultSet.getInt(1);
-            } else {
-                throw new PersistenceException("There is no autoincrement index after trying to add record into table `users`");
-            }
         } catch (SQLException e) {
             throw new PersistenceException(e);
         }

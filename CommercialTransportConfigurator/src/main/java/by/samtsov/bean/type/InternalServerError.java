@@ -14,7 +14,8 @@ public enum InternalServerError {
     INVALID_PHONE_FORM("Invalid phone number"),
     INVALID_ROLE("Invalid role"),
     INVALID_STATUS("Status is invalid"),
-    OLD_PASSWORD_INVALID("Old password is invalid")
+    OLD_PASSWORD_INVALID("Old password is invalid"),
+    INVALID_USER_ID("No user with such ID")
 
     ;
 

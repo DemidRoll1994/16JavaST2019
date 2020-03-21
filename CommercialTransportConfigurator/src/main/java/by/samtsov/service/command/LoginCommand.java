@@ -34,7 +34,6 @@ public class LoginCommand extends Command {
         )));
     }*/
 
-    //@Override
     public Set<Role> getAllowRoles() {
         return null;
     }
