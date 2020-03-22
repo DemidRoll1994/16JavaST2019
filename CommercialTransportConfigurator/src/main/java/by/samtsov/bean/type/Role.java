@@ -11,6 +11,5 @@ public enum Role {
 
     public static Role getByIdentity(Integer identity) {
         return Role.values()[identity];
-        
     }
 }

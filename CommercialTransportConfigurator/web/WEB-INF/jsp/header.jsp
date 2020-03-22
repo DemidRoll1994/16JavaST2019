@@ -54,11 +54,13 @@
 </script>
 
 <header>
-    <nav class="fixed-top navbar navbar-expand-lg navbar-dark bg-dark">
+    <div></div>
+    <nav class="fixed-top navbar navbar-expand-lg navbar-dark bg-dark row"
+         style="align-content: center;">
 
         <c:url value="/index.action" var="itemUrl"/>
         <a class="navbar-brand" href="${itemUrl}"><span
-                class="glyphicon glyphicon-cog"
+                class="glyphicon glyphicon-cog "
                 aria-hidden="true"></span> Конфигуратор </a>
         <button class="navbar-toggler" type="button"
                 data-toggle="collapse" data-target="#navbarNavDropdown"
@@ -68,7 +70,7 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav mr-auto">
+            <ul class="navbar-nav mr-auto ">
                 <li class="nav-item">
                     <a class="nav-link" href="#">Модельный ряд</a>
                 </li>
@@ -108,11 +110,22 @@
                         </li>
                     </c:when>
                     <c:when test="${authorizedUser!=null}">
-                        <a class="nav-link">Hello, ${authorizedUser.name}!</a>
-                        <c:url value="/profile/edit.action" var="editProfile"/>
-                        <a href="${editProfile}">Edit profile</a>
-                        <c:url value="/logout.action" var="logout"/>
-                        <a href="${logout}" class="btn btn-info">Logout</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle"
+                               href="#" id="dropdown08"
+                               data-toggle="dropdown" aria-haspopup="true"
+                               aria-expanded="false">Hello, ${authorizedUser.name}!</a>
+                            <div class="dropdown-menu"
+                                 aria-labelledby="dropdown08">
+                                <c:url value="/profile/edit.action"
+                                       var="editProfile"/>
+                                <a class="dropdown-item" href="${editProfile}">Edit
+                                    profile</a>
+                                <c:url value="/logout.action" var="logout"/>
+                                <a class="dropdown-item btn btn-info"
+                                   href="${logout}">Logout</a>
+                            </div>
+                        </li>
                     </c:when>
                 </c:choose>
             </ul>

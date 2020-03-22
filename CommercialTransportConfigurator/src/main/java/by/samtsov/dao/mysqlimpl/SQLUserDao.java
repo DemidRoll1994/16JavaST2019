@@ -185,7 +185,7 @@ public class SQLUserDao extends SQLBaseDao implements UserDao {
                 statement.setNull(6, Types.INTEGER);
             }
             if (user.getCompanyName() != null) {
-                statement.setString(7, user.getCompanyName());
+                statement.setString(7, user.getAddress());
             } else {
                 statement.setNull(7, Types.INTEGER);
             }

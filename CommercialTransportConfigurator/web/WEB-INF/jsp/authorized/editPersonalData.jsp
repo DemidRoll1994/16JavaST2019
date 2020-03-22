@@ -14,6 +14,7 @@
     <br><br><br><br>
 
 
+    <div class="row">
     <div class="col-2"></div>
     <div class="col-6">
         <c:url value="/profile/save.action" var="saveProfile"/>
@@ -83,6 +84,7 @@
         </form>
     </div>
     <div class="col-4"/>
+    </div>
 
 </main>
 <jsp:include page="../footer.jsp"/>

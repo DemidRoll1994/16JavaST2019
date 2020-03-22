@@ -63,7 +63,7 @@ public class RegisterUserCommand extends Command {
     }
 
 
-    public Set<Role> getAllowRoles() {
+    public Set<Role> getAllowedRoles() {
         return null;
     }
 

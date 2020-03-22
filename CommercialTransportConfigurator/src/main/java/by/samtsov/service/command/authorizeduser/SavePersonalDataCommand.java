@@ -26,7 +26,8 @@ public class SavePersonalDataCommand extends AuthorizedUserCommand {
     public ResponsePage execute(HttpServletRequest request,
                                 HttpServletResponse response) throws InternalServerException, ServiceException {
 
-        ResponsePage responsePage = new ResponsePage("/profile/edit", true);
+        ResponsePage responsePage = new ResponsePage("/profile/edit.action",
+                true);
         String name = request.getParameter("name");
         String surname = request.getParameter("surname");
         String email = request.getParameter("email");
@@ -34,8 +35,7 @@ public class SavePersonalDataCommand extends AuthorizedUserCommand {
         String phoneNumber = request.getParameter("phoneNumber");
         String address = request.getParameter("address");
         UserService service = factory.createService(USER_ENTITY_TYPE);
-        User user = new User();
-        user.setId(getAuthorizedUser().getId());
+        User user = service.get(getAuthorizedUser().getId());
         user.setName(name);
         user.setSurname(surname);
         user.setEmail(email);

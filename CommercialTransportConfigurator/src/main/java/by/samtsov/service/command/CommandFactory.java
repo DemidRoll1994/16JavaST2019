@@ -1,6 +1,8 @@
 package by.samtsov.service.command;
 
+import by.samtsov.service.command.admin.EditUsersDataCommand;
 import by.samtsov.service.command.authorizeduser.EditPersonalDataCommand;
+import by.samtsov.service.command.authorizeduser.LogoutCommand;
 import by.samtsov.service.command.authorizeduser.SavePersonalDataCommand;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,6 +31,9 @@ public class CommandFactory {
                     break;
                 case PROFILE_SAVE:
                     command = new SavePersonalDataCommand();
+                    break;
+                case EDIT_USERS_DATA:
+                    command = new EditUsersDataCommand();
                     break;
                 default:
                     logger.error("Can't create command {}. The corresponding " +

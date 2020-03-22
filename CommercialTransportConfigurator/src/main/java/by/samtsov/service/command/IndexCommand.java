@@ -19,7 +19,7 @@ public class IndexCommand extends Command {
     }
 
 
-    public Set<Role> getAllowRoles() {
+    public Set<Role> getAllowedRoles() {
         return null;
     }
 }

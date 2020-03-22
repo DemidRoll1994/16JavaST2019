@@ -2,6 +2,7 @@ package by.samtsov.service.sql;
 
 import by.samtsov.bean.entity.User;
 import by.samtsov.bean.type.EntityType;
+import by.samtsov.bean.type.InternalServerError;
 import by.samtsov.bean.type.Role;
 import by.samtsov.bean.type.UserStatus;
 import by.samtsov.dao.PersistenceException;
@@ -23,10 +24,10 @@ public class SQLUserService extends SQLService implements UserService {
     public static final String CREATE_USER_ERR_MSG = "can't create user with login ";
     public static final String ROLLBACK_CREATE_ERR_MSG = "can't rollback a transaction while creating user with login ";
     public static final String FIND_USER_ERR_MSG = "can't find user ";
-    private static final Logger logger = LogManager.getLogger(
-            SQLUserService.class);
     public static final String CAN_T_FIND_MSG = "can't find user";
     public static final String CAN_T_DELETE_ERROR_MSG = "Can't delete user with id ";
+    private static final Logger logger = LogManager.getLogger(
+            SQLUserService.class);
     UserDao userDao = null;
     UserValidatorImpl userValidator = null;
 
@@ -40,9 +41,16 @@ public class SQLUserService extends SQLService implements UserService {
     @Override
     public User get(int id) throws ServiceException {
         try {
-            return clearPassword(userDao.get(id));
+            User user = userDao.get(id);
+            transaction.commit();
+            return clearPassword(user);
         } catch (PersistenceException e) {
-            throw new ServiceException(e); /// todo does commit is обязателен?
+            try {
+                transaction.rollback();
+            } catch (PersistenceException ex) {
+                throw new ServiceException(ROLLBACK_CREATE_ERR_MSG, e); // TODO THIS IS NOT CREATE
+            }
+            throw new ServiceException(CAN_T_DELETE_ERROR_MSG, e); // TODO THIS IS NOT delete
         }
     }
 
@@ -89,27 +97,11 @@ public class SQLUserService extends SQLService implements UserService {
     @Override
     public User updatePersonalData(User newUser) throws ServiceException {
         try {
-            logger.trace("trying to edit personal user data: name: {}, " +
-                            "surname: {}, email: {}, companyName: {}, " +
-                            "phoneNumber: {}, address: {}", newUser.getName()
-                    , newUser.getSurname(), newUser.getEmail()
-                    , newUser.getCompanyName(), newUser.getPhoneNumber()
-                    , newUser.getAddress());
-            if (!userValidator.isNameValid(newUser.getName())) {
-                logger.debug("Name {} is invalid", newUser.getName());
-                throw new IncorrectDataException(INVALID_NAME_FORM);
-            }
-            if (!userValidator.isSurnameValid(newUser.getSurname())) {
-                logger.debug("Surname {} is invalid", newUser.getSurname());
-                throw new IncorrectDataException(INVALID_SURNAME_FORM);
-            }
-            if (!userValidator.isEmailValid(newUser.getEmail())) {
-                logger.debug("Email {} is invalid", newUser.getEmail());
-                throw new IncorrectDataException(INVALID_EMAIL_FORM);
-            }
-            if (!userValidator.isPhoneNumberValid(newUser.getPhoneNumber())) {
-                logger.debug("Phone {} is invalid", newUser.getPhoneNumber());
-                throw new IncorrectDataException(INVALID_PHONE_FORM);
+            InternalServerError errorCode = generateErrorCode(newUser.getName(),
+                    newUser.getSurname(), newUser.getEmail(),
+                    newUser.getPhoneNumber());
+            if (errorCode != null) {
+                throw new IncorrectDataException(errorCode);
             }
             User updatingUser = userDao.get(newUser.getId());
             if (updatingUser == null) {
@@ -127,6 +119,8 @@ public class SQLUserService extends SQLService implements UserService {
                 updatingUser.setSurname(newUser.getSurname());
                 updatingUser.setEmail(newUser.getEmail());
                 updatingUser.setPhoneNumber(newUser.getPhoneNumber());
+                updatingUser.setCompanyName(newUser.getCompanyName());
+                updatingUser.setAddress(newUser.getAddress());
                 userDao.update(updatingUser);
                 transaction.commit();
                 return clearPassword(newUser);
@@ -147,31 +141,15 @@ public class SQLUserService extends SQLService implements UserService {
             logger.trace("trying to edit personal user data: name: {}, " +
                             "surname: {}, email: {}, companyName: {}, " +
                             "phoneNumber: {}, address: {}", newUser.getName()
-                    , newUser.getSurname(), newUser.getEmail(), newUser.getCompanyName()
-                    , newUser.getPhoneNumber(), newUser.getAddress());
-            if (!userValidator.isNameValid(newUser.getName())) {
-                logger.debug("Name {} is invalid", newUser.getName());
-                throw new IncorrectDataException(INVALID_NAME_FORM);
-            }
-            if (!userValidator.isSurnameValid(newUser.getSurname())) {
-                logger.debug("Surname {} is invalid", newUser.getSurname());
-                throw new IncorrectDataException(INVALID_SURNAME_FORM);
-            }
-            if (!userValidator.isEmailValid(newUser.getEmail())) {
-                logger.debug("Email {} is invalid", newUser.getEmail());
-                throw new IncorrectDataException(INVALID_EMAIL_FORM);
-            }
-            if (!userValidator.isPhoneNumberValid(newUser.getPhoneNumber())) {
-                logger.debug("Phone {} is invalid", newUser.getPhoneNumber());
-                throw new IncorrectDataException(INVALID_PHONE_FORM);
-            }
-            if (!userValidator.isRoleValid(newUser.getRole())) {
-                logger.debug("Role {} is invalid", newUser.getRole());
-                throw new IncorrectDataException(INVALID_ROLE);
-            }
-            if (!userValidator.isStatusValid(newUser.getStatus())) {
-                logger.debug("Status {} is invalid", newUser.getStatus());
-                throw new IncorrectDataException(INVALID_STATUS);
+                    , newUser.getSurname(), newUser.getEmail()
+                    , newUser.getCompanyName(), newUser.getPhoneNumber()
+                    , newUser.getAddress());
+            InternalServerError errorCode = generateErrorCode(newUser.getName()
+                    , newUser.getSurname(), newUser.getEmail()
+                    , newUser.getPhoneNumber(), newUser.getRole()
+                    , newUser.getStatus());
+            if (errorCode != null) {
+                throw new IncorrectDataException(errorCode);
             }
             User user = userDao.get(newUser.getId());
             if (user == null) {
@@ -214,10 +192,11 @@ public class SQLUserService extends SQLService implements UserService {
     }
 
     @Override
-    public void updatePassword(User newUser, String oldPassword, String newPassword) throws ServiceException {
+    public void updatePassword(User newUser, String oldPassword, String
+            newPassword) throws ServiceException {
         try {
             if (!userValidator.isPasswordValid(newPassword)) {
-                logger.debug("Old password is invalid");
+                logger.debug("New password is invalid");
                 throw new IncorrectDataException(INVALID_PASSWORD_FORM);
             }
             UserPasswordService userPasswordService = new UserPasswordService();
@@ -239,13 +218,13 @@ public class SQLUserService extends SQLService implements UserService {
             } catch (PersistenceException ex) {
                 throw new ServiceException(ROLLBACK_CREATE_ERR_MSG + newUser.getId(), e);// TODO THIS IS NOT CREATE
             }
-            throw new ServiceException(CAN_T_FIND_MSG + newUser.getId(), e);
+            throw new ServiceException(FIND_USER_ERR_MSG + newUser.getId(), e);
         }
     }
 
-
     @Override
-    public User findByEmailAndPassword(String email, String password) throws ServiceException {
+    public User findByEmailAndPassword(String email, String password) throws
+            ServiceException {
         UserPasswordService userPasswordService = new UserPasswordService();
         User user;
         try {
@@ -268,28 +247,17 @@ public class SQLUserService extends SQLService implements UserService {
     }
 
 
-    public User create(String name, String surname, String email, String password) throws ServiceException {
+    public User create(String name, String surname, String email
+            , String password) throws ServiceException {
         try {
-            if (!userValidator.isNameValid(name)) {
-                logger.debug(" name " + name + " is invalid");
-                throw new IncorrectDataException(INVALID_NAME_FORM);
-            }
-            if (!userValidator.isSurnameValid(surname)) {
-                logger.debug(" surname " + surname + " is invalid");
-                throw new IncorrectDataException(INVALID_SURNAME_FORM);
-            }
-            if (!userValidator.isEmailValid(email)) {
-                logger.debug(" email " + email + " is invalid");
-                throw new IncorrectDataException(INVALID_EMAIL_FORM);
+            InternalServerError errorCode = generateErrorCode(name, surname
+                    , email);
+            if (errorCode != null) {
+                throw new IncorrectDataException(errorCode);
             }
             if (!userValidator.isPasswordValid(password)) {
-                logger.debug(" password " + password + " is invalid");
+                logger.debug("password is invalid");
                 throw new IncorrectDataException(INVALID_PASSWORD_FORM);
-            }
-
-            if (userDao.getByEmail(email) != null) {
-                logger.debug(" email " + email + " is exist");
-                throw new IncorrectDataException(EMAIL_ALREADY_EXISTS);
             }
 
             User user = new User();
@@ -319,6 +287,58 @@ public class SQLUserService extends SQLService implements UserService {
         }
     }
 
+
+    private InternalServerError generateErrorCode(String name, String surname
+            , String email, long phone, Role role, UserStatus status)
+            throws PersistenceException {
+        InternalServerError errorCode = generateErrorCode(name, surname, email
+                , phone);
+        if (errorCode != null)
+            return errorCode;
+        if (role == null) {
+            logger.debug("Role {} is invalid", role);
+            errorCode = INVALID_ROLE;
+        }
+        if (status == null) {
+            logger.debug("Status {} is invalid", status);
+            errorCode = INVALID_STATUS;
+        }
+        return errorCode;
+    }
+
+    private InternalServerError generateErrorCode(String name, String surname
+            , String email, long phone) throws PersistenceException {
+        InternalServerError errorCode = generateErrorCode(name, surname, email);
+        if (errorCode == null && !userValidator.isPhoneNumberValid(phone)) {
+            logger.debug("Phone {} is invalid", phone);
+            errorCode = INVALID_PHONE_FORM;
+        }
+        return errorCode;
+    }
+
+    private InternalServerError generateErrorCode(String name, String surname
+            , String email) throws PersistenceException {
+        if (!userValidator.isNameValid(name)) {
+            logger.debug("Name {} is invalid", name);
+            return INVALID_NAME_FORM;
+        }
+        if (!userValidator.isSurnameValid(surname)) {
+            logger.debug("Surname {} is invalid", surname);
+            return INVALID_SURNAME_FORM;
+        }
+        if (!userValidator.isEmailValid(email)) {
+            logger.debug("Email {} is invalid", email);
+            return INVALID_EMAIL_FORM;
+        }
+        User anotherUser = userDao.getByEmail(email);
+        if (anotherUser != null /*&& anotherUser.getId() != thisUser.getId()
+         */) { // todo check for himself email
+            logger.debug("Email {} is exist", email);
+            return EMAIL_ALREADY_EXISTS;
+        }
+        return null;
+    }
+
     private User clearPassword(User user) {
         user.setPasswordHash(null);
         user.setSalt(null);
@@ -328,14 +348,11 @@ public class SQLUserService extends SQLService implements UserService {
 
     @Override
     public User prepareToWriteInSession(User user) {
+        user = clearPassword(user);
         user.setAddress(null);
         user.setPhoneNumber(0);
         user.setCompanyName(null);
-        user.setSalt(null);
-        user.setPasswordHash(null);
         user.setStatus(null);
-        user.setCompanyName(null);
-        user.setCompanyName(null);
         return user;
     }
 

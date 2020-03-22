@@ -12,9 +12,10 @@
 <main>
     <br>
     <br><br><br><br>
-    <H1>ЯРОР</H1>
-    ${error}
-
+    <div style="text-align: center;">
+        <H1>Ошибка!</H1>
+        ${error}
+    </div>
 </main>
 <jsp:include page="footer.jsp"/>
 </body>

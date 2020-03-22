@@ -33,9 +33,9 @@ public class ActionFilter implements Filter {
         actions.put("/reader/edit", ReaderEditAction.class);
         actions.put("/reader/save", ReaderSaveAction.class);
         actions.put("/reader/delete", ReaderDeleteAction.class);
-
-        actions.put("/user/list", UserListAction.class);
-        actions.put("/user/edit", UserEditAction.class);
+*/
+        commands.put("/user/list", AvailableCommand.EDIT_USERS_DATA);
+/*        actions.put("/user/edit", UserEditAction.class);
         actions.put("/user/save", UserSaveAction.class);
         actions.put("/user/delete", UserDeleteAction.class);
 

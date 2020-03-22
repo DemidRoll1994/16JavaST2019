@@ -34,8 +34,8 @@ public class SecurityFilter implements Filter {
             if (session != null) {
                 user = (User) session.getAttribute("authorizedUser");
                 command.setAuthorizedUser(user);
-                String errorMessage = (String)session.getAttribute("SecurityFilterMessage");
-                if(errorMessage != null) {
+                String errorMessage = (String) session.getAttribute("SecurityFilterMessage");
+                if (errorMessage != null) {
                     httpRequest.setAttribute("error", errorMessage);
                     session.removeAttribute("SecurityFilterMessage");
                 }
@@ -48,10 +48,15 @@ public class SecurityFilter implements Filter {
                     || allowedRoles.contains(user.getRole())) {
                 filterChain.doFilter(request, response);
             } else {
+                logger.trace("allowedRoles is null {}, user is null {}, " +
+                                "allowedRoles.contains(user.getRole()) {}",
+                        allowedRoles == null, user == null, allowedRoles == null
+                                ? -1 : allowedRoles.contains(user.getRole()));
                 logger.info("{} is trying to access to forbidden resource \"{}\"", userName, command.getName());
                 if (session != null /*&& command.getClass() != MainAction.class todo del this*/) {
                     session.setAttribute("SecurityFilterMessage", "Доступ запрещён");
-                }request.getServletContext().getRequestDispatcher("/WEB-INF/jsp/forbidden.jsp").forward(request, response);
+                }
+                request.getServletContext().getRequestDispatcher("/WEB-INF/jsp/forbidden.jsp").forward(request, response);
             }
         } else {
             logger.error("It is impossible to use HTTP filter");

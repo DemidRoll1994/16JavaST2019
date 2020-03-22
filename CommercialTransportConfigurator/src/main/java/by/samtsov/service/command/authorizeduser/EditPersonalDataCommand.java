@@ -16,7 +16,7 @@ public class EditPersonalDataCommand extends AuthorizedUserCommand {
 
     private static Logger logger = LogManager.getLogger(
             EditPersonalDataCommand.class);
-    private final EntityType USER_ENTITY_TYPE = EntityType.USER;
+    private static final EntityType USER_ENTITY_TYPE = EntityType.USER;
 
 
     public ResponsePage execute(HttpServletRequest request,

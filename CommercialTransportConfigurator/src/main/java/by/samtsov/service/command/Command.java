@@ -24,7 +24,7 @@ public abstract class Command {
         return allowedRoles;
     }
 
-    public User getAuthorizedUser() {
+    public User getAuthorizedUser() throws ServiceException {
         return authorizedUser;
     }
 
