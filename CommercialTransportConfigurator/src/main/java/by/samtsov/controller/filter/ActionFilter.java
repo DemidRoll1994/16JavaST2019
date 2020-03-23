@@ -25,7 +25,6 @@ public class ActionFilter implements Filter {
         commands.put("/logout", AvailableCommand.LOGOUT);
 
 
-
         commands.put("/profile/edit", AvailableCommand.PROFILE_EDIT);
         commands.put("/profile/save", AvailableCommand.PROFILE_SAVE);
 /*  todo
@@ -34,7 +33,11 @@ public class ActionFilter implements Filter {
         actions.put("/reader/save", ReaderSaveAction.class);
         actions.put("/reader/delete", ReaderDeleteAction.class);
 */
-        commands.put("/user/list", AvailableCommand.EDIT_USERS_DATA);
+        commands.put("/users/list", AvailableCommand.SHOW_USERS_DATA);
+        commands.put("/users/editUser", AvailableCommand.EDIT_USERS_DATA);
+        commands.put("/users/saveUser", AvailableCommand.SAVE_USER_DATA);
+
+
 /*        actions.put("/user/edit", UserEditAction.class);
         actions.put("/user/save", UserSaveAction.class);
         actions.put("/user/delete", UserDeleteAction.class);
@@ -92,8 +95,7 @@ public class ActionFilter implements Filter {
                 logger.debug("command {} is set as attribute for httpRequest"
                         , command.getName());
                 filterChain.doFilter(servletRequest, servletResponse);
-            }
-            else{
+            } else {
                 logger.debug("fail to create command {}", commandName);
                 servletRequest.setAttribute("error", "action doesn't exist");
                 servletRequest.getServletContext().getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(servletRequest, servletResponse);

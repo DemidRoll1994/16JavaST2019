@@ -12,8 +12,9 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
-public class EditUsersDataCommand extends AdminCommand {
+public class ShowUsersCommand extends AdminCommand {
 
     private static final EntityType USER_ENTITY_TYPE = EntityType.USER;
     private static Logger logger = LogManager.getLogger(
@@ -22,19 +23,14 @@ public class EditUsersDataCommand extends AdminCommand {
     @Override
     public ResponsePage execute(HttpServletRequest request, HttpServletResponse response) throws PersistenceException, InternalServerException, ServiceException {
 
-        ResponsePage responsePage = new ResponsePage("/admin/editUser.jsp"
+        ResponsePage responsePage = new ResponsePage("/admin/usersList.jsp"
                 , false);
         UserService service = factory.createService(USER_ENTITY_TYPE);
-        int userId = -1;
-        try {
-            userId = (int) request.getAttribute("userId");
-        } catch (Exception e) {
-            throw new ServiceException("userId is invalid", e);
-        }
-        User user = service.get(userId);
-        logger.trace("user {} is selected ", user == null ? null :
-                user.getId());
-        request.setAttribute("user", user);
+
+        List<User> users = service.getAll();
+        logger.trace("users array size {}", users == null ? null :
+                users.size());
+        request.setAttribute("users", users);
         return responsePage;
     }
 }

@@ -1,6 +1,8 @@
 package by.samtsov.service.command;
 
 import by.samtsov.service.command.admin.EditUsersDataCommand;
+import by.samtsov.service.command.admin.SaveUserDataCommand;
+import by.samtsov.service.command.admin.ShowUsersCommand;
 import by.samtsov.service.command.authorizeduser.EditPersonalDataCommand;
 import by.samtsov.service.command.authorizeduser.LogoutCommand;
 import by.samtsov.service.command.authorizeduser.SavePersonalDataCommand;
@@ -34,6 +36,12 @@ public class CommandFactory {
                     break;
                 case EDIT_USERS_DATA:
                     command = new EditUsersDataCommand();
+                    break;
+                case SAVE_USER_DATA:
+                    command =new SaveUserDataCommand();
+                    break;
+                case SHOW_USERS_DATA:
+                    command = new ShowUsersCommand();
                     break;
                 default:
                     logger.error("Can't create command {}. The corresponding " +

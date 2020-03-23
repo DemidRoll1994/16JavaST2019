@@ -1,5 +1,3 @@
-<%@ page import="by.samtsov.bean.type.Role" %>
-<%@ page import="by.samtsov.bean.type.UserStatus" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java"
          pageEncoding="utf8" %>
 <%@ taglib prefix="ctg" uri="customtags" %>
@@ -15,123 +13,34 @@
     <br>
     <br><br><br><br>
 
-    <c:forEach items="${users}" var="user">
-        <div class="row">
-            <div class="col-1"></div>
-            <div class="col-10">
-                <c:url value="/admin/saveUser.action" var="saveProfile"/>
-                <form action="${saveProfile}" method="post" id="Signup-Form"
-                      role="form">
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input name="name" id="name"
-                                   class="form-control input-sm"
-                                   placeholder="Enter name" required
-                                   data-parsley-pattern="^[a-zа-яA-ZА-ЯёўіЁЎІ]{2,255}$"
-                                   data-parsley-trigger="keyup"
-                                   value="${user.name}">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input name="surname" id="surname"
-                                   class="form-control input-sm"
-                                   placeholder="Enter surname" required
-                                   data-parsley-pattern="^([a-zа-яA-ZА-ЯёўіЁЎІ]+[',.-]?[a-zа-яA-ZА-ЯёўіЁЎІ]+){1,127}$"
-                                   data-parsley-trigger="keyup"
-                                   value="${user.surname}">
-                        </div>
-                    </div>
-                    <div class=" form-group">
-                        <div class="input-group">
-                            <input name="email" id="signup-email"
-                                   type="email"
-                                   class="form-control input-sm"
-                                   placeholder="Enter Email" required
-                                   data-parsley-type="email"
-                                   value="${user.email}">
-                        </div>
-                    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Email</th>
+            <th scope="col">Name</th>
+            <th scope="col">Surname</th>
+            <th scope="col">Edit</th>
+        </tr>
+        </thead>
+        <tbody>
 
+        <c:forEach items="${users}" var="user">
+            <tr>
 
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input name="companyName" id="companyName"
-                                   class="form-control input-sm"
-                                   placeholder="Enter your company name"
-                                   value="${user.companyName}">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input name="phoneNumber" id="phoneNumber"
-                                   data-parsley-type="digits"
-                                   class="form-control input-sm"
-                                   placeholder="Enter your phone"
-                                   value="${user.phoneNumber}">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input name="address" id="address"
-                                   class="form-control input-sm"
-                                   placeholder="Enter your company address"
-                                   value="${user.address}">
-                        </div>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="role">Role</label>
-                        <select class="form-control form-control-sm" id="role">
-                            <c:forEach items="<%=Role.values()%>" var="role">
-                                <option
-                                        <c:if test="${role == user.role}">
-                                            selected
-                                        </c:if>
-                                >${role}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="role">Role</label>
-                        <select class="form-control form-control-sm" id="role">
-                            <c:forEach items="<%=Role.values()%>" var="role">
-                                <option
-                                        <c:if test="${role == user.role}">
-                                            selected
-                                        </c:if>
-                                >${role}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="status">Status</label>
-                        <select class="form-control form-control-sm"
-                                id="status">
-                            <c:forEach items="<%=UserStatus.values()%>"
-                                       var="status">
-                                <option
-                                        <c:if test="${status == user.status}">
-                                            selected
-                                        </c:if>
-                                >${status}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                    <button type="submit"
-                            class="btn btn-success btn-block btn-lg">update
-                        user data
-                    </button>
-                </form>
-            </div>
-            <div class="col-1"/>
-        </div>
-
-    </c:forEach>
+                <th scope="row">${user.email}</th>
+                <td>${user.name}</td>
+                <td>${user.surname}</td>
+                <td>
+                    <c:url value="/users/editUser.action" var="userEditAction"/>
+                    <FORM id="form-${reader.identity}" action="${userEditAction}" method="post">
+                        <INPUT type="hidden" name="userId" value="${user.id}">
+                        <BUTTON type="submit" class="btn btn-warning">Редактирвоать</BUTTON>
+                    </FORM>
+                </td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
 </main>
 <jsp:include page="../footer.jsp"/>
 </body>

@@ -86,19 +86,17 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle"
-                       href="#" id="dropdown07"
+                       href="#" id="dropdownMenu"
                        data-toggle="dropdown" aria-haspopup="true"
                        aria-expanded="false">Заказ</a>
                     <div class="dropdown-menu"
-                         aria-labelledby="dropdown07">
-                        <a class="dropdown-item" href="#">Конфигурация
-                            1</a>
-                        <a class="dropdown-item" href="#">Конфигурация
-                            2</a>
-                        <a class="dropdown-item" href="#">Конфигурация
-                            3</a>
+                         aria-labelledby="dropdownMenu">
+                        <c:forEach items="${usdfssers}" var="item">
+                            <a class="dropdown-item" href="{item}"> </a>
+                        </c:forEach>
                     </div>
                 </li>
+
 
 
                 <c:choose>
