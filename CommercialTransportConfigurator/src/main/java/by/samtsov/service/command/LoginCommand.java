@@ -1,38 +1,35 @@
 package by.samtsov.service.command;
 
-import by.samtsov.view.ResponsePage;
+import by.samtsov.bean.MenuItem;
 import by.samtsov.bean.entity.User;
 import by.samtsov.bean.type.EntityType;
 import by.samtsov.bean.type.Role;
 import by.samtsov.service.InternalServerException;
 import by.samtsov.service.ServiceException;
 import by.samtsov.service.UserService;
+import by.samtsov.view.ResponsePage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Set;
+import java.util.*;
 
 public class LoginCommand extends Command {
     private static Logger logger = LogManager.getLogger(LoginCommand.class);
 
-    /*private static Map<Role, List<MenuItem>> menu = new ConcurrentHashMap<>();
+    private static Map<Role, ArrayList> menu = new HashMap<>();
 
     static {
-        menu.put(Role.LIBRARIAN, new ArrayList<>(Arrays.asList(
-                new MenuItem("/search/book/form.html", "поиск книг"),
-                new MenuItem("/search/reader/form.html", "поиск читателей")
+        menu.put(Role.ADMIN, new ArrayList<>(Arrays.asList(
+                new MenuItem("users/list", "список пользователей")
         )));
-        menu.put(Role.ADMINISTRATOR, new ArrayList<>(Arrays.asList(
-                new MenuItem("/reader/list.html", "читатели"),
-                new MenuItem("/user/list.html", "сотрудники")
+        menu.put(Role.BUYER, new ArrayList<>(Arrays.asList(
         )));
-        menu.put(Role.REGISTRAR, new ArrayList<>(Arrays.asList(
-                new MenuItem("/author/list.html", "авторы")
+        menu.put(Role.VENDOR, new ArrayList<>(Arrays.asList(
         )));
-    }*/
+    }
 
     public Set<Role> getAllowedRoles() {
         return null;
@@ -52,7 +49,7 @@ public class LoginCommand extends Command {
             if (user != null) {
                 HttpSession session = request.getSession();
                 session.setAttribute("authorizedUser", user);
-                //session.setAttribute("menu", menu.get(user.getRole()));
+                session.setAttribute("menu", menu.get(user.getRole()));
                 logger.info(String.format("user \"%s\" is logged in from %s (%s:%s)", email, request.getRemoteAddr(), request.getRemoteHost(), request.getRemotePort()));
             } else {
                 request.setAttribute("message", "Имя пользователя или пароль не опознанны");

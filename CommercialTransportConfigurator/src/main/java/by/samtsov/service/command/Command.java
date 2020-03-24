@@ -10,7 +10,6 @@ import by.samtsov.view.ResponsePage;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,7 +17,6 @@ public abstract class Command {
     private Set<Role> allowedRoles = new HashSet<>();
     private User authorizedUser;
     private String name;
-    private HashMap<String , String > menu = new HashMap<>();
 
     protected SQLServiceFactory factory;
 
@@ -47,9 +45,5 @@ public abstract class Command {
     }
 
     abstract public ResponsePage execute(HttpServletRequest request, HttpServletResponse response) throws PersistenceException, InternalServerException, ServiceException;
-
-    public HashMap<String, String> getMenu() {
-        return menu;
-    }
 
 }

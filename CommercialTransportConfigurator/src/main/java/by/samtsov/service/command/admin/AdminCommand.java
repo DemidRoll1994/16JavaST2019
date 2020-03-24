@@ -7,6 +7,5 @@ public abstract class AdminCommand extends Command {
 
     public AdminCommand() {
         getAllowedRoles().add(Role.ADMIN);
-        getMenu().put("список пользователей","/users/list.action");
     }
 }

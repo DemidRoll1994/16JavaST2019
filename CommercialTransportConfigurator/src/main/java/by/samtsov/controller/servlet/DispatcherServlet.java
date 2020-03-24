@@ -71,6 +71,7 @@ public class DispatcherServlet extends HttpServlet {
 
             moveRedirectedDataFromSessionToRequest(session, request);
             ResponsePage responsePage = commandManager.execute(command, request, response);
+
             moveRedirectedDataFromRequestToSession(responsePage, session);
 
             makeResponse(request, response, responsePage, command.getName());

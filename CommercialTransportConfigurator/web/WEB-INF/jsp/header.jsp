@@ -88,12 +88,14 @@
                     <a class="nav-link dropdown-toggle"
                        href="#" id="dropdownMenu"
                        data-toggle="dropdown" aria-haspopup="true"
-                       aria-expanded="false">Заказ</a>
+                       aria-expanded="false">Action</a>
                     <div class="dropdown-menu"
                          aria-labelledby="dropdownMenu">
-                        <c:forEach items="${usdfssers}" var="item">
-                            <a class="dropdown-item" href="{item}"> </a>
+                        <c:url value="/" var="itemprefix"/>
+                        <c:forEach items="${menu}" var="item">
+                            <a class="dropdown-item" href="${itemprefix}${item.url}.action">  ${item.name} </a>
                         </c:forEach>
+
                     </div>
                 </li>
 
@@ -119,6 +121,7 @@
                                        var="editProfile"/>
                                 <a class="dropdown-item" href="${editProfile}">Edit
                                     profile</a>
+                                <div class="dropdown-divider"></div>
                                 <c:url value="/logout.action" var="logout"/>
                                 <a class="dropdown-item btn btn-info"
                                    href="${logout}">Logout</a>
