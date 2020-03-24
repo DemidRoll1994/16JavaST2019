@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import static by.samtsov.bean.type.InternalServerError.INVALID_PASSWORD_FORM;
+import static by.samtsov.bean.type.InternalServerError.INVALID_PHONE_FORM;
 
 public class SaveUserDataCommand extends AuthorizedUserCommand {
 
@@ -28,9 +29,15 @@ public class SaveUserDataCommand extends AuthorizedUserCommand {
 
     public ResponsePage execute(HttpServletRequest request,
                                 HttpServletResponse response) throws InternalServerException, ServiceException {
-
-        ResponsePage responsePage = new ResponsePage("/users/saveUser.action",
+        logger.trace("starting saveUser by admin command");
+        ResponsePage responsePage = new ResponsePage("/users/editUser.action",
                 true);
+        int id;
+        try {
+            id = Integer.parseInt(request.getParameter("userId"));
+        } catch (NumberFormatException | NullPointerException e) {
+            throw new ServiceException("userId is not found", e);
+        }
         String name = request.getParameter("name");
         String surname = request.getParameter("surname");
         String email = request.getParameter("email");
@@ -40,7 +47,7 @@ public class SaveUserDataCommand extends AuthorizedUserCommand {
         UserStatus status = UserStatus.valueOf(request.getParameter("status"));
         Role role = Role.valueOf(request.getParameter("role"));
         UserService service = factory.createService(USER_ENTITY_TYPE);
-        User user = service.get(getAuthorizedUser().getId());
+        User user = service.get(id);
         user.setName(name);
         user.setSurname(surname);
         user.setEmail(email);
@@ -51,16 +58,14 @@ public class SaveUserDataCommand extends AuthorizedUserCommand {
             }
         } catch (NumberFormatException e) {
             logger.debug("Phone number {} is invalid", user.getPhoneNumber());
-            throw new IncorrectDataException(INVALID_PASSWORD_FORM);
+            throw new IncorrectDataException(INVALID_PHONE_FORM);
         }
         user.setAddress(address);
         user.setRole(role);
         user.setStatus(status);
-
         service.updateUserData(user);
-        HttpSession session = request.getSession();
-        session.setAttribute("authorizedUser"
-                , service.prepareToWriteInSession(user));
+        responsePage.getRedirectedAttributes().put("userId", id);
+
         logger.debug("user {} is updated with values : name{}, surname{}, " +
                         "email{}, companyName{}, phoneNumber{}, address{}",
                 user.getId(), name, surname, email, companyName, phoneNumber

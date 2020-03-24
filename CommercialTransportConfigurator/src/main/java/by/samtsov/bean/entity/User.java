@@ -13,7 +13,7 @@ public class User {
     private UserStatus status; //not null
     private Role role; //not null
     private String companyName;
-    private long phoneNumber = -1;
+    private long phoneNumber ;
     private String address;
 
     public User() {

@@ -44,14 +44,12 @@ public class SecurityFilter implements Filter {
             if (user != null) {
                 userName = "\"" + user.getEmail() + "\" user";
             }
-            if (allowedRoles == null || user == null
-                    || allowedRoles.contains(user.getRole())) {
+            if (allowedRoles == null || (user != null && allowedRoles
+                    .contains(user.getRole()))) {
                 filterChain.doFilter(request, response);
             } else {
-                logger.trace("allowedRoles is null {}, user is null {}, " +
-                                "allowedRoles.contains(user.getRole()) {}",
-                        allowedRoles == null, user == null, allowedRoles == null
-                                ? -1 : allowedRoles.contains(user.getRole()));
+                logger.trace("allowedRoles is null {}, user is null {} ",
+                        allowedRoles == null, user == null);
                 logger.info("{} is trying to access to forbidden resource \"{}\"", userName, command.getName());
                 if (session != null /*&& command.getClass() != MainAction.class todo del this*/) {
                     session.setAttribute("SecurityFilterMessage", "Доступ запрещён");

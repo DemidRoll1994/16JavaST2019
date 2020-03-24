@@ -27,7 +27,12 @@ public class EditUsersDataCommand extends AdminCommand {
         UserService service = factory.createService(USER_ENTITY_TYPE);
         int userId = -1;
         try {
-            userId = (int) request.getAttribute("userId");
+            String id= request.getParameter("userId");
+            if (id==null){
+                userId = (Integer) request.getAttribute("userId");
+            }else {
+                userId = Integer.parseInt(request.getParameter("userId"));
+            }
         } catch (Exception e) {
             throw new ServiceException("userId is invalid", e);
         }

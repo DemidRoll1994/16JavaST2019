@@ -6,7 +6,6 @@ import java.util.Map;
 public class ResponsePage {
 
     private String jspName;
-    private String redirectedUrl;
     private boolean redirect;
     private Map<String, Object> redirectedAttributes = new HashMap<>();
 

@@ -23,6 +23,7 @@ public class LogoutCommand extends AuthorizedUserCommand {
         User user = (User) session.getAttribute("authorizedUser");
         if (user != null) {
             session.removeAttribute("authorizedUser");
+            session.removeAttribute("menu");
             logger.info("user {} is logged out", user.getEmail());
         }else{
             logger.info("trying logout user, but he is already is logged out");

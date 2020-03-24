@@ -110,6 +110,7 @@ public class DispatcherServlet extends HttpServlet {
 
     private void moveRedirectedDataFromRequestToSession(ResponsePage responsePage, HttpSession session) {
         if (session != null && responsePage != null && !responsePage.getRedirectedAttributes().isEmpty()) {
+            logger.debug("redirected attributes {}", responsePage.getRedirectedAttributes());
             session.setAttribute("redirectedData", responsePage.getRedirectedAttributes());
         }
     }
@@ -119,7 +120,8 @@ public class DispatcherServlet extends HttpServlet {
             @SuppressWarnings("unchecked")
             Map<String, Object> attributes = (Map<String, Object>) session
                     .getAttribute("redirectedData");
-            if (attributes != null) {
+            if (session != null && request != null && attributes != null) {
+                logger.debug("redirected attributes {}", attributes.keySet());
                 for (String key : attributes.keySet()) {
                     request.setAttribute(key, attributes.get(key));
                 }
