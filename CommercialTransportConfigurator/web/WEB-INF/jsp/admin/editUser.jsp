@@ -14,6 +14,7 @@
 <main>
 
 
+    <div class="container-fluid">
     <div class="row">
         <div class="col-2"></div>
         <div class="col-6">
@@ -122,11 +123,9 @@
                 </button>
             </form>
         </div>
-
-        <div class="w-100"></div>
-        <div class="col-4"/>
+        <div class="col-4"></div>
     </div>
-
+    </div>
     <jsp:include page="../footer.jsp"/>
 </body>
 </html>

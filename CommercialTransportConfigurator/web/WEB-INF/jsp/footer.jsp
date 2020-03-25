@@ -9,6 +9,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <footer>
+    <div class="container-fluid">
     <div class="row navbar-fixed-bottom">
         <div class="col-9"></div>
         <div class="col-3">
@@ -16,6 +17,7 @@
             <br>
             training.by, 2019-2020
         </div>
+    </div>
     </div>
 </footer>
 

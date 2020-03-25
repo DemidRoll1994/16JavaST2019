@@ -33,11 +33,11 @@ public class SQLServiceFactory implements ServiceFactory {
                 return (Type) modelService;
             case ORDER:
                 OrderServiceImpl orderService = new OrderServiceImpl(transaction);
-                return (Type) orderService;
+                return (Type) orderService;*/
             case OPTION:
-                OptionServiceImpl optionService = new OptionServiceImpl(transaction);
+                SQLOptionService optionService = new SQLOptionService(transaction);
                 return (Type) optionService;
-            case OPTION_VALUE:
+            /*case OPTION_VALUE:
                 OptionValueServiceImpl optionValueService = new OptionValueServiceImpl(transaction);
                 return (Type) optionValueService;
             case CONFIGURATION:

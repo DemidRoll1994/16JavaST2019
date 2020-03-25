@@ -54,7 +54,8 @@
 </script>
 
 <header>
-    <div></div>
+
+    <div class="container-fluid">
     <nav class="fixed-top navbar navbar-expand-lg navbar-dark bg-dark row"
          style="align-content: center;">
 
@@ -307,7 +308,7 @@
             <!-- содержимое модального окна forgot password -->
         </div>
     </div>
-
+    </div>
 </header>
 
 <br><br><br>
