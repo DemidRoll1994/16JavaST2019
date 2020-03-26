@@ -21,11 +21,36 @@ import static by.samtsov.bean.type.InternalServerError.*;
 public class SQLUserService extends SQLService implements UserService {
 
     public static final EntityType USER_ENTITY_TYPE = EntityType.USER;
-    public static final String CREATE_USER_ERR_MSG = "can't create user with login ";
-    public static final String ROLLBACK_CREATE_ERR_MSG = "can't rollback a transaction while creating user with login ";
-    public static final String FIND_USER_ERR_MSG = "can't find user ";
-    public static final String CAN_T_FIND_MSG = "can't find user";
-    public static final String CAN_T_DELETE_ERROR_MSG = "Can't delete user with id ";
+
+    private static final String ROLLBACK_GET_ERR_MSG
+            = "can't rollback a transaction while try to get user with login";
+    private static final String CAN_T_GET_ERROR_MSG
+            = "can't get user with login";
+    private static final String ROLLBACK_GET_ALL_ERR_MSG
+            = "can't rollback a transaction while try to get all users";
+    private static final String CAN_T_GET_ALL_ERROR_MSG
+            = "can't get all users";
+    private static final String ROLLBACK_SAVE_ERR_MSG
+            = "can't rollback a transaction while try to save user with id";
+    private static final String CAN_T_SAVE_ERROR_MSG
+            = "can't save user with id";
+    private static final String ROLLBACK_UPDATE_ERR_MSG
+            = "can't rollback a transaction while try to update user with id";
+    private static final String CAN_T_UPDATE_ERROR_MSG
+            = "can't update user with id";
+    private static final String CAN_T_CREATE_ERR_MSG
+            = "can't create user with login";
+    private static final String ROLLBACK_CREATE_ERR_MSG
+            = "can't rollback a transaction while try to delete user with id";
+    private static final String CAN_T_DELETE_ERROR_MSG
+            = "can't delete user with id";
+    private static final String CAN_T_FIND_MSG = "can't find user with id";
+    private static final String ROLLBACK_FIND_ERR_MSG
+            = "can't rollback a transaction while try to find user with id";
+    private static final String UPDATE_PASSWORD_ERR_MSG
+            = "can't update password for user with login";
+    private static final String ROLLBACK_PASS_UPD_ERR_MSG = "can't rollback a" +
+            " transaction while try to update password for user with login";
     private static final Logger logger = LogManager.getLogger(
             SQLUserService.class);
     UserDao userDao = null;
@@ -48,9 +73,9 @@ public class SQLUserService extends SQLService implements UserService {
             try {
                 transaction.rollback();
             } catch (PersistenceException ex) {
-                throw new ServiceException(ROLLBACK_CREATE_ERR_MSG, e); // TODO THIS IS NOT CREATE
+                throw new ServiceException(ROLLBACK_GET_ERR_MSG, e);
             }
-            throw new ServiceException(CAN_T_DELETE_ERROR_MSG, e); // TODO THIS IS NOT delete
+            throw new ServiceException(CAN_T_GET_ERROR_MSG, e);
         }
     }
 
@@ -67,15 +92,18 @@ public class SQLUserService extends SQLService implements UserService {
             try {
                 transaction.rollback();
             } catch (PersistenceException ex) {
-                throw new ServiceException(ROLLBACK_CREATE_ERR_MSG, e); // TODO THIS IS NOT CREATE
+                throw new ServiceException(ROLLBACK_GET_ALL_ERR_MSG, e);
             }
-            throw new ServiceException(CAN_T_DELETE_ERROR_MSG, e); // TODO THIS IS NOT delete
+            throw new ServiceException(CAN_T_GET_ALL_ERROR_MSG, e);
         }
     }
 
     @Override
     public int save(User user) throws ServiceException {
         try {
+            if (user == null) {
+                return -1;
+            }
             int id = userDao.add(user);
             transaction.commit();
             return id;
@@ -83,9 +111,9 @@ public class SQLUserService extends SQLService implements UserService {
             try {
                 transaction.rollback();
             } catch (PersistenceException ex) {
-                throw new ServiceException(ROLLBACK_CREATE_ERR_MSG + user.getId(), e); // TODO THIS IS NOT CREATE
+                throw new ServiceException(ROLLBACK_SAVE_ERR_MSG + user.getId(), e);
             }
-            throw new ServiceException(CAN_T_DELETE_ERROR_MSG + user.getId(), e);// TODO THIS IS NOT delete
+            throw new ServiceException(CAN_T_SAVE_ERROR_MSG + user.getId(), e);
         }
     }
 
@@ -237,9 +265,11 @@ public class SQLUserService extends SQLService implements UserService {
             try {
                 transaction.rollback();
             } catch (PersistenceException ex) {
-                throw new ServiceException(ROLLBACK_CREATE_ERR_MSG + newUser.getId(), e);// TODO THIS IS NOT CREATE
+                throw new ServiceException(ROLLBACK_PASS_UPD_ERR_MSG
+                        + newUser.getId(), e);
             }
-            throw new ServiceException(FIND_USER_ERR_MSG + newUser.getId(), e);
+            throw new ServiceException(UPDATE_PASSWORD_ERR_MSG
+                    + newUser.getId(), e);
         }
     }
 
@@ -255,7 +285,7 @@ public class SQLUserService extends SQLService implements UserService {
             try {
                 transaction.rollback();
             } catch (PersistenceException ex) {
-                throw new ServiceException(ROLLBACK_CREATE_ERR_MSG + email, e);
+                throw new ServiceException(ROLLBACK_FIND_ERR_MSG + email, e);
             }
             throw new ServiceException(CAN_T_FIND_MSG + email, e);
         }
@@ -304,7 +334,7 @@ public class SQLUserService extends SQLService implements UserService {
             } catch (PersistenceException ex) {
                 throw new ServiceException(ROLLBACK_CREATE_ERR_MSG + email, e);
             }
-            throw new ServiceException(CREATE_USER_ERR_MSG + email, e);
+            throw new ServiceException(CAN_T_CREATE_ERR_MSG + email, e);
         }
     }
 
@@ -370,6 +400,9 @@ public class SQLUserService extends SQLService implements UserService {
 
     @Override
     public User prepareToWriteInSession(User user) {
+        if (user == null) {
+            return null;
+        }
         user = clearPassword(user);
         user.setAddress(null);
         user.setPhoneNumber(0);

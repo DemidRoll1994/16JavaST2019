@@ -19,8 +19,22 @@ public class SQLOptionService extends SQLService implements OptionService {
     public static final EntityType OPTION_ENTITY_TYPE = EntityType.OPTION;
     private static final Logger logger = LogManager.getLogger(
             SQLUserService.class);
-    private static final String ROLLBACK_GETALL_ERR_MSG = "can't get all options";
-    private static final String ROLLBACK_GET_ERR_MSG ="can't get option with id {}" ;
+    private static final String ROLLBACK_GET_ERR_MSG
+            = "can't rollback while try to get option with id";
+    private static final String CAN_T_GET_ERROR_MSG
+            = "can't get option with id {}";
+    private static final String ROLLBACK_GET_ALL_ERR_MSG
+            = "can't rollback while try to get all options";
+    private static final String CAN_T_GET_ALL_ERROR_MSG
+            = "can't get all options";
+    private static final String ROLLBACK_SAVE_ERR_MSG
+            = "can't rollback while try to save option with id";
+    private static final String CAN_T_SAVE_ERROR_MSG
+            = "can't save option with id";
+    private static final String ROLLBACK_CREATE_ERR_MSG
+            = "can't rollback while try to delete option with id";
+    private static final String CAN_T_DELETE_ERROR_MSG
+            = "can't delete option with id";
     OptionDao optionDao = null;
 
     public SQLOptionService(Transaction transaction) throws InternalServerException {
@@ -40,9 +54,9 @@ public class SQLOptionService extends SQLService implements OptionService {
             try {
                 transaction.rollback();
             } catch (PersistenceException ex) {
-                throw new ServiceException(ROLLBACK_GET_ERR_MSG, e);
+                throw new ServiceException(ROLLBACK_GET_ERR_MSG + id, e);
             }
-            throw new ServiceException(CAN_T_GET_ERROR_MSG, e);
+            throw new ServiceException(CAN_T_GET_ERROR_MSG + id, e);
         }
     }
 
@@ -56,9 +70,9 @@ public class SQLOptionService extends SQLService implements OptionService {
             try {
                 transaction.rollback();
             } catch (PersistenceException ex) {
-                throw new ServiceException(ROLLBACK_GETALL_ERR_MSG, e); // TODO THIS IS NOT CREATE
+                throw new ServiceException(ROLLBACK_GET_ALL_ERR_MSG, e);
             }
-            throw new ServiceException(CAN_T_GETALL_ERROR_MSG, e); // TODO THIS IS NOT delete
+            throw new ServiceException(CAN_T_GET_ALL_ERROR_MSG, e);
         }
     }
 
@@ -72,25 +86,22 @@ public class SQLOptionService extends SQLService implements OptionService {
             try {
                 transaction.rollback();
             } catch (PersistenceException ex) {
-                throw new ServiceException(ROLLBACK_SAVE_ERR_MSG + option.getId(), e); // TODO THIS IS NOT CREATE
+                throw new ServiceException(ROLLBACK_SAVE_ERR_MSG + option.getId(), e);
             }
-            throw new ServiceException(CAN_T_SAVE_ERROR_MSG + option.getId(), e);// TODO THIS IS NOT delete
+            throw new ServiceException(CAN_T_SAVE_ERROR_MSG + option.getId(), e);
         }
     }
 
     @Override
     public Option update(Option option) throws ServiceException {
-
-                throw new UnsupportedOperationException(ROLLBACK_CREATE_ERR_MSG + id, e); // TODO THIS this method
-
-            }
-            throw new ServiceException(CAN_T_DELETE_ERROR_MSG + id, e);
+        //todo
+        throw new UnsupportedOperationException(ROLLBACK_CREATE_ERR_MSG + option.getId());
 
     }
 
+
     @Override
     public void delete(int id) throws ServiceException {
-
         try {
             optionDao.delete(id);
             transaction.commit();
@@ -98,7 +109,7 @@ public class SQLOptionService extends SQLService implements OptionService {
             try {
                 transaction.rollback();
             } catch (PersistenceException ex) {
-                throw new ServiceException(ROLLBACK_CREATE_ERR_MSG + id, e); // TODO THIS IS NOT CREATE
+                throw new ServiceException(ROLLBACK_CREATE_ERR_MSG + id, e);
             }
             throw new ServiceException(CAN_T_DELETE_ERROR_MSG + id, e);
         }
