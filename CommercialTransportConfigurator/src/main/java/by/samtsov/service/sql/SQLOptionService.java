@@ -94,7 +94,7 @@ public class SQLOptionService extends SQLService implements OptionService {
 
     @Override
     public Option update(Option option) throws ServiceException {
-        //todo
+
         throw new UnsupportedOperationException(ROLLBACK_CREATE_ERR_MSG + option.getId());
 
     }

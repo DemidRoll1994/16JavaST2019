@@ -9,15 +9,15 @@ CREATE TABLE `users`
     `surname`       VARCHAR(255),
 
     /*
-     * 0 - не активирован
-     * 1 - активирован 
-     * 2 - заблокирован 
+     * 0 - not activated
+     * 1 - activated
+     * 2 - blocked
      */
     `status`        TINYINT      NOT NULL CHECK (`status` IN (0, 1, 2)),
     /*
-     * 0 - администратор
-     * 1 - покупатель
-     * 2 - продавец
+     * 0 - admin
+     * 1 - buyer
+     * 2 - vendor
      */
     `role`          TINYINT      NOT NULL CHECK (`role` IN (0, 1, 2)),
     `company`       VARCHAR(255),

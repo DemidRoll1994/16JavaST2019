@@ -172,9 +172,9 @@ public class SQLUserService extends SQLService implements UserService {
             try {
                 transaction.rollback();
             } catch (PersistenceException ex) {
-                throw new ServiceException(ROLLBACK_CREATE_ERR_MSG + newUser.getId(), e); // TODO THIS IS NOT CREATE
+                throw new ServiceException(ROLLBACK_UPDATE_ERR_MSG + newUser.getId(), e);
             }
-            throw new ServiceException(CAN_T_DELETE_ERROR_MSG + newUser.getId(), e);// TODO THIS IS NOT delete
+            throw new ServiceException(CAN_T_UPDATE_ERROR_MSG + newUser.getId(), e);
         }
     }
 
@@ -219,26 +219,50 @@ public class SQLUserService extends SQLService implements UserService {
             try {
                 transaction.rollback();
             } catch (PersistenceException ex) {
-                throw new ServiceException(ROLLBACK_CREATE_ERR_MSG + newUser.getId(), e); // TODO THIS IS NOT CREATE
+                throw new ServiceException(ROLLBACK_UPDATE_ERR_MSG + newUser.getId(), e);
             }
-            throw new ServiceException(CAN_T_DELETE_ERROR_MSG + newUser.getId(), e);// TODO THIS IS NOT delete
+            throw new ServiceException(CAN_T_UPDATE_ERROR_MSG + newUser.getId(), e);
         }
     }
 
     @Override
     public void delete(int id) throws ServiceException {
+        throw new UnsupportedOperationException();
+    }
+
+
+    public void blockUser(int id) throws ServiceException {
         try {
-            userDao.delete(id);
+            User user = userDao.get(id);
+            user.setStatus(UserStatus.BLOCKED);
+            userDao.update(user);
             transaction.commit();
         } catch (PersistenceException e) {
             try {
                 transaction.rollback();
             } catch (PersistenceException ex) {
-                throw new ServiceException(ROLLBACK_CREATE_ERR_MSG + id, e); // TODO THIS IS NOT CREATE
+                throw new ServiceException(ROLLBACK_CREATE_ERR_MSG + id, e);
             }
             throw new ServiceException(CAN_T_DELETE_ERROR_MSG + id, e);
         }
     }
+
+    public void activateUser(int id) throws ServiceException {
+        try {
+            User user = userDao.get(id);
+            user.setStatus(UserStatus.ACTIVE);
+            userDao.update(user);
+            transaction.commit();
+        } catch (PersistenceException e) {
+            try {
+                transaction.rollback();
+            } catch (PersistenceException ex) {
+                throw new ServiceException(ROLLBACK_CREATE_ERR_MSG + id, e);
+            }
+            throw new ServiceException(CAN_T_DELETE_ERROR_MSG + id, e);
+        }
+    }
+
 
     @Override
     public void updatePassword(User newUser, String oldPassword, String

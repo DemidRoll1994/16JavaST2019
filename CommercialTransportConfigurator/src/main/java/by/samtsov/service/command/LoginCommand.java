@@ -4,6 +4,7 @@ import by.samtsov.bean.MenuItem;
 import by.samtsov.bean.entity.User;
 import by.samtsov.bean.type.EntityType;
 import by.samtsov.bean.type.Role;
+import by.samtsov.bean.type.UserStatus;
 import by.samtsov.service.InternalServerException;
 import by.samtsov.service.ServiceException;
 import by.samtsov.service.UserService;
@@ -39,7 +40,7 @@ public class LoginCommand extends Command {
     public ResponsePage execute(HttpServletRequest request,
                                 HttpServletResponse response)
             throws InternalServerException, ServiceException {
-        ResponsePage responsePage = new ResponsePage("/", true);
+        ResponsePage responsePage = new ResponsePage("/", true); //todo редирект не туда
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         if (email != null && password != null) {
@@ -47,12 +48,20 @@ public class LoginCommand extends Command {
             User user = service.findByEmailAndPassword(email, password);
             service.prepareToWriteInSession(user);
             if (user != null) {
-                HttpSession session = request.getSession();
-                session.setAttribute("authorizedUser", user);
-                session.setAttribute("menu", menu.get(user.getRole()));
-                logger.info(String.format("user \"%s\" is logged in from %s (%s:%s)", email, request.getRemoteAddr(), request.getRemoteHost(), request.getRemotePort()));
+                if (user.getStatus() == UserStatus.ACTIVE) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("authorizedUser", user);
+                    session.setAttribute("menu", menu.get(user.getRole()));
+                    logger.info(String.format("user \"%s\" is logged in from %s (%s:%s)", email, request.getRemoteAddr(), request.getRemoteHost(), request.getRemotePort()));
+                } else if (user.getStatus() == UserStatus.NOT_ACTIVATE) {
+                    logger.trace(String.format("not activacted user \"%s\" is trying log in from %s (%s:%s)", email, request.getRemoteAddr(), request.getRemoteHost(), request.getRemotePort()));
+                    request.setAttribute("message", "Пользователь не активен");
+                } else if (user.getStatus() == UserStatus.BLOCKED) {
+                    logger.info(String.format("blocked user \"%s\" is trying log in from %s (%s:%s)", email, request.getRemoteAddr(), request.getRemoteHost(), request.getRemotePort()));
+                    request.setAttribute("message", "Пользователь заблокирован");
+                }
             } else {
-                request.setAttribute("message", "Имя пользователя или пароль не опознанны");
+                request.setAttribute("message", "Имя пользователя или пароль не найдены");
                 logger.info(String.format("user \"%s\" unsuccessfully tried to log in from %s (%s:%s)", email, request.getRemoteAddr(), request.getRemoteHost(), request.getRemotePort()));
             }
         }

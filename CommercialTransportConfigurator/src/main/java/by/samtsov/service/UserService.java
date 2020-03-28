@@ -15,4 +15,8 @@ public interface UserService extends Service<User> {
     User create( String name, String surname, String email, String password) throws ServiceException, InternalServerException;
 
     User prepareToWriteInSession(User user);
+
+    void activateUser(int id) throws ServiceException;
+
+    void blockUser(int id) throws ServiceException;
 }
