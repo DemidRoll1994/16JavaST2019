@@ -30,7 +30,7 @@ public class SQLOptionDao extends SQLBaseDao implements OptionDao {
                 option.setName(resultSet.getString("name"));
                 option.setType(OptionType.getByIdentity(
                         resultSet.getInt("option_type")));
-                // todo mo to the service-layer option.setAvailableOptions(resultSet.getString("salt"));
+                // todo добавить option values на уровне service
             }
             return option;
         } catch (SQLException e) {

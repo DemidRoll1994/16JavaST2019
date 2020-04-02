@@ -8,6 +8,7 @@ import by.samtsov.dao.transaction.Transaction;
 import by.samtsov.service.InternalServerException;
 import by.samtsov.service.OptionService;
 import by.samtsov.service.ServiceException;
+import by.samtsov.service.ServiceFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -48,6 +49,7 @@ public class SQLOptionService extends SQLService implements OptionService {
     public Option get(int id) throws ServiceException {
         try {
             Option option = optionDao.get(id);
+            new SQLServiceFactory(transactionFactory);
             transaction.commit();
             return option;
         } catch (PersistenceException e) {

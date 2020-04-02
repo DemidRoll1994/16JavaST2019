@@ -67,6 +67,7 @@ public class SQLUserService extends SQLService implements UserService {
     public User get(int id) throws ServiceException {
         try {
             User user = userDao.get(id);
+
             transaction.commit();
             return clearPassword(user);
         } catch (PersistenceException e) {
@@ -303,7 +304,7 @@ public class SQLUserService extends SQLService implements UserService {
         UserPasswordService userPasswordService = new UserPasswordService();
         User user;
         try {
-            user = userDao.getByEmail(email);
+            user = userDao.findByEmail(email);
             transaction.commit();
         } catch (PersistenceException e) {
             try {
@@ -406,7 +407,7 @@ public class SQLUserService extends SQLService implements UserService {
             logger.debug("Email {} is invalid", email);
             return INVALID_EMAIL_FORM;
         }
-        User anotherUser = userDao.getByEmail(email);
+        User anotherUser = userDao.findByEmail(email);
         if (anotherUser != null && thisUser != null
                 && anotherUser.getId() != thisUser.getId()) {
             logger.debug("Email {} is exist", email);

@@ -4,7 +4,9 @@ import java.util.List;
 
 public class Configuration {
     int id;
+    String name;
     Model model;
+    int owner_id;
     List<OptionValue> optionValues;
     double price;
 
@@ -14,6 +16,14 @@ public class Configuration {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Model getModel() {
@@ -39,4 +49,11 @@ public class Configuration {
     public void setPrice(double price) {
         this.price = price;
     }
-}
+
+    public int getOwner_id() {
+        return owner_id;
+    }
+
+    public void setOwner_id(int owner_id) {
+        this.owner_id = owner_id;
+    }}

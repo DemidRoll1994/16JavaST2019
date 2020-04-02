@@ -212,7 +212,7 @@ public class SQLUserDao extends SQLBaseDao implements UserDao {
 
 
     @Override
-    public User getByEmail(String email) throws PersistenceException {
+    public User findByEmail(String email) throws PersistenceException {
         String sql = "SELECT `id`,  `password_hash`, `salt`, " +
                 "`status`, `role`,`company`,`Phone_number`, `address`," +
                 " `email`, `name`, `surname` FROM `users` where `email` =?";
@@ -257,6 +257,7 @@ public class SQLUserDao extends SQLBaseDao implements UserDao {
             try {
                 if (resultSet != null) resultSet.close();
             } catch (SQLException e) {
+                throw new PersistenceException(e);
             }
         }
     }

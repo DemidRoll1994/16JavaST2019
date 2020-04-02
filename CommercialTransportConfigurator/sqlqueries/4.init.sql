@@ -1,4 +1,4 @@
-USE `vehiclessales`;
+USE `vehicles_sales`;
 INSERT INTO `users` (`id`,
                      `email`,
                      `password_Hash`,

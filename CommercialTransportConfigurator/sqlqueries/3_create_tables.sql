@@ -1,4 +1,4 @@
-USE `vehiclessales`;
+USE `vehicles_sales`;
 CREATE TABLE `users`
 (
     `id`            INTEGER      NOT NULL AUTO_INCREMENT,
@@ -29,8 +29,8 @@ CREATE TABLE `users`
 
 CREATE TABLE `orders`
 (
-    id      INTEGER           NOT NULL AUTO_INCREMENT,
-    user_id INTEGER           NOT NULL,
+    `id`      INTEGER           NOT NULL AUTO_INCREMENT,
+    `user_id` INTEGER           NOT NULL,
     /*
      * 0 - ФОРМИРУЕТСЯ
      * 1 - СФОРМИРОВАН 
@@ -38,7 +38,7 @@ CREATE TABLE `orders`
      * 3 - ВЫПОЛНЯЕТСЯ 
      * 4 - ВЫПОЛНЕН 
      */
-    STATUS  TINYINT DEFAULT 0 NOT NULL CHECK (`STATUS` IN (0, 1, 2, 3, 4)),
+    `STATUS`  TINYINT DEFAULT 0 NOT NULL CHECK (`STATUS` IN (0, 1, 2, 3, 4)),
     PRIMARY KEY (`id`),
     Foreign KEY (user_id) REFERENCES users (id)
         ON DELETE RESTRICT
@@ -104,14 +104,17 @@ CREATE TABLE `available_model_OPTION_Values`
 CREATE TABLE `CONFIGURATIONS`
 (
     `id`               INTEGER NOT NULL AUTO_INCREMENT,
-    `name`               varchar(255) not null,
+    `name`             varchar(255) not null,
     `ORDER_ID`         INTEGER,
     `MODEL_ID`         INTEGER,
-    `is_Common_config` tinyint(1) default 0,
+    `OWNER_ID`         INTEGER,
+
     PRIMARY KEY (`id`),
     FOREIGN KEY (ORDER_ID) REFERENCES ORDERS (id)
         ON DELETE RESTRICT,
-    FOREIGN KEY (MODEL_ID) REFERENCES Models (id)
+    FOREIGN KEY (MODEL_ID) REFERENCES MODELS (id)
+        ON DELETE RESTRICT,
+    Foreign KEY (OWNER_ID) REFERENCES USERS (id)
         ON DELETE RESTRICT
 ) ENGINE = INNODB
   DEFAULT CHARACTER SET utf8;
