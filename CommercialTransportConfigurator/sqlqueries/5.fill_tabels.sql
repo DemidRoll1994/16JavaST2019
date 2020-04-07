@@ -55,7 +55,7 @@ VALUES (1, 1, 'Легкосплавные',        '4 легкосплавных
        (24, 5, '1', 'С системой ESP для автобуса', 1500),
        (25, 5, '0', 'Без системы ESP для автобуса', 0);
 
-INSERT INTO `available_model_OPTION_Values` (`model_ID`, `OPTION_values_ID`)
+INSERT INTO `available_model_OPTION_Values` (`model_ID`, `OPTION_value_ID`)
 VALUES (1, 1),
        (1, 2),
        (2, 3),

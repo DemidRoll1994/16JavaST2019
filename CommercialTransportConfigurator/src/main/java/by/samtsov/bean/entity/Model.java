@@ -3,10 +3,10 @@ package by.samtsov.bean.entity;
 import java.util.List;
 
 public class Model {
-    int id;
-    String name;
-    double price;
-    List<Option> availableOptions;
+    private int id;
+    private String name;
+    private double price;
+    private List<Option> availableOptions;
 
     public int getId() {
         return id;

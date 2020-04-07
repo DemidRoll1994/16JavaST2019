@@ -89,11 +89,11 @@ CREATE TABLE `Models`
 CREATE TABLE `available_model_OPTION_Values`
 (
     `model_ID`         INTEGER NOT NULL,
-    `OPTION_values_ID` INTEGER NOT NULL,
-    PRIMARY KEY (`model_ID`, `OPTION_values_ID`),
+    `OPTION_value_ID` INTEGER NOT NULL,
+    PRIMARY KEY (`model_ID`, `OPTION_value_ID`),
     FOREIGN KEY (`model_ID`) REFERENCES `Models` (`ID`)
         ON DELETE RESTRICT,
-    FOREIGN KEY (`OPTION_values_ID`) REFERENCES `OPTION_VALUES` (`ID`)
+    FOREIGN KEY (`OPTION_value_ID`) REFERENCES `OPTION_VALUES` (`ID`)
         ON DELETE RESTRICT
 
 ) ENGINE = INNODB

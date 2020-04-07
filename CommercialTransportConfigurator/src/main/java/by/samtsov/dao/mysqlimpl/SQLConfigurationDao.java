@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SQLConfigurationDao extends SQLBaseDao implements ConfigurationDao {
+    private static final String EMPTY_OPTION_VALUES_ERR_MSG = "Empty optionValues List. Use delete method to delete all option values from configuration";
 
     private static final Logger logger = LogManager.getLogger(
             SQLConfigurationDao.class);
@@ -35,9 +36,9 @@ public class SQLConfigurationDao extends SQLBaseDao implements ConfigurationDao 
                 Model model = new Model();
                 model.setId(resultSet.getInt("model_id"));
                 configuration.setModel(model);
-                configuration.setOwner_id(resultSet.getInt("owner_id"));
-                configuration.setOptionValues(findOptionValuesByConfigId(
-                        configuration.getId()));
+                configuration.setOwnerId(resultSet.getInt("owner_id"));
+                configuration.setSelectedOptionValues(
+                        findOptionValuesByConfigId(configuration.getId()));
             }
             return configuration;
         } catch (SQLException e) {
@@ -65,9 +66,9 @@ public class SQLConfigurationDao extends SQLBaseDao implements ConfigurationDao 
                 Model model = new Model();
                 model.setId(resultSet.getInt("model_id"));
                 configuration.setModel(model);
-                configuration.setOwner_id(resultSet.getInt("owner_id"));
-                configuration.setOptionValues(findOptionValuesByConfigId(
-                        configuration.getId()));
+                configuration.setOwnerId(resultSet.getInt("owner_id"));
+                configuration.setSelectedOptionValues(
+                        findOptionValuesByConfigId(configuration.getId()));
                 configurations.add(configuration);
             }
             return configurations;
@@ -87,7 +88,7 @@ public class SQLConfigurationDao extends SQLBaseDao implements ConfigurationDao 
                 , Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, configuration.getName());
             statement.setInt(2, configuration.getModel().getId());
-            statement.setInt(3, configuration.getOwner_id());
+            statement.setInt(3, configuration.getOwnerId());
             statement.executeUpdate();
             resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -113,8 +114,10 @@ public class SQLConfigurationDao extends SQLBaseDao implements ConfigurationDao 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, configuration.getName());
             statement.setInt(2, configuration.getModel().getId());
-            statement.setInt(3, configuration.getOwner_id());
+            statement.setInt(3, configuration.getOwnerId());
             statement.executeUpdate();
+            updateOptionValuesForConfig(configuration.getId()
+                    , configuration.getSelectedOptionValues());
         } catch (SQLException e) {
             throw new PersistenceException(e);
         }
@@ -133,7 +136,7 @@ public class SQLConfigurationDao extends SQLBaseDao implements ConfigurationDao 
 
     private List<OptionValue> findOptionValuesByConfigId(int configurationId) throws PersistenceException {
         String sql = "SELECT `option_value_id` FROM " +
-                "`selected_config_option_values` where `config_id` =? ";
+                "`selected_config_option_values` where `config_id` = ? ";
         ResultSet resultSet = null;
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, configurationId);
@@ -159,131 +162,36 @@ public class SQLConfigurationDao extends SQLBaseDao implements ConfigurationDao 
 
     private void updateOptionValuesForConfig(int configurationId, List<OptionValue> newOptionValues) throws PersistenceException {
         if (newOptionValues == null) {
-            throw new PersistenceException("Empty optionValues List. Use delete method to delete all option values from configuration");
+            throw new PersistenceException(EMPTY_OPTION_VALUES_ERR_MSG);
         }
-
         deleteOptionValuesByConfigId(configurationId);
-        /*final String sql = "DELETE FROM `selected_config_option_values` " +
-                "WHERE" +
-                " `config_id` = ?;" +
-                "INSERT INTO `selected_config_option_values` (`config_id`, " +
-                "`option_value_id`) VALUES (?,?)";
-        ResultSet resultSet = null;
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, configurationId);
-            resultSet = statement.executeQuery();
-            List<OptionValue> optionValues = new ArrayList<>();
-            while (resultSet.next()) {
-                OptionValue optionValue = new OptionValue();
-                optionValue.setId(resultSet.getInt("id"));
-                optionValues.add(optionValue);
-            }
-            return optionValues;
-        } catch (SQLException e) {
-            throw new PersistenceException(e);
-        } finally {
-            try {
-                if (resultSet != null) resultSet.close();
-            } catch (SQLException e) {
-                throw new PersistenceException(e);
-            }
-        }*/
+        addOptionValues(configurationId, newOptionValues);
     }
 
-    private void addOptionValues(int configurationId,
-                                 List<OptionValue> optionValues) throws PersistenceException{
-        String sql = "INSERT INTO `configurations` (`name`, `model_id`, " +
-                "`owner_id`) VALUES (?, ?, ?)";
-        ResultSet resultSet = null;
-        try (PreparedStatement statement = connection.prepareStatement(sql
-                , Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, configuration.getName());
-            statement.setInt(2, configuration.getModel().getId());
-            statement.setInt(3, configuration.getOwner_id());
-            statement.executeUpdate();
-            resultSet = statement.getGeneratedKeys();
-            if (resultSet.next()) {
-                return resultSet.getInt(1);
-            } else {
-                throw new PersistenceException("There is no autoincrement index after trying to add record into table `users`");
-            }
-        } catch (SQLException e) {
-            throw new PersistenceException(e);
-        } finally {
-            try {
-                if (resultSet != null) resultSet.close();
-            } catch (SQLException e) {
-                throw new PersistenceException(e);
-            }
-        }
-    }
-    private void deleteOptionValuesByConfigId(int configurationId)
-            throws PersistenceException {
-        final String sql = "DELETE FROM `selected_config_option_values` " +
-                "WHERE `config_id` = ?";
-        ResultSet resultSet = null;
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, configurationId);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new PersistenceException(e);
-        }
-    }
-
-/*
-    private void updateOptionValuesForConfig(int configurationId, List<OptionValue> newOptionValues) throws PersistenceException {
-        if (newOptionValues == null) {
-            throw new PersistenceException("Empty optionValues List. Use delete method to delete all option values from configuration");
+    private void addOptionValues(int configurationId
+            , List<OptionValue> optionValues) throws PersistenceException {
+        if (optionValues == null) {
+            throw new PersistenceException(EMPTY_OPTION_VALUES_ERR_MSG);
         }
         final int columnCountsInTable = 2;
         final String valuesPattern = "(?, ?)";
-        String sql = "DELETE FROM `selected_config_option_values` WHERE `config_id` = ?;" +
-                "INSERT INTO `selected_config_option_values` (`config_id`, " +
-                "`option_value_id`, ) VALUES " + valuesPattern;
+        //build sql insert query
+        String sql = "INSERT INTO `selected_config_option_values` " +
+                "(`config_id`, `option_value_id`, ) VALUES " + valuesPattern;
         StringBuilder stringBuilder = new StringBuilder().append(sql);
-        for (int i = 1; i < newOptionValues.size(); i++) {
+        for (int i = 1; i < optionValues.size(); i++) {
             stringBuilder.append("," + valuesPattern);
         }
         sql = stringBuilder.toString();
 
-
-        ResultSet resultSet = null;
-        try (PreparedStatement statement = connection.prepareStatement(sql
-                , Statement.RETURN_GENERATED_KEYS)) {
-            for (int i = 0; i < newOptionValues.size(); i++) {
-                statement.setInt(i * columnCountsInTable + 1, configurationId);
-                statement.setInt(i * columnCountsInTable + 2, newOptionValues.get(i));
-// todo remake. too much hardcode.
-            }
-            statement.executeUpdate();
-            resultSet = statement.getGeneratedKeys();
-            if (resultSet.next()) {
-                return resultSet.getInt(1);
-            } else {
-                throw new PersistenceException("There is no autoincrement index after trying to add record into table `users`");
-            }
-        } catch (SQLException e) {
-            throw new PersistenceException(e);
-        } finally {
-            try {
-                if (resultSet != null) resultSet.close();
-            } catch (SQLException e) {
-                throw new PersistenceException(e);
-            }
-        }
-
-
+        //fill sql insert query
         ResultSet resultSet = null;
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, configurationId);
-            resultSet = statement.executeQuery();
-            List<OptionValue> optionValues = new ArrayList<>();
-            while (resultSet.next()) {
-                OptionValue optionValue = new OptionValue();
-                optionValue.setId(resultSet.getInt("id"));
-                optionValues.add(optionValue);
+            for (int i = 0; i < optionValues.size(); i++) {
+                statement.setInt(i * columnCountsInTable + 1, configurationId);
+                statement.setInt(i * columnCountsInTable + 2, optionValues.get(i).getId());
             }
-            return optionValues;
+            statement.executeUpdate();
         } catch (SQLException e) {
             throw new PersistenceException(e);
         } finally {
@@ -293,6 +201,19 @@ public class SQLConfigurationDao extends SQLBaseDao implements ConfigurationDao 
                 throw new PersistenceException(e);
             }
         }
-    }*/
+    }
+
+    private void deleteOptionValuesByConfigId(int configurationId)
+            throws PersistenceException {
+        final String sql = "DELETE FROM `selected_config_option_values` " +
+                "WHERE `config_id` = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, configurationId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new PersistenceException(e);
+        }
+    }
+
 
 }

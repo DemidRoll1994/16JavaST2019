@@ -3,12 +3,12 @@ package by.samtsov.bean.entity;
 import java.util.List;
 
 public class Configuration {
-    int id;
-    String name;
-    Model model;
-    int owner_id;
-    List<OptionValue> optionValues;
-    double price;
+    private int id;
+    private String name;
+    private Model model;
+    private int ownerId;
+    private List<OptionValue> selectedOptionValues;
+    private double price;
 
     public int getId() {
         return id;
@@ -34,12 +34,12 @@ public class Configuration {
         this.model = model;
     }
 
-    public List<OptionValue> getOptionValues() {
-        return optionValues;
+    public List<OptionValue> getSelectedOptionValues() {
+        return selectedOptionValues;
     }
 
-    public void setOptionValues(List<OptionValue> optionValues) {
-        this.optionValues = optionValues;
+    public void setSelectedOptionValues(List<OptionValue> selectedOptionValues) {
+        this.selectedOptionValues = selectedOptionValues;
     }
 
     public double getPrice() {
@@ -50,10 +50,10 @@ public class Configuration {
         this.price = price;
     }
 
-    public int getOwner_id() {
-        return owner_id;
+    public int getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner_id(int owner_id) {
-        this.owner_id = owner_id;
+    public void setOwnerId(int ownerId) {
+        this.ownerId = ownerId;
     }}
