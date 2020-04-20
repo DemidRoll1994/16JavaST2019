@@ -9,8 +9,8 @@ import by.samtsov.dao.PersistenceException;
 import by.samtsov.dao.UserDao;
 import by.samtsov.dao.transaction.Transaction;
 import by.samtsov.service.*;
-import by.samtsov.service.validator.UserValidatorImpl;
 import by.samtsov.service.validator.ValidatorFactory;
+import by.samtsov.service.validator.impl.UserValidatorImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -53,6 +53,20 @@ public class SQLUserService extends SQLService implements UserService {
             " transaction while try to update password for user with login";
     private static final Logger logger = LogManager.getLogger(
             SQLUserService.class);
+    private static final String GET_OPERATION_NAME = "get user by identity";
+    private static final String GET_ALL_OPERATION_NAME = "get all users";
+    private static final String CREATE_OPERATION_NAME = "create user";
+    private static final String UPDATE_PERSONAL_DATA_OPERATION_NAME = "update" +
+            " personal data by user";
+    private static final String UPDATE_USER_DATA_OPERATION_NAME = "update" +
+            " user data by admin";
+    private static final String BLOCK_USER_OPERATION_NAME = "Block user by id";
+    private static final String ACTIVATE_USER_OPERATION_NAME = "Activate user" +
+            " by id";
+    private static final String UPDATE_PASSWORD_OPERATION_NAME = "Update " +
+            "password";
+    private static final String FIND_BY_EMAIL_OPERATION_NAME = "Find by email" +
+            " and password" ;
     UserDao userDao = null;
     UserValidatorImpl userValidator = null;
 
@@ -67,16 +81,11 @@ public class SQLUserService extends SQLService implements UserService {
     public User get(int id) throws ServiceException {
         try {
             User user = userDao.get(id);
-
             transaction.commit();
             return clearPassword(user);
         } catch (PersistenceException e) {
-            try {
-                transaction.rollback();
-            } catch (PersistenceException ex) {
-                throw new ServiceException(ROLLBACK_GET_ERR_MSG, e);
-            }
-            throw new ServiceException(CAN_T_GET_ERROR_MSG, e);
+            rollbackTransaction(GET_OPERATION_NAME);
+            throw generateException(GET_OPERATION_NAME, e);
         }
     }
 
@@ -90,17 +99,13 @@ public class SQLUserService extends SQLService implements UserService {
             }
             return users;
         } catch (PersistenceException e) {
-            try {
-                transaction.rollback();
-            } catch (PersistenceException ex) {
-                throw new ServiceException(ROLLBACK_GET_ALL_ERR_MSG, e);
-            }
-            throw new ServiceException(CAN_T_GET_ALL_ERROR_MSG, e);
+            rollbackTransaction(GET_ALL_OPERATION_NAME);
+            throw generateException(GET_ALL_OPERATION_NAME, e);
         }
     }
 
     @Override
-    public int save(User user) throws ServiceException {
+    public int create(User user) throws ServiceException {
         try {
             if (user == null) {
                 return -1;
@@ -109,17 +114,14 @@ public class SQLUserService extends SQLService implements UserService {
             transaction.commit();
             return id;
         } catch (PersistenceException e) {
-            try {
-                transaction.rollback();
-            } catch (PersistenceException ex) {
-                throw new ServiceException(ROLLBACK_SAVE_ERR_MSG + user.getId(), e);
-            }
-            throw new ServiceException(CAN_T_SAVE_ERROR_MSG + user.getId(), e);
+            rollbackTransaction(CREATE_OPERATION_NAME);
+            throw generateException(CREATE_OPERATION_NAME, e);
         }
     }
 
     @Override
-    public User update(User user) throws ServiceException, InternalServerException {
+    public void update(User user) throws ServiceException,
+            InternalServerException {
         throw new UnsupportedOperationException();//todo чё за лажа
     }
 
@@ -170,12 +172,8 @@ public class SQLUserService extends SQLService implements UserService {
             return clearPassword(oldUser);
 
         } catch (PersistenceException e) {
-            try {
-                transaction.rollback();
-            } catch (PersistenceException ex) {
-                throw new ServiceException(ROLLBACK_UPDATE_ERR_MSG + newUser.getId(), e);
-            }
-            throw new ServiceException(CAN_T_UPDATE_ERROR_MSG + newUser.getId(), e);
+            rollbackTransaction(UPDATE_PERSONAL_DATA_OPERATION_NAME);
+            throw generateException(UPDATE_PERSONAL_DATA_OPERATION_NAME, e);
         }
     }
 
@@ -215,14 +213,9 @@ public class SQLUserService extends SQLService implements UserService {
             userDao.update(oldUser);
             transaction.commit();
             return clearPassword(oldUser);
-
         } catch (PersistenceException e) {
-            try {
-                transaction.rollback();
-            } catch (PersistenceException ex) {
-                throw new ServiceException(ROLLBACK_UPDATE_ERR_MSG + newUser.getId(), e);
-            }
-            throw new ServiceException(CAN_T_UPDATE_ERROR_MSG + newUser.getId(), e);
+            rollbackTransaction(UPDATE_USER_DATA_OPERATION_NAME);
+            throw generateException(UPDATE_USER_DATA_OPERATION_NAME, e);
         }
     }
 
@@ -239,12 +232,8 @@ public class SQLUserService extends SQLService implements UserService {
             userDao.update(user);
             transaction.commit();
         } catch (PersistenceException e) {
-            try {
-                transaction.rollback();
-            } catch (PersistenceException ex) {
-                throw new ServiceException(ROLLBACK_CREATE_ERR_MSG + id, e);
-            }
-            throw new ServiceException(CAN_T_DELETE_ERROR_MSG + id, e);
+            rollbackTransaction(BLOCK_USER_OPERATION_NAME);
+            throw generateException(BLOCK_USER_OPERATION_NAME, e);
         }
     }
 
@@ -255,12 +244,8 @@ public class SQLUserService extends SQLService implements UserService {
             userDao.update(user);
             transaction.commit();
         } catch (PersistenceException e) {
-            try {
-                transaction.rollback();
-            } catch (PersistenceException ex) {
-                throw new ServiceException(ROLLBACK_CREATE_ERR_MSG + id, e);
-            }
-            throw new ServiceException(CAN_T_DELETE_ERROR_MSG + id, e);
+            rollbackTransaction(ACTIVATE_USER_OPERATION_NAME);
+            throw generateException(ACTIVATE_USER_OPERATION_NAME, e);
         }
     }
 
@@ -287,38 +272,27 @@ public class SQLUserService extends SQLService implements UserService {
                 throw new IncorrectDataException(OLD_PASSWORD_INVALID);
             }
         } catch (PersistenceException e) {
-            try {
-                transaction.rollback();
-            } catch (PersistenceException ex) {
-                throw new ServiceException(ROLLBACK_PASS_UPD_ERR_MSG
-                        + newUser.getId(), e);
-            }
-            throw new ServiceException(UPDATE_PASSWORD_ERR_MSG
-                    + newUser.getId(), e);
+            rollbackTransaction(UPDATE_PASSWORD_OPERATION_NAME);
+            throw generateException(UPDATE_PASSWORD_OPERATION_NAME, e);
         }
     }
 
     @Override
     public User findByEmailAndPassword(String email, String password) throws
             ServiceException {
-        UserPasswordService userPasswordService = new UserPasswordService();
-        User user;
         try {
-            user = userDao.findByEmail(email);
+            UserPasswordService userPasswordService = new UserPasswordService();
+            User user = userDao.findByEmail(email);
             transaction.commit();
-        } catch (PersistenceException e) {
-            try {
-                transaction.rollback();
-            } catch (PersistenceException ex) {
-                throw new ServiceException(ROLLBACK_FIND_ERR_MSG + email, e);
+            if (user != null && userPasswordService.verifyUserPassword(password,
+                    user.getPasswordHash(), user.getSalt())) {
+                return user;
+            } else {
+                throw new IncorrectDataException("Incorrect username or password");
             }
-            throw new ServiceException(CAN_T_FIND_MSG + email, e);
-        }
-        if (user != null && userPasswordService.verifyUserPassword(password,
-                user.getPasswordHash(), user.getSalt())) {
-            return user;
-        } else {
-            throw new IncorrectDataException("Incorrect username or password");
+        } catch (PersistenceException e) {
+            rollbackTransaction(FIND_BY_EMAIL_OPERATION_NAME);
+            throw generateException(FIND_BY_EMAIL_OPERATION_NAME, e);
         }
     }
 
@@ -351,8 +325,7 @@ public class SQLUserService extends SQLService implements UserService {
             user.setStatus(UserStatus.NOT_ACTIVATE);
             int userId = userDao.add(user);
             transaction.commit();
-            user = get(userId);
-            return clearPassword(user);
+            return clearPassword(get(userId));
         } catch (PersistenceException e) {
             try {
                 transaction.rollback();

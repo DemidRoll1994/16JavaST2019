@@ -13,7 +13,6 @@ public interface UserValidator {
 
     boolean isSurnameValid(String surname);
 
-
     boolean isPhoneNumberValid(long phoneNumber);
 
     boolean isRoleValid(Role role);

@@ -1,8 +1,11 @@
-package by.samtsov.service.validator;
+package by.samtsov.service.validator.impl;
 
 import by.samtsov.bean.entity.User;
 import by.samtsov.bean.type.Role;
 import by.samtsov.bean.type.UserStatus;
+import by.samtsov.service.IncorrectDataException;
+import by.samtsov.service.validator.UserValidator;
+import by.samtsov.service.validator.Validator;
 
 import java.util.regex.Pattern;
 
@@ -23,7 +26,7 @@ public class UserValidatorImpl extends Validator<User> implements UserValidator 
 
 
     @Override
-    public boolean isValid(User user) {
+    public boolean isValid(User user) throws IncorrectDataException {
         return user != null && user.getId() > 0 && isEmailValid(user.getEmail())
                 && isRoleValid(user.getRole())
                 && isStatusValid(user.getStatus())

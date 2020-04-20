@@ -7,7 +7,9 @@ import java.util.regex.Pattern;
 
 public abstract class Validator<T> {
 
-    abstract boolean isValid(T entity) throws IncorrectDataException;
+    public abstract boolean isValid(T entity) throws IncorrectDataException;
+    // todo move to interface or remove/ implementeted classes cannot use
+    //  methods of both interfaces and abstract class.
 
     protected boolean isValidNotRequiredString(String value, Pattern pattern) {
         return value == null || isValueMatchPattern(value, pattern);

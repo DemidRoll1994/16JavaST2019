@@ -5,6 +5,7 @@ import by.samtsov.bean.entity.OptionValue;
 import by.samtsov.bean.type.EntityType;
 import by.samtsov.dao.ConfigurationDao;
 import by.samtsov.dao.ModelDao;
+import by.samtsov.dao.OptionValueDao;
 import by.samtsov.dao.PersistenceException;
 import by.samtsov.dao.transaction.Transaction;
 import by.samtsov.service.ConfigurationService;
@@ -54,10 +55,10 @@ public class SQLConfigurationService extends SQLService
     private static final Logger logger = LogManager.getLogger(
             SQLConfigurationService.class);
     ConfigurationDao configDao = null;
-    OptionValuesDao optionValuesDao = null;
+    OptionValueDao optionValuesDao = null;
     ModelDao modelDao = null;
 
-    ConfigurationValidator configValidator = null;
+    // todo create ConfigurationValidator configValidator = null;
 
 
     public SQLConfigurationService(Transaction transaction) throws InternalServerException {
@@ -66,12 +67,14 @@ public class SQLConfigurationService extends SQLService
         configDao = transaction.createDao(EntityType.CONFIGURATION);
         optionValuesDao = transaction.createDao(EntityType.OPTION_VALUE);
         modelDao = transaction.createDao(EntityType.MODEL);
-        configValidator = ValidatorFactory.createValidator(CONFIGURATION);
+        // todo init configValidator = ValidatorFactory.createValidator
+        // (CONFIGURATION);
     }
 
     @Override
-    public Configuration get(int id) throws ServiceException, InternalServerException {
-        try {
+    public Configuration get(int id) throws ServiceException,
+            InternalServerException {
+        /*ry {
             Configuration config = configDao.get(id);
             config.setModel(modelDao.get(config.getModel().getId()));
             List optionValues = new ArrayList();
@@ -84,13 +87,15 @@ public class SQLConfigurationService extends SQLService
             config.setPrice(calculatePrice(config));
             return config;
         } catch (PersistenceException e) {
+            String operation;
+            rollbackTransaction(operation);
             try {
                 transaction.rollback();
             } catch (PersistenceException ex) {
                 throw new ServiceException(ROLLBACK_GET_ERR_MSG, e);
             }
             throw new ServiceException(CAN_T_GET_ERROR_MSG, e);
-        }
+        }*/throw new ServiceException();
     }
 
 
@@ -100,13 +105,13 @@ public class SQLConfigurationService extends SQLService
     }
 
     @Override
-    public int save(Configuration configuration) {
+    public int create(Configuration configuration) {
         return 0;
     }
 
     @Override
-    public Configuration update(Configuration configuration) {
-        return null;
+    public void update(Configuration configuration) {
+
     }
 
     @Override
@@ -117,7 +122,7 @@ public class SQLConfigurationService extends SQLService
 
     private double calculatePrice(Configuration config) {
         double price = config.getModel().getPrice();
-        for (OptionValue value : config.getOptionValues()) {
+        for (OptionValue value : config.getSelectedOptionValues()) {
             price += value.getPrice();
         }
         return price;

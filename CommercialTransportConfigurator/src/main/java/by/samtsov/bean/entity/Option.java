@@ -2,6 +2,7 @@ package by.samtsov.bean.entity;
 
 import by.samtsov.bean.type.OptionType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Option {
@@ -9,6 +10,14 @@ public class Option {
     String name;
     OptionType type;
     List<OptionValue> optionValues;
+
+    public Option() {
+        optionValues = new ArrayList<>();
+    }
+    public Option(int id) {
+        this();
+        this.id=id;
+    }
 
     public int getId() {
         return id;

@@ -2,6 +2,7 @@ package by.samtsov.service.validator;
 
 import by.samtsov.bean.type.EntityType;
 import by.samtsov.service.InternalServerException;
+import by.samtsov.service.validator.impl.UserValidatorImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

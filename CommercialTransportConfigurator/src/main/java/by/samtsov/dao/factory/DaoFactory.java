@@ -6,22 +6,22 @@ import by.samtsov.dao.mysqlimpl.*;
 import by.samtsov.service.InternalServerException;
 
 public class DaoFactory {
-    public static <Type extends Dao<?>> Type createDao(EntityType entityType) throws InternalServerException {
+    public static <T extends Dao<?>> T createDao(EntityType entityType) throws InternalServerException {
 
         switch (entityType) {
             case USER:
-                return (Type) new SQLUserDao();
+                return (T) new SQLUserDao();
             case MODEL:
-                return (Type) new SQLModelDao();
+                return (T) new SQLModelDao();
             case ORDER://todo create dao
                 throw new InternalServerException("creating unsupported dao");
                 //return (Type) new SQLOrderDao();
             case OPTION:
-                return (Type) new SQLOptionDao();
+                return (T) new SQLOptionDao();
             case OPTION_VALUE:
-                return (Type) new SQLOptionValueDao();
+                return (T) new SQLOptionValueDao();
             case CONFIGURATION://todo create dao
-                return (Type) new SQLConfigurationDao();
+                return (T) new SQLConfigurationDao();
             default:
                 throw new InternalServerException("creating unsupported dao");
         }

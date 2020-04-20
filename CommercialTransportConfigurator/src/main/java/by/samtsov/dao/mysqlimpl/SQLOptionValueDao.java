@@ -1,8 +1,8 @@
 package by.samtsov.dao.mysqlimpl;
 
 import by.samtsov.bean.entity.OptionValue;
-import by.samtsov.dao.PersistenceException;
 import by.samtsov.dao.OptionValueDao;
+import by.samtsov.dao.PersistenceException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +13,9 @@ import java.util.List;
 
 public class SQLOptionValueDao extends SQLBaseDao implements OptionValueDao {
 
+
+    private static final String EMPTY_OPTION_VALUES_ERR_MSG = "option values " +
+            "list is empty. use delete method to remove all values for model";
 
     @Override
     public OptionValue get(int id) throws PersistenceException {
@@ -94,6 +97,112 @@ public class SQLOptionValueDao extends SQLBaseDao implements OptionValueDao {
         }
     }
 
+    @Override
+    public List<OptionValue> findByModelId(int modelId) throws PersistenceException {
+        String sql = "SELECT `option_value_id` FROM " +
+                "`available_model_option_values` where `model_id` = ? ";
+        ResultSet resultSet = null;
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, modelId);
+            resultSet = statement.executeQuery();
+            List<OptionValue> optionValues = new ArrayList<>();
+            while (resultSet.next()) {
+                OptionValue optionValue = new OptionValue();
+                optionValue.setId(resultSet.getInt("id"));
+                optionValues.add(optionValue);
+            }
+            return optionValues;
+        } catch (SQLException e) {
+            throw new PersistenceException(e);
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+            } catch (SQLException e) {
+                throw new PersistenceException(e);
+            }
+        }
+    }
+
+
+    public void updateOptionValuesForModel(int modelId,
+                                           List<OptionValue> newOptionValues) throws PersistenceException {
+        deleteOptionValuesByModelId(modelId);
+        if (newOptionValues != null) {
+            addOptionValuesByModelId(modelId, newOptionValues);
+        }
+    }
+
+    public void addOptionValuesByModelId(int modelId
+            , List<OptionValue> optionValues) throws PersistenceException {
+        if (optionValues == null) {
+            throw new PersistenceException(EMPTY_OPTION_VALUES_ERR_MSG);
+        }
+        final int columnCountsInTable = 2;
+        final String valuesPattern = "(?, ?)";
+        //build sql insert query
+        String sql = "INSERT INTO `available_model_option_values` " +
+                "(`model_id`, `option_value_id`, ) VALUES " + valuesPattern;
+        StringBuilder stringBuilder = new StringBuilder().append(sql);
+        for (int i = 1; i < optionValues.size(); i++) {
+            stringBuilder.append("," + valuesPattern);
+        }
+        sql = stringBuilder.toString();
+
+        //fill sql insert query
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            for (int i = 0; i < optionValues.size(); i++) {
+                statement.setInt(i * columnCountsInTable + 1, modelId);
+                statement.setInt(i * columnCountsInTable + 2,
+                        optionValues.get(i).getId());
+            }
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new PersistenceException(e);
+        }
+    }
+
+    public void deleteOptionValuesByModelId(int modelId)
+            throws PersistenceException {
+        final String sql = "DELETE FROM `available_model_option_values` " +
+                "WHERE `model_id` = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, modelId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new PersistenceException(e);
+        }
+    }
+
+    @Override
+    public List<OptionValue> getByOptionId(int optionId) throws PersistenceException {
+        String sql = "SELECT `id`, `value`, `description`, `price`" +
+                " FROM `OPTION_VALUES` where `OPTION_ID` =?";
+        ResultSet resultSet = null;
+        try (PreparedStatement statement = connection.prepareStatement(sql);) {
+            statement.setInt(1, optionId);
+            resultSet = statement.executeQuery();
+            List<OptionValue> optionValues = new ArrayList<>();
+            OptionValue optionValue = null;
+            while (resultSet.next()) {
+                optionValue = new OptionValue();
+                optionValue.setId(resultSet.getInt("id"));
+                optionValue.setValue(resultSet.getString("value"));
+                optionValue.setDescription(resultSet.getString("description"));
+                optionValue.setPrice(resultSet.getDouble("price"));
+                optionValue.setOptionId(resultSet.getInt("option_id"));
+                optionValues.add(optionValue);
+            }
+            return optionValues;
+        } catch (SQLException e) {
+            throw new PersistenceException(e);
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+            } catch (SQLException e) {
+                throw new PersistenceException();
+            }
+        }
+    }
 
 
     @Override

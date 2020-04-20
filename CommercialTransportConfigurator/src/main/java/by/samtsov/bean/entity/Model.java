@@ -1,12 +1,13 @@
 package by.samtsov.bean.entity;
 
 import java.util.List;
+import java.util.Map;
 
 public class Model {
     private int id;
     private String name;
     private double price;
-    private List<Option> availableOptions;
+    private Map<Integer, Option>  availableOptions;
 
     public int getId() {
         return id;
@@ -32,11 +33,11 @@ public class Model {
         this.price = price;
     }
 
-    public List<Option> getAvailableOptions() {
+    public Map<Integer, Option> getAvailableOptions() {
         return availableOptions;
     }
 
-    public void setAvailableOptions(List<Option> availableOptions) {
+    public void setAvailableOptions(Map<Integer, Option> availableOptions) {
         this.availableOptions = availableOptions;
     }
 }
