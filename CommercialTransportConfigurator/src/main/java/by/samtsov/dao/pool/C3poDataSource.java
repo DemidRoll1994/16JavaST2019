@@ -14,7 +14,7 @@ public class C3poDataSource {
 
     private static ComboPooledDataSource cpds = new ComboPooledDataSource();
 
-    public static final String URL = "jdbc:mysql://localhost:3306/vehiclesSales?useUnicode=true&characterEncoding=UTF-8&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    public static final String URL = "jdbc:mysql://localhost:3306/vehicles_sales?useUnicode=true&characterEncoding=UTF-8&useLegacyDatetimeCode=false&serverTimezone=UTC";
 
     public static final String DRIVER_CLASS = "com.mysql.jdbc.Driver";
 

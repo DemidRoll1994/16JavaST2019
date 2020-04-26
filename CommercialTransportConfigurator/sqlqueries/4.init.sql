@@ -21,9 +21,9 @@ INSERT INTO `users` (`id`,
 VALUES (1,
         "admin@admin.com",
         /* password hash for "Admin_2020" */
-        "6a1t7bLOcKIYNqJ/FA6AOwoT0RBc4pJ+nPyNrBalQ7g3dVab1B5UI3mtQweIyWTunHTWE3e+vCQEcspavL5wEw==",
+        "c/QM75wrF0Gtt9olWiBva6uNyeZFTWdAE5EqRqgnASnyhIEaUmsCmi4RfAaDyjJMVwJc4qQK3AkOkcYpOfDz0Q==",
         /*salt for password "Admin_2020"*/
-        "RC38nMA2111pEqpHEdGxhEVSO00gK48luElziSf3dJxSBzrSY99GIWj3ori9uEep0KnUziBvyMbbbKCBIiA0eQOhAe4JfJk5geuxQEKX1iYctubbv9CuYOt59xateosdHxcYzHBNNnGhzR2Z1iswuOuTJs7KundoASmJRX7djBEaWJKk5nS1Xnp2MlJ3oK9nyW94WCmEJPX4MUwGp4gLy2Yev8bXAauXCT0rbVgpfFKLEmbaqPDCsJVw63aLfCB", /*todo salt and hash*/
+        "U2FoHtngTOPHEdDMwbtcUfaJ4F748N5vNdEWgiGeP5ncsdbWyf6cRUvCmrwhhLd6ILF2B6B9FfVKYOEtBnWyYCRTqTJgHmfMMrGzVSkbd3EHNQjX59KESTkW7lOOP1czfoIe1F8jLRKoeaFctHWaghpyEdUfwSZoqf5jA7xQ9Yimp30KxUhYccyZvnr9FVfZ5XouX3Ho9BTNfnbYdvSXpmZCYcflKXWBscJhaOhAkwxCc9J5jqaJpfebBJVMmX0", /*todo salt and hash*/
         "admin",
         "adminov",
         1,

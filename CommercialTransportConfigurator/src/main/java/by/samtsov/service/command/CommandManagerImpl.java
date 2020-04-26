@@ -30,7 +30,8 @@ public class CommandManagerImpl implements CommandManager {
             return command.execute(request, response);
         } catch (IncorrectDataException e) {
             logger.debug("incorrect data : " + command.getName() + ". Error: ", e);
-            request.setAttribute("error", "Неверно введены данные." + e.getErrorMessage());
+            request.setAttribute("error",
+                    "Неверно введены данные. <br>" + e.getErrorMessage());
             return new ResponsePage("/error.jsp", false); //todo сделать
             // нормальную проброску на страницу через json
         } catch (PersistenceException e) { // todo объединить

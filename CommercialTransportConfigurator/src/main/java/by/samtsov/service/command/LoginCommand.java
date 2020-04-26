@@ -52,17 +52,25 @@ public class LoginCommand extends Command {
                     HttpSession session = request.getSession();
                     session.setAttribute("authorizedUser", user);
                     session.setAttribute("menu", menu.get(user.getRole()));
-                    logger.info(String.format("user \"%s\" is logged in from %s (%s:%s)", email, request.getRemoteAddr(), request.getRemoteHost(), request.getRemotePort()));
+                    logger.info("user {} is logged in from {} ({}:{})",
+                            email, request.getRemoteAddr(),
+                            request.getRemoteHost(), request.getRemotePort());
                 } else if (user.getStatus() == UserStatus.NOT_ACTIVATE) {
-                    logger.trace(String.format("not activacted user \"%s\" is trying log in from %s (%s:%s)", email, request.getRemoteAddr(), request.getRemoteHost(), request.getRemotePort()));
+                    logger.trace("not activacted user \"{}\" is trying log in" +
+                            " from {} ({}:{})", email, request.getRemoteAddr(),
+                            request.getRemoteHost(), request.getRemotePort());
                     request.setAttribute("message", "Пользователь не активен");
                 } else if (user.getStatus() == UserStatus.BLOCKED) {
-                    logger.info(String.format("blocked user \"%s\" is trying log in from %s (%s:%s)", email, request.getRemoteAddr(), request.getRemoteHost(), request.getRemotePort()));
+                    logger.info("blocked user \"{}\" is trying log in from {}" +
+                                    " ({}:{})", email, request.getRemoteAddr()
+                            , request.getRemoteHost(), request.getRemotePort());
                     request.setAttribute("message", "Пользователь заблокирован");
                 }
             } else {
                 request.setAttribute("message", "Имя пользователя или пароль не найдены");
-                logger.info(String.format("user \"%s\" unsuccessfully tried to log in from %s (%s:%s)", email, request.getRemoteAddr(), request.getRemoteHost(), request.getRemotePort()));
+                logger.info("user \"{}\" unsuccessfully tried to log in from " +
+                        "{} ({}:{})", email, request.getRemoteAddr(),
+                        request.getRemoteHost(), request.getRemotePort());
             }
         }
         return responsePage;

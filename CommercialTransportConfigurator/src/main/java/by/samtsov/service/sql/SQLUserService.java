@@ -66,7 +66,7 @@ public class SQLUserService extends SQLService implements UserService {
     private static final String UPDATE_PASSWORD_OPERATION_NAME = "Update " +
             "password";
     private static final String FIND_BY_EMAIL_OPERATION_NAME = "Find by email" +
-            " and password" ;
+            " and password";
     UserDao userDao = null;
     UserValidatorImpl userValidator = null;
 
@@ -309,7 +309,9 @@ public class SQLUserService extends SQLService implements UserService {
                 logger.debug("password is invalid");
                 throw new IncorrectDataException(INVALID_PASSWORD_FORM);
             }
-
+            if (userDao.findByEmail(email) != null) {
+                throw new IncorrectDataException(EMAIL_ALREADY_EXISTS);
+            }
             User user = new User();
             user.setName(name);
             user.setSurname(surname);

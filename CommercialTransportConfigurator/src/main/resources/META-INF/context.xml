@@ -4,4 +4,4 @@
           username="vehiclesSalesUser1"
           password="vehiclesSalesUser1Password"
           driverClassName="com.mysql.jdbc.Driver"
-          url="jdbc:mysql://localhost:3306/vehiclesSales?useUnicode=true&amp;characterEncoding=UTF-8&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"/>
+          url="jdbc:mysql://localhost:3306/vehicles_sales?useUnicode=true&amp;characterEncoding=UTF-8&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"/>
