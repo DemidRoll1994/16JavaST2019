@@ -1,11 +1,11 @@
-package by.samtsov.service.command.admin;
+package by.samtsov.service.command.vendor;
 
-import by.samtsov.bean.entity.User;
+import by.samtsov.bean.entity.Model;
 import by.samtsov.bean.type.EntityType;
 import by.samtsov.dao.PersistenceException;
 import by.samtsov.service.InternalServerException;
+import by.samtsov.service.ModelService;
 import by.samtsov.service.ServiceException;
-import by.samtsov.service.UserService;
 import by.samtsov.view.ResponsePage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,23 +14,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-public class ShowUsersCommand extends AdminCommand {
+public class ShowModelsCommand extends VendorCommand  {
 
-    private static final EntityType USER_ENTITY_TYPE = EntityType.USER;
+    private static final EntityType MODEL_ENTITY_TYPE = EntityType.MODEL;
     private static Logger logger = LogManager.getLogger(
-            EditUsersDataCommand.class);
+            ShowModelsCommand.class);
 
     @Override
     public ResponsePage execute(HttpServletRequest request, HttpServletResponse response) throws PersistenceException, InternalServerException, ServiceException {
 
-        ResponsePage responsePage = new ResponsePage("/admin/ModelsList.jsp"
+        ResponsePage responsePage = new ResponsePage("/vendor/ModelList.jsp"
                 , false);
-        UserService service = factory.createService(USER_ENTITY_TYPE);
+        ModelService service = factory.createService(MODEL_ENTITY_TYPE);
 
-        List<User> users = service.getAll();
-        logger.trace("users array size {}", users == null ? null :
-                users.size());
-        request.setAttribute("users", users);
+        List<Model> models = service.getAll();
+        logger.trace("models array size {}", models == null ? null :
+                models.size());
+        request.setAttribute("models", models);
         return responsePage;
     }
 }

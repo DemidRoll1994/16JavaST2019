@@ -13,9 +13,9 @@ INSERT INTO `users` (`id`,
      */
                      `status`,
     /*
-     * 0 - администратор
-     * 1 - покупатель
-     * 2 - продавец
+     * 0 - BUYER,
+     * 1 - ADMIN,
+     * 2 - VENDOR;
      */
                      `role`)
 VALUES (1,
@@ -27,5 +27,5 @@ VALUES (1,
         "admin",
         "adminov",
         1,
-        0);
+        1);
 

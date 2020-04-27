@@ -16,24 +16,26 @@
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">Email</th>
+            <th scope="col">Id</th>
             <th scope="col">Name</th>
-            <th scope="col">Surname</th>
-            <th scope="col">Edit</th>
+            <th scope="col">Photo</th>
+            <th scope="col">Basic price</th>
+            <th scope="col">Available options</th>
+            <th scope="col">Edit model</th>
         </tr>
         </thead>
         <tbody>
 
-        <c:forEach items="${users}" var="user">
+        <c:forEach items="${models}" var="model">
             <tr>
-
-                <th scope="row">${user.email}</th>
-                <td>${user.name}</td>
-                <td>${user.surname}</td>
+                <th scope="row">${model.id}</th>
+                <td>${model.name}</td>
+                <td><img src="<c:url value="${model.photo}"/>"/></td>
+                <td>${model.basicPrice}</td>
                 <td>
-                    <c:url value="/users/editUser.action" var="userEditAction"/>
-                    <FORM id="form-${reader.identity}" action="${userEditAction}" method="post">
-                        <INPUT type="hidden" name="userId" value="${user.id}">
+                    <c:url value="/vendor/editModel.action" var="editModelAction"/>
+                    <FORM id="form-${model.id}" action="${editModelAction}" method="post">
+                        <INPUT type="hidden" name="modelId" value="${model.id}">
                         <BUTTON type="submit" class="btn btn-warning">Редактировать</BUTTON>
                     </FORM>
                 </td>

@@ -7,8 +7,11 @@ public enum AvailableCommand {
     LOGOUT,
     PROFILE_EDIT,
     PROFILE_SAVE,
-    EDIT_USERS_DATA,
-    SHOW_USERS_DATA,
-    SAVE_USER_DATA
+    EDIT_USER_DATA,
+    SHOW_USERS,
+    SAVE_USER_DATA,
+    SHOW_MODELS,
+    EDIT_MODEL_DATA,
+    SAVE_MODEL_DATA,
 
 }

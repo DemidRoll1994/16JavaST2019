@@ -33,9 +33,13 @@ public class ActionFilter implements Filter {
         actions.put("/reader/save", ReaderSaveAction.class);
         actions.put("/reader/delete", ReaderDeleteAction.class);
 */
-        commands.put("/users/list", AvailableCommand.SHOW_USERS_DATA);
-        commands.put("/users/editUser", AvailableCommand.EDIT_USERS_DATA);
+        commands.put("/users/list", AvailableCommand.SHOW_USERS);
+        commands.put("/users/editUser", AvailableCommand.EDIT_USER_DATA);
         commands.put("/users/saveUser", AvailableCommand.SAVE_USER_DATA);
+
+        commands.put("/models/list", AvailableCommand.SHOW_MODELS);
+        commands.put("/models/editModel", AvailableCommand.EDIT_MODEL_DATA);
+        commands.put("/models/saveModel", AvailableCommand.SAVE_MODEL_DATA);
 
 
 /*        actions.put("/user/edit", UserEditAction.class);

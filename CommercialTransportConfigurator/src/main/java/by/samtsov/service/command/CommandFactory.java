@@ -6,6 +6,9 @@ import by.samtsov.service.command.admin.ShowUsersCommand;
 import by.samtsov.service.command.authorizeduser.EditPersonalDataCommand;
 import by.samtsov.service.command.authorizeduser.LogoutCommand;
 import by.samtsov.service.command.authorizeduser.SavePersonalDataCommand;
+import by.samtsov.service.command.vendor.EditModelsDataCommand;
+import by.samtsov.service.command.vendor.SaveModelDataCommand;
+import by.samtsov.service.command.vendor.ShowModelsCommand;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -34,15 +37,23 @@ public class CommandFactory {
                 case PROFILE_SAVE:
                     command = new SavePersonalDataCommand();
                     break;
-                case EDIT_USERS_DATA:
+                case EDIT_USER_DATA:
                     command = new EditUsersDataCommand();
                     break;
                 case SAVE_USER_DATA:
                     command =new SaveUserDataCommand();
                     break;
-                case SHOW_USERS_DATA:
+                case SHOW_USERS:
                     command = new ShowUsersCommand();
                     break;
+                case SHOW_MODELS:
+                    command = new ShowModelsCommand();
+                    break;
+                case EDIT_MODEL_DATA:
+                    command = new EditModelsDataCommand();
+                    break;
+                case SAVE_MODEL_DATA:
+                    command = new SaveModelDataCommand();
                 default:
                     logger.error("Can't create command {}. The corresponding " +
                             "case is not written", availableCommands);
