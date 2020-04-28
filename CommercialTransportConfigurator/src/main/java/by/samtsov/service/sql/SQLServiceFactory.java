@@ -28,11 +28,11 @@ public class SQLServiceFactory implements ServiceFactory {
             case USER:
                 SQLUserService userService = new SQLUserService(transaction);
                 return (Type) userService;
-            /*case MODEL:
-                ModelServiceImpl modelService = new ModelServiceImpl(transaction);
+            case MODEL:
+                SQLModelService modelService = new SQLModelService(transaction);
                 return (Type) modelService;
-            case ORDER:
-                OrderServiceImpl orderService = new OrderServiceImpl(transaction);
+            /*case ORDER:
+                SQLOrderService orderService = new SQLOrderService(transaction);
                 return (Type) orderService;*/
             case OPTION:
                 SQLOptionService optionService = new SQLOptionService(transaction);

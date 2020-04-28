@@ -23,7 +23,7 @@ public class ShowUsersCommand extends AdminCommand {
     @Override
     public ResponsePage execute(HttpServletRequest request, HttpServletResponse response) throws PersistenceException, InternalServerException, ServiceException {
 
-        ResponsePage responsePage = new ResponsePage("/admin/ModelsList.jsp"
+        ResponsePage responsePage = new ResponsePage("/admin/usersList.jsp"
                 , false);
         UserService service = factory.createService(USER_ENTITY_TYPE);
 

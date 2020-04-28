@@ -1,13 +1,13 @@
 package by.samtsov.bean.entity;
 
-import java.util.List;
 import java.util.Map;
 
 public class Model {
     private int id;
     private String name;
-    private double price;
-    private Map<Integer, Option>  availableOptions;
+    private double basicPrice;
+    private String imgPath;
+    private Map<Integer, Option> availableOptions;
 
     public int getId() {
         return id;
@@ -25,12 +25,12 @@ public class Model {
         this.name = name;
     }
 
-    public double getPrice() {
-        return price;
+    public double getBasicPrice() {
+        return basicPrice;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setBasicPrice(double basicPrice) {
+        this.basicPrice = basicPrice;
     }
 
     public Map<Integer, Option> getAvailableOptions() {
@@ -39,5 +39,13 @@ public class Model {
 
     public void setAvailableOptions(Map<Integer, Option> availableOptions) {
         this.availableOptions = availableOptions;
+    }
+
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
     }
 }

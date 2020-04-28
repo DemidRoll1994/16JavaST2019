@@ -42,10 +42,44 @@
                                type="text" min="0" max="20000" step="0.01"
                                data-parsley-validation-threshold="1"
                                data-parsley-trigger="keyup"
-                               data-parsley-type="number" />
-                               value="${model.basicPrice}">
+                               data-parsley-type="number"
+                               value="${model.basicPrice}"/>
                     </div>
                 </div>
+                <div class="form-group">
+
+                        <select multiple class="form-control" id="exampleFormControlSelect2">
+///////todo на эту странциу нужно передавтаь список всех вариантов для этой
+                            опции и выбраные варианты. то есть нужнопоменять
+                            передаваемые на страницу данные
+                            <c:forEach items="${model.availableOptions}"
+                                       var="option">
+                                <option
+                                        <c:if test="${status == user.status}">
+                                            selected
+                                        </c:if>
+                                >${option.value}</option>
+                            </c:forEach>
+                        </select>
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Example textarea</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    </div>
+
+
+                    Options:
+                    <div class="input-group">
+                        <input name="basicPrice" id="basicPrice"
+                               class="form-control input-sm"
+                               placeholder="Enter basic price" required
+                               type="text" min="0" max="20000" step="0.01"
+                               data-parsley-validation-threshold="1"
+                               data-parsley-trigger="keyup"
+                               data-parsley-type="number"
+                               value="${model.basicPrice}"/>
+                    </div>
+                </div>
+
 
 <!--
                 <div class="form-group">
@@ -53,6 +87,7 @@
                         <select name="status"
                                 class="form-control form-control-sm"
                                 id="status">
+
                             <c:forEach items="<%=UserStatus.values()%>"
                                        var="status">
                                 <option

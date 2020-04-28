@@ -34,7 +34,7 @@ public class SaveModelDataCommand extends VendorCommand {
         ModelService service = factory.createService(MODEL_ENTITY_TYPE);
         Model model = service.get(id);
         model.setName(name);
-        model.setPrice(Double.parseDouble(basicPrice));
+        model.setBasicPrice(Double.parseDouble(basicPrice));
         //todo model.setAvailableOptions(options);
         service.update(model);
         responsePage.getRedirectedAttributes().put("userId", id);

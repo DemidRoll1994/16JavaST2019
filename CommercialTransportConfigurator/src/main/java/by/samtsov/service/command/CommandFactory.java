@@ -54,6 +54,7 @@ public class CommandFactory {
                     break;
                 case SAVE_MODEL_DATA:
                     command = new SaveModelDataCommand();
+                    break;
                 default:
                     logger.error("Can't create command {}. The corresponding " +
                             "case is not written", availableCommands);

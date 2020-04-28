@@ -1,10 +1,10 @@
 USE `vehicles_sales`;
 CREATE TABLE `users`
 (
-    `id`            INTEGER      NOT NULL AUTO_INCREMENT,
+    `id`            INTEGER             NOT NULL AUTO_INCREMENT,
     `email`         VARCHAR(255) unique not null,
-    `password_Hash` text(512)    NOT NULL,
-    `salt`          varchar(255) NOT NULL,
+    `password_Hash` text(512)           NOT NULL,
+    `salt`          varchar(255)        NOT NULL,
     `name`          VARCHAR(255),
     `surname`       VARCHAR(255),
 
@@ -13,13 +13,13 @@ CREATE TABLE `users`
      * 1 - activated
      * 2 - blocked
      */
-    `status`        TINYINT      NOT NULL CHECK (`status` IN (0, 1, 2)),
+    `status`        TINYINT             NOT NULL CHECK (`status` IN (0, 1, 2)),
     /*
      * 0 - admin
      * 1 - buyer
      * 2 - vendor
      */
-    `role`          TINYINT      NOT NULL CHECK (`role` IN (0, 1, 2)),
+    `role`          TINYINT             NOT NULL CHECK (`role` IN (0, 1, 2)),
     `company`       VARCHAR(255),
     `PHONE_NUMBER`  BIGINT,
     `ADDRESS`       VARCHAR(255),
@@ -56,7 +56,7 @@ CREATE TABLE `OPTIONS`
       1-integer
       2-double
       3-boolean*/
-    `option_type` tinyint NOT NULL CHECK (`option_type` IN (0, 1, 2, 3)),
+    `option_type` tinyint      NOT NULL CHECK (`option_type` IN (0, 1, 2, 3)),
     PRIMARY KEY (`id`)
 ) ENGINE = INNODB
   DEFAULT CHARACTER SET utf8;
@@ -81,6 +81,7 @@ CREATE TABLE `Models`
     `id`          INTEGER      NOT NULL AUTO_INCREMENT,
     `model_name`  VARCHAR(255) NOT NULL,
     `basic_price` double       NOT NULL,
+    `img_path`    VARCHAR(255) NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = INNODB
   DEFAULT CHARACTER SET utf8;
@@ -88,7 +89,7 @@ CREATE TABLE `Models`
 
 CREATE TABLE `available_model_OPTION_Values`
 (
-    `model_ID`         INTEGER NOT NULL,
+    `model_ID`        INTEGER NOT NULL,
     `OPTION_value_ID` INTEGER NOT NULL,
     PRIMARY KEY (`model_ID`, `OPTION_value_ID`),
     FOREIGN KEY (`model_ID`) REFERENCES `Models` (`ID`)
@@ -103,11 +104,12 @@ CREATE TABLE `available_model_OPTION_Values`
 
 CREATE TABLE `CONFIGURATIONS`
 (
-    `id`               INTEGER NOT NULL AUTO_INCREMENT,
-    `name`             varchar(255) not null,
-    `ORDER_ID`         INTEGER,
-    `MODEL_ID`         INTEGER,
-    `OWNER_ID`         INTEGER,
+    `id`       INTEGER      NOT NULL AUTO_INCREMENT,
+    `name`     varchar(255) not null,
+    `ORDER_ID` INTEGER,
+    `MODEL_ID` INTEGER,
+    `OWNER_ID` INTEGER,
+    `img_path` VARCHAR(255) NOT NULL,
 
     PRIMARY KEY (`id`),
     FOREIGN KEY (ORDER_ID) REFERENCES ORDERS (id)

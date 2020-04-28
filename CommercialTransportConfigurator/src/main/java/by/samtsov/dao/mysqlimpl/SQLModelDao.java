@@ -1,8 +1,6 @@
 package by.samtsov.dao.mysqlimpl;
 
 import by.samtsov.bean.entity.Model;
-import by.samtsov.bean.entity.Option;
-import by.samtsov.bean.entity.OptionValue;
 import by.samtsov.dao.PersistenceException;
 import by.samtsov.dao.ModelDao;
 
@@ -11,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class SQLModelDao extends SQLBaseDao implements ModelDao {
@@ -36,7 +33,7 @@ where `models`.id=1;
 
     @Override
     public Model get(int id) throws PersistenceException {
-        String sql = "SELECT `id`, `model_name`, `basic_price` " +
+        String sql = "SELECT `id`, `model_name`, `basic_price`, `img_path` " +
                 "FROM `models` where `id` =?";
 
         ResultSet resultSet = null;
@@ -48,7 +45,8 @@ where `models`.id=1;
                 model = new Model();
                 model.setId(resultSet.getInt("id"));
                 model.setName(resultSet.getString("model_name"));
-                model.setPrice(resultSet.getDouble("basic_price"));
+                model.setBasicPrice(resultSet.getDouble("basic_price"));
+                model.setImgPath(resultSet.getString("img_path"));
             }
             return model;
         } catch (SQLException e) {
@@ -64,8 +62,8 @@ where `models`.id=1;
 
     @Override
     public List<Model> getAll() throws PersistenceException {
-        String sql = "SELECT `id`, `model_name`, `basic_price` FROM `models` " +
-                "ORDER BY `model_name`";
+        String sql = "SELECT `id`, `model_name`, `basic_price`,`img_path` " +
+                "FROM `models`";
         try (PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
             List<Model> models = new ArrayList<>();
@@ -74,7 +72,8 @@ where `models`.id=1;
                 model = new Model();
                 model.setId(resultSet.getInt("id"));
                 model.setName(resultSet.getString("model_name"));
-                model.setPrice(resultSet.getDouble("basic_price"));
+                model.setBasicPrice(resultSet.getDouble("basic_price"));
+                model.setImgPath(resultSet.getString("img_path"));
                 models.add(model);
             }
             return models;
@@ -85,13 +84,14 @@ where `models`.id=1;
 
     @Override
     public int add(Model model) throws PersistenceException {
-        String sql = "INSERT INTO `models` (`model_name`, `basic_price`)" +
-                " VALUES (?, ?)";
+        String sql = "INSERT INTO `models` (`model_name`, `basic_price`," +
+                "`img_path`) VALUES (?, ?, ?)";
         ResultSet resultSet = null;
         try (PreparedStatement statement = connection.prepareStatement(sql,
                 Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, model.getName());
-            statement.setDouble(2, model.getPrice());
+            statement.setDouble(2, model.getBasicPrice());
+            statement.setString(3, model.getImgPath());
             statement.executeUpdate();
             resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -113,11 +113,12 @@ where `models`.id=1;
     @Override
     public void update(Model model) throws PersistenceException {
         String sql = "UPDATE `models` SET `model_name` = ?, `basic_price` = ?" +
-                " WHERE `id` = ?";
+                ", `img_path` = ? WHERE `id` = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, model.getName());
-            statement.setDouble(2, model.getPrice());
-            statement.setInt(3, model.getId());
+            statement.setDouble(2, model.getBasicPrice());
+            statement.setString(3, model.getImgPath());
+            statement.setInt(4, model.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new PersistenceException(e);

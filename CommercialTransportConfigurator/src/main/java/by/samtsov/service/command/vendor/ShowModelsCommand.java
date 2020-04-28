@@ -23,7 +23,7 @@ public class ShowModelsCommand extends VendorCommand  {
     @Override
     public ResponsePage execute(HttpServletRequest request, HttpServletResponse response) throws PersistenceException, InternalServerException, ServiceException {
 
-        ResponsePage responsePage = new ResponsePage("/vendor/ModelList.jsp"
+        ResponsePage responsePage = new ResponsePage("/vendor/modelList.jsp"
                 , false);
         ModelService service = factory.createService(MODEL_ENTITY_TYPE);
 

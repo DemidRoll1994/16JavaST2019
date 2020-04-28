@@ -1,12 +1,12 @@
 /* Next values are optional for start application */
 USE `vehicles_sales`;
 
-INSERT INTO `models` (`id`, `model_name`, `basic_price`)
-VALUES (1, 'МАЗ 5440М5', 75000),
-       (2, 'МАЗ 107', 85000),
-       (3, 'МАЗ 251', 110000),
-       (4, 'МАЗ 303', 100000),
-       (5, 'МАЗ 257', 60000);
+INSERT INTO `models` (`id`, `model_name`, `basic_price`,`img_path`)
+VALUES (1, 'МАЗ 5440М5', 75000, 'resources/img/photo/maz5440m9.png'),
+       (2, 'МАЗ 107', 85000, 'resources/img/photo/maz107.png'),
+       (3, 'МАЗ 251', 110000, 'resources/img/photo/maz251.png'),
+       (4, 'МАЗ 303', 100000, 'resources/img/photo/maz303.jpg'),
+       (5, 'МАЗ 257', 60000, 'resources/img/photo/maz257.gif');
 
 
 
@@ -103,11 +103,11 @@ VALUES (1, 1),
        (5, 25);
 
 
-INSERT INTO `CONFIGURATIONS` (`id`, `name`, `MODEL_ID`)
-VALUES (1, 'МАЗ 257 школьный автобус', 5),
-       (2, 'МАЗ 5440М5. Базовая комлектация',1),
-       (3, 'МАЗ 5440М5. Полная комлектация', 1),
-       (4, 'МАЗ 303. Бери не пожалеешь!!!', 4);
+INSERT INTO `CONFIGURATIONS` (`id`, `name`, `MODEL_ID`,`img_path`)
+VALUES (1, 'МАЗ 257 школьный автобус', 5, 'resources/img/photo/maz257school.jpg'),
+       (2, 'МАЗ 5440М5. Базовая комлектация',1,''),
+       (3, 'МАЗ 5440М5. Полная комлектация', 1,''),
+       (4, 'МАЗ 303. Бери не пожалеешь!!!', 4,'');
 
 INSERT INTO `selected_config_OPTION_Values` (`config_ID`, `OPTION_value_ID`)
 VALUES (1, 6),

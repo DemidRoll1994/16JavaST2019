@@ -2,6 +2,7 @@ package by.samtsov.service.validator;
 
 import by.samtsov.bean.type.EntityType;
 import by.samtsov.service.InternalServerException;
+import by.samtsov.service.validator.impl.ModelValidatorImpl;
 import by.samtsov.service.validator.impl.UserValidatorImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,25 +18,20 @@ public class ValidatorFactory {
             case USER:
                 UserValidator userValidator = new UserValidatorImpl();
                 return (Type) userValidator;
-            /*case MODEL:
-                ModelServiceImpl modelService = new ModelServiceImpl();
-                modelService.setConnection(conn);
-                return (Type) modelService;
-            case ORDER:
+            case MODEL:
+                ModelValidator modelValidator = new ModelValidatorImpl();
+                return (Type) modelValidator;
+            /*case ORDER:
                 OrderServiceImpl orderService = new OrderServiceImpl();
-                orderService.setConnection(conn);
                 return (Type) orderService;
             case OPTION:
                 OptionServiceImpl optionService = new OptionServiceImpl();
-                optionService.setConnection(conn);
                 return (Type) optionService;
             case OPTION_VALUE:
                 OptionValueServiceImpl optionValueService = new OptionValueServiceImpl();
-                optionValueService.setConnection(conn);
                 return (Type) optionValueService;
             case CONFIGURATION:
                 ConfigurationServiceImpl configurationService = new ConfigurationServiceImpl();
-                configurationService.setConnection(conn);
                 return (Type) configurationService; */
         }
 

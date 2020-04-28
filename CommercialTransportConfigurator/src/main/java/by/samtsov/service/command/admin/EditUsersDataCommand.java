@@ -22,7 +22,7 @@ public class EditUsersDataCommand extends AdminCommand {
     @Override
     public ResponsePage execute(HttpServletRequest request, HttpServletResponse response) throws PersistenceException, InternalServerException, ServiceException {
 
-        ResponsePage responsePage = new ResponsePage("/admin/editModel.jsp"
+        ResponsePage responsePage = new ResponsePage("/admin/editUser.jsp"
                 , false);
         UserService service = factory.createService(USER_ENTITY_TYPE);
         int userId = -1;

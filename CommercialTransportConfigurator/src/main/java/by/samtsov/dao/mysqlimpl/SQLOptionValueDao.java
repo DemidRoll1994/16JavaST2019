@@ -108,7 +108,7 @@ public class SQLOptionValueDao extends SQLBaseDao implements OptionValueDao {
             List<OptionValue> optionValues = new ArrayList<>();
             while (resultSet.next()) {
                 OptionValue optionValue = new OptionValue();
-                optionValue.setId(resultSet.getInt("id"));
+                optionValue.setId(resultSet.getInt("option_value_id"));
                 optionValues.add(optionValue);
             }
             return optionValues;

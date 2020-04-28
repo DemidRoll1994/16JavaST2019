@@ -6,16 +6,13 @@ import by.samtsov.bean.type.EntityType;
 import by.samtsov.dao.ConfigurationDao;
 import by.samtsov.dao.ModelDao;
 import by.samtsov.dao.OptionValueDao;
-import by.samtsov.dao.PersistenceException;
 import by.samtsov.dao.transaction.Transaction;
 import by.samtsov.service.ConfigurationService;
 import by.samtsov.service.InternalServerException;
 import by.samtsov.service.ServiceException;
-import by.samtsov.service.validator.ValidatorFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SQLConfigurationService extends SQLService
@@ -121,7 +118,7 @@ public class SQLConfigurationService extends SQLService
 
 
     private double calculatePrice(Configuration config) {
-        double price = config.getModel().getPrice();
+        double price = config.getModel().getBasicPrice();
         for (OptionValue value : config.getSelectedOptionValues()) {
             price += value.getPrice();
         }

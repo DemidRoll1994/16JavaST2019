@@ -5,6 +5,7 @@ import by.samtsov.bean.entity.Option;
 import by.samtsov.bean.entity.OptionValue;
 import by.samtsov.bean.type.EntityType;
 import by.samtsov.dao.ModelDao;
+import by.samtsov.dao.OptionDao;
 import by.samtsov.dao.OptionValueDao;
 import by.samtsov.dao.PersistenceException;
 import by.samtsov.dao.transaction.Transaction;
@@ -12,7 +13,6 @@ import by.samtsov.service.IncorrectDataException;
 import by.samtsov.service.InternalServerException;
 import by.samtsov.service.ModelService;
 import by.samtsov.service.ServiceException;
-import by.samtsov.service.validator.ModelValidator;
 import by.samtsov.service.validator.Validator;
 import by.samtsov.service.validator.ValidatorFactory;
 import org.apache.logging.log4j.LogManager;
@@ -31,6 +31,8 @@ public class SQLModelService extends SQLService implements ModelService {
     private static final EntityType MODEL_ENTITY_TYPE = EntityType.MODEL;
     private static final EntityType OPTION_VALUE_ENTITY_TYPE = EntityType
             .OPTION_VALUE;
+    private static final EntityType OPTION_ENTITY_TYPE = EntityType
+            .OPTION;
     private static final Logger logger = LogManager.getLogger(
             SQLModelService.class);
     private static final String GET_OPERATION_NAME = "Get model by identity";
@@ -41,6 +43,7 @@ public class SQLModelService extends SQLService implements ModelService {
     private static final String UPDATE_OPERATION_NAME = "Update model";
     OptionValueDao optionValueDao = null;
     ModelDao modelDao = null;
+    OptionDao optionDao = null;
 
     Validator modelValidator = null;
 
@@ -50,6 +53,7 @@ public class SQLModelService extends SQLService implements ModelService {
         this.transaction = transaction;
         optionValueDao = transaction.createDao(OPTION_VALUE_ENTITY_TYPE);
         modelDao = transaction.createDao(MODEL_ENTITY_TYPE);
+        optionDao = transaction.createDao(OPTION_ENTITY_TYPE);
         modelValidator = ValidatorFactory.createValidator(MODEL_ENTITY_TYPE);
     }
 
@@ -58,9 +62,14 @@ public class SQLModelService extends SQLService implements ModelService {
         try {
             Model model = modelDao.get(id);
             if (model != null) {
-                model.setAvailableOptions(
-                        createOptionsFromOptionValues(
-                                optionValueDao.findByModelId(model.getId())));
+                List<OptionValue> optionValues = optionValueDao
+                        .findByModelId(model.getId());
+                for (int i = 0; i < optionValues.size(); i++) {
+                    optionValues.set(i, optionValueDao.get(optionValues
+                            .get(i).getId()));
+                }
+                model.setAvailableOptions(createOptionsFromOptionValues(
+                        optionValues));
             }
             transaction.commit();
             return model;
@@ -76,8 +85,14 @@ public class SQLModelService extends SQLService implements ModelService {
             List<Model> models = modelDao.getAll();
             if (models != null) {
                 for (Model model : models) {
+                    List<OptionValue> optionValues = optionValueDao
+                            .findByModelId(model.getId());
+                    for (int i = 0; i < optionValues.size(); i++) {
+                        optionValues.set(i, optionValueDao.get(optionValues
+                                .get(i).getId()));
+                    }
                     model.setAvailableOptions(createOptionsFromOptionValues(
-                            optionValueDao.findByModelId(model.getId())));
+                            optionValues));
                 }
             }
             transaction.commit();
@@ -160,14 +175,15 @@ public class SQLModelService extends SQLService implements ModelService {
         }
     }
 
-    private Map<Integer, Option> createOptionsFromOptionValues(List<OptionValue> optionValues) {
+    private Map<Integer, Option> createOptionsFromOptionValues(List<OptionValue> optionValues) throws PersistenceException{
         if (optionValues == null) return null;
         Map<Integer, Option> options = new HashMap<>();
         for (OptionValue optionValue : optionValues) {
             int optionId = optionValue.getOptionId();
-            options.putIfAbsent(optionId, new Option(optionId));
+            options.putIfAbsent(optionId, optionDao.get(optionId));
             options.get(optionId).getOptionValues().add(optionValue);
         }
+
         return options;
     }
 

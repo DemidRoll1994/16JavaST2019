@@ -8,8 +8,7 @@ public class ModelValidatorImpl extends Validator<Model> implements ModelValidat
 
     @Override
     public boolean isValid(Model model) {
-        return model != null && model.getAvailableOptions() != null && model.getPrice() >= 0 ;
+        return model != null && model.getAvailableOptions() != null && model.getBasicPrice() >= 0 ;
     }
-
 
 }

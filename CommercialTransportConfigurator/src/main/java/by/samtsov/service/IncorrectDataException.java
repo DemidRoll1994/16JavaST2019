@@ -28,10 +28,13 @@ public class IncorrectDataException extends ServiceException {
     }
 
     public String getErrorMessage() {
-        if (internalServerErrorType == null) {
-            return "Incorrect data";
+        if (internalServerErrorType != null) {
+            return internalServerErrorType.getMessage();
         }
-        return internalServerErrorType.getMessage();
+        if (getMessage() != null) {
+            return getMessage();
+        }
+        return "Incorrect data";
     }
 
 }

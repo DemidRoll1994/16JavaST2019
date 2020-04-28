@@ -5,6 +5,7 @@ import by.samtsov.bean.entity.User;
 import by.samtsov.bean.type.EntityType;
 import by.samtsov.bean.type.Role;
 import by.samtsov.bean.type.UserStatus;
+import by.samtsov.service.IncorrectDataException;
 import by.samtsov.service.InternalServerException;
 import by.samtsov.service.ServiceException;
 import by.samtsov.service.UserService;
@@ -24,11 +25,13 @@ public class LoginCommand extends Command {
 
     static {
         menu.put(Role.ADMIN, new ArrayList<>(Arrays.asList(
-                new MenuItem("users/list", "список пользователей")
+                new MenuItem("users/list", "список пользователей"),
+                new MenuItem("models/list", "список моделей")
         )));
         menu.put(Role.BUYER, new ArrayList<>(Arrays.asList(
         )));
         menu.put(Role.VENDOR, new ArrayList<>(Arrays.asList(
+                new MenuItem("models/list", "список моделей")
         )));
     }
 
@@ -57,19 +60,19 @@ public class LoginCommand extends Command {
                             request.getRemoteHost(), request.getRemotePort());
                 } else if (user.getStatus() == UserStatus.NOT_ACTIVATE) {
                     logger.trace("not activacted user \"{}\" is trying log in" +
-                            " from {} ({}:{})", email, request.getRemoteAddr(),
+                                    " from {} ({}:{})", email, request.getRemoteAddr(),
                             request.getRemoteHost(), request.getRemotePort());
-                    request.setAttribute("message", "Пользователь не активен");
+                    throw new IncorrectDataException("Пользователь не активен");
                 } else if (user.getStatus() == UserStatus.BLOCKED) {
                     logger.info("blocked user \"{}\" is trying log in from {}" +
                                     " ({}:{})", email, request.getRemoteAddr()
                             , request.getRemoteHost(), request.getRemotePort());
-                    request.setAttribute("message", "Пользователь заблокирован");
+                    throw new IncorrectDataException("Пользователь заблокирован");
                 }
             } else {
                 request.setAttribute("message", "Имя пользователя или пароль не найдены");
                 logger.info("user \"{}\" unsuccessfully tried to log in from " +
-                        "{} ({}:{})", email, request.getRemoteAddr(),
+                                "{} ({}:{})", email, request.getRemoteAddr(),
                         request.getRemoteHost(), request.getRemotePort());
             }
         }
