@@ -188,8 +188,8 @@ public class SQLOptionValueDao extends SQLBaseDao implements OptionValueDao {
 
     @Override
     public List<OptionValue> getByOptionId(int optionId) throws PersistenceException {
-        String sql = "SELECT `id`, `value`, `description`, `price`" +
-                " FROM `OPTION_VALUES` where `OPTION_ID` =?";
+        String sql = "SELECT `id`, `value`, `description`, `price`, " +
+                "`option_id` FROM `OPTION_VALUES` where `OPTION_ID` =?";
         ResultSet resultSet = null;
         try (PreparedStatement statement = connection.prepareStatement(sql);) {
             statement.setInt(1, optionId);
