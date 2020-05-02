@@ -14,8 +14,10 @@ public interface OptionValueDao extends Dao<OptionValue> {
     void addOptionValuesByModelId(int modelId
             , List<OptionValue> optionValues) throws PersistenceException;
 
-    void deleteOptionValuesByModelId(int modelId)
+    void deleteByModelAndOptionId(int modelId, int optionValueId)
             throws PersistenceException;
+
+    void deleteAllByModelId(int modelId) throws PersistenceException;
 
     List<OptionValue> getByOptionId(int optionId) throws PersistenceException;
 

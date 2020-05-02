@@ -126,7 +126,7 @@ public class SQLOptionValueDao extends SQLBaseDao implements OptionValueDao {
 
     public void updateOptionValuesForModel(int modelId,
                                            List<OptionValue> newOptionValues) throws PersistenceException {
-        deleteOptionValuesByModelId(modelId);
+        deleteAllByModelId(modelId);
         if (newOptionValues != null) {
             addOptionValuesByModelId(modelId, newOptionValues);
         }
@@ -161,12 +161,25 @@ public class SQLOptionValueDao extends SQLBaseDao implements OptionValueDao {
         }
     }
 
-    public void deleteOptionValuesByModelId(int modelId)
+    public void deleteAllByModelId(int modelId)
             throws PersistenceException {
         final String sql = "DELETE FROM `available_model_option_values` " +
-                "WHERE `model_id` = ?";
+                "WHERE `model_id` = ? ";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, modelId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new PersistenceException(e);
+        }
+    }
+
+    public void deleteByModelAndOptionId(int modelId, int optionValueId)
+            throws PersistenceException {
+        final String sql = "DELETE FROM `available_model_option_values` " +
+                "WHERE `model_id` = ? AND `OPTION_value_ID`=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, modelId);
+            statement.setInt(2, optionValueId);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new PersistenceException(e);

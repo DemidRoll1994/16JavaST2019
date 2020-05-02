@@ -26,6 +26,7 @@ import java.util.Map;
 public class SQLModelService extends SQLService implements ModelService {
 
 
+    public static final String ADD_AVAILABLE_OPTION_OPERATION_NAME = "add Available Option";
     private static final String NULL_POINTER_ERR = "model cannot be null";
     private static final String MODEL_IS_INVALID_ERR = "model is invalid";
     private static final EntityType MODEL_ENTITY_TYPE = EntityType.MODEL;
@@ -137,7 +138,7 @@ public class SQLModelService extends SQLService implements ModelService {
     public void delete(int id) throws ServiceException {
         try {
             modelDao.delete(id);
-            optionValueDao.deleteOptionValuesByModelId(id);
+            optionValueDao.deleteAllByModelId(id);
             transaction.commit();
         } catch (PersistenceException e) {
             rollbackTransaction(DELETE_OPERATION_NAME);
@@ -166,6 +167,46 @@ public class SQLModelService extends SQLService implements ModelService {
         return null;
     }
 
+    @Override
+    public void addAvailableOption(int modelId, Option option) throws ServiceException {
+        try {
+            if (option != null && option.getOptionValues() != null
+                    && !option.getOptionValues().isEmpty()) {
+                optionValueDao.addOptionValuesByModelId(modelId,
+                        option.getOptionValues());
+            }
+        } catch (PersistenceException e) {
+            rollbackTransaction(ADD_AVAILABLE_OPTION_OPERATION_NAME);
+            throw generateException(ADD_AVAILABLE_OPTION_OPERATION_NAME, e);
+        }
+    }
+
+    @Override
+    public void deleteAvailableOption(int modelId, int optionId) throws ServiceException {
+
+        try {
+            for (OptionValue optionValue :
+                    optionValueDao.getByOptionId(optionId)) {
+                optionValueDao.deleteByModelAndOptionId(modelId,
+                        optionValue.getId());
+            }
+        } catch (PersistenceException e) {
+            rollbackTransaction(ADD_AVAILABLE_OPTION_OPERATION_NAME);
+            throw generateException(ADD_AVAILABLE_OPTION_OPERATION_NAME, e);
+        }
+    }
+
+    @Override
+    public void editAvailableOption(int modelId, Option option) throws ServiceException {
+        try {
+            optionValueDao.updateOptionValuesForModel(modelId,
+                    option.getOptionValues());
+        } catch (PersistenceException e) {
+            rollbackTransaction(ADD_AVAILABLE_OPTION_OPERATION_NAME);
+            throw generateException(ADD_AVAILABLE_OPTION_OPERATION_NAME, e);
+        }
+    }
+
     private void checkArguments(Model model) throws IncorrectDataException {
         if (model == null) {
             throw new IncorrectDataException(NULL_POINTER_ERR);
@@ -175,7 +216,7 @@ public class SQLModelService extends SQLService implements ModelService {
         }
     }
 
-    private Map<Integer, Option> createOptionsFromOptionValues(List<OptionValue> optionValues) throws PersistenceException{
+    private Map<Integer, Option> createOptionsFromOptionValues(List<OptionValue> optionValues) throws PersistenceException {
         if (optionValues == null) return null;
         Map<Integer, Option> options = new HashMap<>();
         for (OptionValue optionValue : optionValues) {
