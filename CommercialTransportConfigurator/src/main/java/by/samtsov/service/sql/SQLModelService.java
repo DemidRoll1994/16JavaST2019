@@ -25,7 +25,8 @@ import java.util.Map;
 
 public class SQLModelService extends SQLService implements ModelService {
 
-
+    public static final String FIND_ACTIVE_VALUES_FOR_OPTION_OPERATION_NAME
+            = "add Available Option";
     public static final String ADD_AVAILABLE_OPTION_OPERATION_NAME = "add Available Option";
     private static final String NULL_POINTER_ERR = "model cannot be null";
     private static final String MODEL_IS_INVALID_ERR = "model is invalid";
@@ -204,6 +205,52 @@ public class SQLModelService extends SQLService implements ModelService {
         } catch (PersistenceException e) {
             rollbackTransaction(ADD_AVAILABLE_OPTION_OPERATION_NAME);
             throw generateException(ADD_AVAILABLE_OPTION_OPERATION_NAME, e);
+        }
+    }
+
+    /**
+     * look for all OptionValues for option with id=optionId and mark as true
+     * that is available for model with id = modelId.
+     * @param modelId  id of a selected model
+     * @param optionId id of a selected option
+     * @return HashMap <OptionValue, Boolean> that contains all options values
+     * of option with id = optionId as a key and marker true as a value if this
+     * OptionValue is active for model with id = modelId.
+     * @throws ServiceException if
+     */
+    public HashMap<OptionValue, Boolean> findActiveValuesForOption(int modelId
+            , int optionId) throws ServiceException {
+        try {
+            HashMap<OptionValue, Boolean> activeOptionValues
+                    = new HashMap<>();
+            if (optionDao.get(optionId) == null) {
+                throw new ServiceException("no such option can be found");
+            }
+            for (OptionValue optionValue
+                    : optionValueDao.getByOptionId(optionId)) {
+                activeOptionValues.put(optionValue, false);
+            }
+            List<OptionValue> allOptionValuesOfAModel = optionValueDao
+                    .findByModelId(modelId);
+            if (allOptionValuesOfAModel == null) {
+                throw new ServiceException("no such model can be found");
+            }
+            for (OptionValue optionValue : allOptionValuesOfAModel) {
+                if (optionValue.getOptionId() == optionId) {
+                    for (OptionValue optionValue2
+                            : activeOptionValues.keySet()) {
+                        if (optionValue2.getId() == optionValue.getId()) {
+                            activeOptionValues.put(optionValue2, true);
+                            break;
+                        }
+                    }
+                }
+            }
+            return activeOptionValues;
+        } catch (PersistenceException e) {
+            rollbackTransaction(FIND_ACTIVE_VALUES_FOR_OPTION_OPERATION_NAME);
+            throw generateException(FIND_ACTIVE_VALUES_FOR_OPTION_OPERATION_NAME
+                    , e);
         }
     }
 

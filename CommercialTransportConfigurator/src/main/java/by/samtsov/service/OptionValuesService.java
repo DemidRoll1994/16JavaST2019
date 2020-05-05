@@ -1,9 +1,6 @@
-package by.samtsov.service.sql;
+package by.samtsov.service;
 
 import by.samtsov.bean.entity.OptionValue;
-import by.samtsov.service.InternalServerException;
-import by.samtsov.service.Service;
-import by.samtsov.service.ServiceException;
 
 import java.util.List;
 

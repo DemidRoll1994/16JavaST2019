@@ -13,5 +13,6 @@ public enum AvailableCommand {
     SHOW_MODELS,
     EDIT_MODEL_DATA,
     SAVE_MODEL_DATA,
-
+    EDIT_OPTION_FOR_MODEL,
+    SAVE_OPTION_FOR_MODEL;
 }

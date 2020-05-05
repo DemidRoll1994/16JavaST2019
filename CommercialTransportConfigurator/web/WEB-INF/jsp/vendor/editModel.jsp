@@ -18,8 +18,7 @@
             <div class="col-2"></div>
             <div class="col-6">
                 <c:url value="/models/saveModel.action" var="saveModel"/>
-                <form action="${saveModel}" method="post" id="Signup-Form"
-                      role="form">
+                <form action="${saveModel}" method="post" role="form">
                     <div class="form-group">
                         <div class="input-group">
                             <INPUT type="hidden" name="modelId"
@@ -46,23 +45,25 @@
                                    value="${model.basicPrice}"/>
                         </div>
                     </div>
-                    <div class="form-group">
 
-                        ///////todo на эту странциу нужно передавтаь список
-                        всех вариантов для этой
-                        опции и выбраные варианты. то есть нужнопоменять
-                        передаваемые на страницу данные
-                        <%--> creates multiple choice box for every option that can be assigned to the model (all options) <--%>
+
+                    <%-->
+                                        <div class="form-group">
+
+                                            ///////todo на эту странциу нужно передавтаь список
+                                            всех вариантов для этой
+                                            опции и выбраные варианты. то есть нужнопоменять
+                                            передаваемые на страницу данные
+                                            <%--> creates multiple choice box for every option that can be assigned to the model (all options) <-->
                         <c:forEach items="${fullOptions}" var="fullOption">
 
                             <select name="selectedOptionValues"
                                     multiple class="form-control"
                                     id="exampleFormControlSelect2">
-                                    <%--> creates all option values for option<--%>
+                                    <%--> creates all option values for option<-->
 
                                 <c:forEach items="${fullOption.optionValues}"
                                            var="optionValue">
-                                    <script>alert("${optionValue.id}");</script>
                                     <option
 
                                             <c:forEach var="availableOptionValue"
@@ -111,12 +112,54 @@
                     </c:forEach>
                 </select>
             </div>
-        </div>-->
+        </div>--%>
                     <button type="submit"
                             class="btn btn-success btn-block btn-lg">update
                         model data
                     </button>
                 </form>
+
+
+                <table class="table container">
+                    <thead>
+                    <tr class="row">
+                        <th class="col" scope="col">Option Name</th>
+                        <th class="col" scope="col">Option Value</th>
+                        <th class="col" scope="col">Option Value Description</th>
+                        <th class="col" scope="col">Edit</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <c:forEach items="${model.availableOptions}" var="option">
+                        <tr class="row">
+                            <th class="col"scope="row"><c:out value="${option.value.name}"/></th>
+                            <td class="col">
+                                <c:forEach items="${option.value.optionValues}"
+                                           var="optionValue">
+                                    ${optionValue.value}<br>
+                                </c:forEach>
+                            </td>
+                            <td class="col">
+                                <c:forEach items="${option.value.optionValues}"
+                                           var="optionValue">
+                                    ${optionValue.description}<br>
+                                </c:forEach>
+                            </td>
+                            <td class="col">
+                                <c:url value="/options/editOptionForModel.action"
+                                       var="editOptionForModel"/>
+                                <FORM action="${editOptionForModel}"
+                                      method="post">
+                                    <INPUT type="hidden" name="modelId" value="${model.id}">
+                                    <INPUT type="hidden" name="optionId" value="${option.value.id}">
+                                    <BUTTON type="submit" class="btn btn-warning">Редактировать</BUTTON>
+                                </FORM>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
             </div>
             <div class="col-4"></div>
         </div>

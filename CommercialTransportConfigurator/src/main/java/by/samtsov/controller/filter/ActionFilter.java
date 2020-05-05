@@ -41,6 +41,11 @@ public class ActionFilter implements Filter {
         commands.put("/models/editModel", AvailableCommand.EDIT_MODEL_DATA);
         commands.put("/models/saveModel", AvailableCommand.SAVE_MODEL_DATA);
 
+        commands.put("/options/editOptionForModel"
+                , AvailableCommand.EDIT_OPTION_FOR_MODEL);
+        commands.put("/options/saveOptionForModel"
+                , AvailableCommand.SAVE_OPTION_FOR_MODEL);
+
 
 /*        actions.put("/user/edit", UserEditAction.class);
         actions.put("/user/save", UserSaveAction.class);

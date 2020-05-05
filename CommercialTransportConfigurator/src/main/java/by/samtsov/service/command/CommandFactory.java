@@ -7,6 +7,7 @@ import by.samtsov.service.command.authorizeduser.EditPersonalDataCommand;
 import by.samtsov.service.command.authorizeduser.LogoutCommand;
 import by.samtsov.service.command.authorizeduser.SavePersonalDataCommand;
 import by.samtsov.service.command.vendor.EditModelsDataCommand;
+import by.samtsov.service.command.vendor.EditOptionForModelCommand;
 import by.samtsov.service.command.vendor.SaveModelDataCommand;
 import by.samtsov.service.command.vendor.ShowModelsCommand;
 import org.apache.logging.log4j.LogManager;
@@ -54,6 +55,9 @@ public class CommandFactory {
                     break;
                 case SAVE_MODEL_DATA:
                     command = new SaveModelDataCommand();
+                    break;
+                case EDIT_OPTION_FOR_MODEL:
+                    command = new EditOptionForModelCommand();
                     break;
                 default:
                     logger.error("Can't create command {}. The corresponding " +
