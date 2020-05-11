@@ -28,23 +28,12 @@
                         </tr>
                         </thead>
                         <tbody>
-
                         <c:url value="/models/saveOptionForModel.action"
                                var="saveAction"/>
-
-                        <script>alert("${activeOptions.size}");</script>
-
                         <c:forEach items="${activeOptions.key}"
                                    var="option">
-                            <script>alert("foreach");</script>
                         <tr class="row">
-                            <script>alert("row");</script>
-
                             <form action="${saveAction}" method="post" role="form">
-
-                                <script>alert("1");</script>
-
-
                             <th class="col form-group" scope="row">
                                 <div class="input-group">
                                     <INPUT type="hidden" name="value"
@@ -66,15 +55,12 @@
                                 </div>
                             </th>
 
-                                <script>alert("5");</script>
                             <th class="col form-group" scope="row">
                                 <div class="input-group">
                                     <INPUT type="hidden" name="isActive"
                                            value="${option.value}">
                                 </div>
                             </th>
-
-                                <script>alert("6");</script>
                             <th class="col form-group" scope="row">
                                 <button type="submit"
                                         class="btn btn-success btn-block btn-lg">update
@@ -83,7 +69,6 @@
                             </th>
                             </form>
                         </tr>
-                            <script>alert("/foreach");</script>
                         </c:forEach>
                         </tbody>
                     </table>
