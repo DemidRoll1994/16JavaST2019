@@ -2,7 +2,7 @@ package by.samtsov.dao.mysqlimpl;
 
 import java.sql.Connection;
 
-public class SQLBaseDao {
+public abstract class SQLBaseDao {
 
     Connection connection = null;
 

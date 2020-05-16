@@ -141,7 +141,7 @@ public class SQLOptionValueDao extends SQLBaseDao implements OptionValueDao {
         final String valuesPattern = "(?, ?)";
         //build sql insert query
         String sql = "INSERT INTO `available_model_option_values` " +
-                "(`model_id`, `option_value_id`, ) VALUES " + valuesPattern;
+                "(`model_id`, `option_value_id`) VALUES " + valuesPattern;
         StringBuilder stringBuilder = new StringBuilder().append(sql);
         for (int i = 1; i < optionValues.size(); i++) {
             stringBuilder.append("," + valuesPattern);
