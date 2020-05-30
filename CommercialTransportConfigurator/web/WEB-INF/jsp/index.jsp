@@ -8,6 +8,7 @@
 </head>
 <body>
 <!-- HEADER -->
+<jsp:include page="header.jsp"/>
 <!-- ОСНОВНОЕ СОДЕРЖИМОЕ -->
 <main>
 
@@ -66,7 +67,6 @@
         <div class="col-2"></div>
     </div>
 </main>
-<jsp:include page="header.jsp"/>
 <jsp:include page="footer.jsp"/>
 </body>
 </html>

@@ -53,7 +53,7 @@ public class UserValidatorImpl extends Validator<User> implements UserValidator 
 
     @Override
     public boolean isPhoneNumberValid(long phoneNumber) {
-        return phoneNumber > 0;
+        return phoneNumber >= 0;
     }
 
     @Override

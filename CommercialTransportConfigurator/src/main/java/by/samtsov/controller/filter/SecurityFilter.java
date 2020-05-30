@@ -26,6 +26,7 @@ public class SecurityFilter implements Filter {
         if (request instanceof HttpServletRequest && response instanceof HttpServletResponse) {
             HttpServletRequest httpRequest = (HttpServletRequest) request;
             HttpServletResponse httpResponse = (HttpServletResponse) response;
+            logger.debug(httpRequest.getAttribute("command"));
             Command command = (Command) httpRequest.getAttribute("command");
             Set<Role> allowedRoles = command.getAllowedRoles();
             String userName = "unauthorized user";

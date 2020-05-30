@@ -101,7 +101,6 @@
                 </li>
 
 
-
                 <c:choose>
                     <c:when test="${authorizedUser==null}">
                         <li class="nav-item">

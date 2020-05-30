@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import static by.samtsov.bean.type.InternalServerError.INVALID_PASSWORD_FORM;
+import static by.samtsov.bean.type.InternalServerError.INVALID_PHONE_FORM;
 
 public class SavePersonalDataCommand extends AuthorizedUserCommand {
 
@@ -46,7 +46,7 @@ public class SavePersonalDataCommand extends AuthorizedUserCommand {
             }
         } catch (NumberFormatException e) {
             logger.debug("Phone number {} is invalid", user.getPhoneNumber());
-            throw new IncorrectDataException(INVALID_PASSWORD_FORM);
+            throw new IncorrectDataException(INVALID_PHONE_FORM);
         }
         user.setAddress(address);
 

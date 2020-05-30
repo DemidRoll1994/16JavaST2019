@@ -97,9 +97,8 @@ public class ActionFilter implements Filter {
             AvailableCommand commandType = commands.get(commandName);
             if (commandType != null) {
                 Command command = CommandFactory.createCommand(commandType);
-                logger.debug("command {} is created", command.getName());
+                logger.debug("command {} is created", command.getClass());
                 command.setName(commandName);
-                logger.debug("command.setName(commandName) is ok ");
                 httpRequest.setAttribute("command", command);
                 logger.debug("command {} is set as attribute for httpRequest"
                         , command.getName());
